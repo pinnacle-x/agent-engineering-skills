@@ -21,20 +21,31 @@ role: system
 
 ## `praxflow-pdf-ingest`
 
-**Typical invocation:**
+**Typical invocation (ordinary PDF):**
 
 ```text
 $praxflow-pdf-ingest input/DeviceManual.pdf
 ```
 
-**Does:** extracts PDF evidence, preserves source file/page, identifies weak extraction/OCR candidates, marks uncertainty instead of guessing.
+**Typical invocation (schematic/drawing):**
+
+```text
+$praxflow-pdf-ingest input/Main_Schematic.pdf
+```
+
+For schematic or drawing PDFs, the skill runs the helper with `--schematic` / `--render-images all` so every page is available as visual evidence.
+
+**Does:** extracts PDF evidence, preserves source file/page, identifies weak extraction/OCR candidates, renders visual page artifacts when required, and marks uncertainty instead of guessing.
 
 **Writes:**
 
 ```text
 docs/raw/<stem>_raw.md
 docs/raw/<stem>_extraction_report.md
+docs/raw/<stem>_images/page_NNN.png   # rendered pages
 ```
+
+**Visual rule:** for schematics and engineering drawings, use rendered page images with a vision-capable model. Do not infer exact electrical connectivity from extracted labels alone; prefer a netlist/native structured source when exact connectivity matters.
 
 ## `praxflow-system-discovery`
 
