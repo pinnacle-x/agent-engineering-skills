@@ -247,7 +247,7 @@ def build_report(
             "## Next action",
             "",
             "For schematics/drawings, inspect every rendered page with a vision-capable model or human reviewer. "
-            "For OCR candidates, use OCR only when text is required and the visual inspection is insufficient. "
+            "For OCR candidates, use OCR only when text is required and visual inspection is insufficient. "
             "Do not infer electrical connectivity from extracted labels alone when the page image or a netlist is available.",
             "",
         ]

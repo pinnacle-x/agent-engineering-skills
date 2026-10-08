@@ -9,7 +9,7 @@ input/DeviceManual.pdf
 Invocation:
 
 ```text
-$praxflow-pdf-ingest input/DeviceManual.pdf
+$praxflow pdf-ingest input/DeviceManual.pdf
 ```
 
 Expected outputs:

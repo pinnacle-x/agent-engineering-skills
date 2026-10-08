@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Install PraxFlow Agent Skills for Codex and DeepSeek Harness.
+"""Install the unified PraxFlow Agent Skill for Codex and DeepSeek Harness.
 
-The canonical skills always come from ../skills. Codex and DeepSeek Harness
-share the Agent Skills location ~/.agents/skills for user-scope installs and
-.agents/skills for project-scope installs.
+The canonical skill lives at ../skills/praxflow. Codex and DeepSeek Harness
+share ~/.agents/skills for user-scope installs and .agents/skills for
+project-scope installs.
 """
 
 from __future__ import annotations
@@ -79,7 +79,7 @@ def install_link(src: Path, dst: Path, force: bool) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Install PraxFlow Agent Skills")
+    parser = argparse.ArgumentParser(description="Install the PraxFlow Agent Skill")
     parser.add_argument(
         "--agent",
         choices=sorted(TARGETS),
@@ -103,13 +103,13 @@ def parse_args() -> argparse.Namespace:
         "--mode",
         choices=("copy", "link"),
         default="copy",
-        help="Copy skills or create directory symlinks back to this checkout.",
+        help="Copy the Skill or create a directory symlink back to this checkout.",
     )
     parser.add_argument(
         "--skill",
         action="append",
         dest="skills",
-        help="Install one named skill. Repeat to install multiple skills. Default: all.",
+        help="Optional explicit skill name. PraxFlow currently provides: praxflow.",
     )
     parser.add_argument(
         "--force",
@@ -162,7 +162,7 @@ def main() -> int:
 
     print()
     print(f"PraxFlow installed for target '{args.agent}' in: {root}")
-    print(f"Skills installed: {len(installed)}")
+    print("Installed: " + ", ".join(installed))
     return 0
 
 

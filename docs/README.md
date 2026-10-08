@@ -6,11 +6,15 @@ This directory is the maintained source of truth for the PraxFlow engineering pr
 
 1. `quick-start.md` — run a first project with concrete commands.
 2. `workflow.md` — understand the full lifecycle and output files.
-3. `skill-reference.md` — inspect each PraxFlow skill in detail.
+3. `skill-reference.md` — inspect the unified PraxFlow Skill and each workflow mode.
 4. `decision-gates.md` — understand when the agent stops for human input.
 5. `cross-repo-workflow.md` — use when a public contract affects multiple repositories.
 6. `repository-roles.md` and `source-of-truth.md` — ownership rules.
 7. `installation.md` and `portability.md` — runtime/install details.
+
+## Canonical Skill
+
+The executable workflow source is `skills/praxflow/SKILL.md`. PraxFlow stages are modes of this one Skill rather than separate Skill packages.
 
 ## Maintenance rule
 

@@ -17,33 +17,33 @@ The workspace root is not a Git repository. Each child directory is an independe
 
 ## 1. Bootstrap every repository
 
-Open the repository with your agent and run the normal agent setup for that repository if needed. Then run PraxFlow.
+Open the repository with your agent and run the normal agent setup for that repository if needed. Then run the unified PraxFlow Skill.
 
 System repository:
 
 ```text
-$praxflow-repo-bootstrap
+$praxflow repo-bootstrap
 role: system
 ```
 
 Protocol repository:
 
 ```text
-$praxflow-repo-bootstrap
+$praxflow repo-bootstrap
 role: protocol
 ```
 
 PC repository:
 
 ```text
-$praxflow-repo-bootstrap
+$praxflow repo-bootstrap
 role: pc
 ```
 
 Controller repository:
 
 ```text
-$praxflow-repo-bootstrap
+$praxflow repo-bootstrap
 role: controller
 ```
 
@@ -66,7 +66,7 @@ One fact should have one owner repository.
 Example:
 
 ```text
-$praxflow-pdf-ingest input/ProductRequirements.pdf
+$praxflow pdf-ingest input/ProductRequirements.pdf
 ```
 
 Expected output:
@@ -83,7 +83,7 @@ Inspect `TODO_VERIFY`, `OCR_CANDIDATE`, missing tables, and source-page referenc
 Run only in the system repository after the main source material is ingested:
 
 ```text
-$praxflow-system-discovery
+$praxflow system-discovery
 ```
 
 Expected output:
@@ -126,7 +126,7 @@ Record the resulting concrete source identifier, for example a GitHub/GitLab iss
 Example:
 
 ```text
-$praxflow-spec-materialize
+$praxflow spec-materialize
 source: issue #123
 ```
 
@@ -146,13 +146,13 @@ docs/spec/SPEC_SOURCE.json
 Every implementation repository:
 
 ```text
-$praxflow-spec-validate
+$praxflow spec-validate
 ```
 
 Protocol repository additionally:
 
 ```text
-$praxflow-protocol-validate
+$praxflow protocol-validate
 ```
 
 Do not implement when the validation result is `BLOCKED`.
@@ -187,7 +187,7 @@ Implement <behavior> according to the approved spec.
 Before changing a shared/public interface:
 
 ```text
-$praxflow-interface-change
+$praxflow interface-change
 goal: Add StartTest command.
 ```
 
@@ -198,7 +198,7 @@ Update and approve the owner spec first, then update consumers.
 After all affected repositories are ready:
 
 ```text
-$praxflow-system-verify
+$praxflow system-verify
 change: IC-0001
 ```
 
@@ -209,7 +209,7 @@ Manual/hardware checks remain `MANUAL_PENDING` until a human provides evidence.
 Only when system verification is `PASS`:
 
 ```text
-$praxflow-manifest-release
+$praxflow manifest-release
 version: 1.0.0
 verification: system/docs/verification/VER-RC-001.md
 ```
@@ -223,4 +223,4 @@ releases/v1.0.0.md
 
 ## First-run rule
 
-Do not redesign the workflow before trying it. Run one real project through the process, record friction points, then change the relevant `skill`, `docs`, `template`, or `example` based on observed failures.
+Do not redesign the workflow before trying it. Run one real project through the process, record friction points, then change the relevant `SKILL.md`, docs, template, or example based on observed failures.

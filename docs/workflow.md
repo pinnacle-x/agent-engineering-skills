@@ -2,11 +2,13 @@
 
 PraxFlow coordinates product-level engineering across multiple independent Git repositories. It complements, rather than replaces, general engineering capabilities such as design review, specification, TDD, implementation, diagnosis, and code review.
 
+PraxFlow is installed as one Agent Skill named `praxflow`. Workflow stages are selected as modes, for example `$praxflow repo-bootstrap` or `$praxflow system-verify`.
+
 ## 1. Workstation setup
 
-Install PraxFlow once using either a shared Agent Skills directory or an agent-specific adapter. Do not duplicate the same canonical skills into every product repository unless a project intentionally pins them.
+Install PraxFlow once using the shared Agent Skills directory. Do not duplicate the same canonical Skill into every product repository unless a project intentionally pins it.
 
-See `docs/installation.md` for Codex, Claude Code, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Cline, Roo Code, and other Agent Skills-capable environments.
+See `docs/installation.md` for supported environments.
 
 Optional general engineering skill packs may also be installed globally. PraxFlow does not require one specific pack.
 
@@ -32,7 +34,7 @@ Later, Android `repo`/manifest may populate the same directory layout. Each chil
 For every new repository:
 
 1. Run the environment's normal repository-agent setup, if one exists.
-2. Run `praxflow-repo-bootstrap` with the repository role.
+2. Run `$praxflow repo-bootstrap` with the repository role.
 3. Review `AGENTS.md` with the agent's native capability or a general writing-for-agents skill without adding speculative product facts.
 
 Key output: repository-specific `AGENTS.md` plus durable directory scaffolding.
@@ -52,7 +54,7 @@ A fact should have one owner repository.
 
 ## 5. Ingest PDFs
 
-Run `praxflow-pdf-ingest` on source PDFs.
+Run `$praxflow pdf-ingest` on source PDFs.
 
 Outputs:
 
@@ -65,7 +67,7 @@ This stage extracts evidence only. It does not create product decisions or produ
 
 ## 6. Discover the system
 
-In the system repository, run `praxflow-system-discovery` after relevant source material is ingested.
+In the system repository, run `$praxflow system-discovery` after relevant source material is ingested.
 
 Outputs:
 
@@ -75,7 +77,7 @@ docs/system/SYSTEM_FACTS.md
 docs/system/OPEN_DECISIONS.md
 ```
 
-The skill classifies unresolved decisions as LOW, MEDIUM, HIGH, or CRITICAL.
+The mode classifies unresolved decisions as LOW, MEDIUM, HIGH, or CRITICAL.
 
 ## 7. Conditionally use a deep design review
 
@@ -107,7 +109,7 @@ Do not duplicate the canonical spec's semantics manually.
 
 ## 9. Materialize repository-local specs
 
-Run `praxflow-spec-materialize` with the concrete spec source.
+Run `$praxflow spec-materialize` with the concrete spec source.
 
 Outputs vary by repository role. Examples:
 
@@ -155,7 +157,7 @@ docs/spec/SPEC_SOURCE.json
 
 ## 10. Validate specs
 
-Run `praxflow-spec-validate` in every implementation repository before production implementation.
+Run `$praxflow spec-validate` in every implementation repository before production implementation.
 
 Output:
 
@@ -163,7 +165,7 @@ Output:
 docs/spec/VALIDATION_REPORT.md
 ```
 
-Protocol repositories additionally run `praxflow-protocol-validate`.
+Protocol repositories additionally run `$praxflow protocol-validate`.
 
 Output:
 
@@ -171,7 +173,7 @@ Output:
 docs/spec/PROTOCOL_VALIDATION_REPORT.md
 ```
 
-A BLOCKED report prevents implementation until the blocking uncertainty is resolved.
+A `BLOCKED` report prevents implementation until the blocking uncertainty is resolved.
 
 ## 11. Human approval gate
 
@@ -183,13 +185,13 @@ Production implementation must not begin from an unapproved spec.
 
 For a large approved spec, use the environment's task-decomposition capability, then create a feature branch before implementation.
 
-Use the agent's implementation/TDD/review capabilities according to repository rules. A compatible general skill pack may provide commands such as ticket decomposition, implementation, TDD, and code review, but PraxFlow does not require specific command names.
+Use the agent's implementation/TDD/review capabilities according to repository rules. PraxFlow does not require specific implementation command names.
 
 For a small, already-clear behavior, direct TDD or a focused implementation task is enough; do not re-run design/specification for every atomic task.
 
 ## 13. Cross-repository public interface changes
 
-Before changing a public contract, run `praxflow-interface-change` from a workspace that can see the relevant repositories.
+Before changing a public contract, run `$praxflow interface-change` from a workspace that can see the relevant repositories.
 
 Output:
 
@@ -208,7 +210,7 @@ Consumers must never redefine public protocol semantics locally just because the
 
 ## 14. System verification
 
-After all affected repositories are implemented/reviewed, run `praxflow-system-verify`.
+After all affected repositories are implemented/reviewed, run `$praxflow system-verify`.
 
 Output:
 
@@ -220,7 +222,7 @@ It records exact repository SHAs and separates automatic from manual/hardware ve
 
 ## 15. Product release
 
-Only when system verification is PASS, run `praxflow-manifest-release` in the manifest repository.
+Only when system verification is `PASS`, run `$praxflow manifest-release` in the manifest repository.
 
 Outputs:
 
@@ -236,33 +238,33 @@ Release manifests pin immutable revisions so the complete product version is rep
 ```text
 repo setup
   ↓
-praxflow-repo-bootstrap
+$praxflow repo-bootstrap
   ↓
 PDF owner/input
   ↓
-praxflow-pdf-ingest
+$praxflow pdf-ingest
   ↓
-praxflow-system-discovery (system repo)
+$praxflow system-discovery (system repo)
   ↓
 HIGH/CRITICAL decisions? ─ yes → human-approved deep design review
   ↓ no / resolved
 canonical specification
   ↓
-praxflow-spec-materialize
+$praxflow spec-materialize
   ↓
-praxflow-spec-validate
+$praxflow spec-validate
   ↓
-protocol? → praxflow-protocol-validate
+protocol? → $praxflow protocol-validate
   ↓
 human approval
   ↓
 implementation / TDD / review
   ↓
-cross-repo? → praxflow-interface-change before contract changes
+cross-repo? → $praxflow interface-change before contract changes
   ↓
-praxflow-system-verify
+$praxflow system-verify
   ↓
 manual/hardware checks complete
   ↓
-praxflow-manifest-release
+$praxflow manifest-release
 ```

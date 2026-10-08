@@ -1,7 +1,7 @@
 {
   "name": "praxflow",
-  "version": "0.2.0",
-  "description": "Codex packaging adapter for the portable PraxFlow Agent Skills library.",
+  "version": "0.3.0",
+  "description": "Codex packaging adapter for the portable PraxFlow Agent Skill.",
   "author": {
     "name": "pinnacle-x",
     "url": "https://github.com/pinnacle-x"
@@ -13,17 +13,17 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "PraxFlow",
-    "shortDescription": "Portable product engineering workflows for multi-repository projects",
-    "longDescription": "PraxFlow provides agent-neutral repository bootstrap, PDF ingestion, system discovery, specification validation, protocol validation, cross-repository interface change control, system verification, and manifest release workflows. This manifest only packages the shared skills for Codex.",
+    "shortDescription": "Portable product engineering workflow for multi-repository projects",
+    "longDescription": "PraxFlow provides one agent-neutral Skill with modes for repository bootstrap, PDF ingestion, system discovery, specification materialization and validation, protocol validation, cross-repository interface change control, system verification, and manifest release. This manifest packages the shared PraxFlow Skill for Codex.",
     "developerName": "pinnacle-x",
     "category": "Developer Tools",
     "capabilities": ["Read", "Write", "Interactive"],
     "websiteURL": "https://github.com/pinnacle-x/PraxFlow",
     "defaultPrompt": [
-      "Bootstrap this repository with PraxFlow.",
-      "Ingest the PDFs in input/ with source traceability.",
-      "Discover the system contexts and unresolved decisions.",
-      "Validate this protocol specification before implementation."
+      "Use PraxFlow repo-bootstrap for this repository.",
+      "Use PraxFlow pdf-ingest for the PDFs in input/ with source traceability.",
+      "Use PraxFlow system-discovery to find contexts and unresolved decisions.",
+      "Use PraxFlow protocol-validate before protocol implementation."
     ]
   }
 }

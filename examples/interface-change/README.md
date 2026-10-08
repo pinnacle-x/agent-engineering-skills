@@ -3,7 +3,7 @@
 Invocation:
 
 ```text
-$praxflow-interface-change
+$praxflow interface-change
 goal: Add StartTest command.
 ```
 

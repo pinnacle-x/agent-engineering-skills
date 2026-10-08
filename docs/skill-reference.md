@@ -1,39 +1,37 @@
 # PraxFlow Skill Reference
 
-This file describes the maintained PraxFlow skills. The corresponding `skills/<name>/SKILL.md` remains the executable instruction source.
-
-## `praxflow-repo-bootstrap`
-
-**Use when:** creating or standardizing a system, protocol, PC, controller, module, hardware, or manifest repository.
-
-**Typical invocation:**
+PraxFlow is maintained as one Agent Skill:
 
 ```text
-$praxflow-repo-bootstrap
+skills/praxflow/SKILL.md
+```
+
+The Skill exposes multiple workflow modes through one entrypoint.
+
+## `repo-bootstrap`
+
+**Invocation:**
+
+```text
+$praxflow repo-bootstrap
 role: system
 ```
 
+**Use when:** creating or standardizing a system, protocol, PC, controller, module, hardware, or manifest repository.
+
 **Reads:** current repository structure, existing `AGENTS.md`, existing agent metadata.
 
-**Does:** establishes repository role, ownership rules, durable folders, implementation gates, source-of-truth references.
+**Does:** establishes repository role, ownership rules, durable folders, implementation gates, and source-of-truth references.
 
-**Does not:** invent requirements, create speculative `CONTEXT.md`, ADRs, or formal specs.
+**Does not:** invent requirements or create speculative `CONTEXT.md`, ADRs, or formal specs.
 
-## `praxflow-pdf-ingest`
+## `pdf-ingest`
 
-**Typical invocation (ordinary PDF):**
-
-```text
-$praxflow-pdf-ingest input/DeviceManual.pdf
-```
-
-**Typical invocation (schematic/drawing):**
+**Invocation:**
 
 ```text
-$praxflow-pdf-ingest input/Main_Schematic.pdf
+$praxflow pdf-ingest input/DeviceManual.pdf
 ```
-
-For schematic or drawing PDFs, the skill runs the helper with `--schematic` / `--render-images all` so every page is available as visual evidence.
 
 **Does:** extracts PDF evidence, preserves source file/page, identifies weak extraction/OCR candidates, renders visual page artifacts when required, and marks uncertainty instead of guessing.
 
@@ -45,17 +43,17 @@ docs/raw/<stem>_extraction_report.md
 docs/raw/<stem>_images/page_NNN.png   # rendered pages
 ```
 
-**Visual rule:** for schematics and engineering drawings, use rendered page images with a vision-capable model. Do not infer exact electrical connectivity from extracted labels alone; prefer a netlist/native structured source when exact connectivity matters.
+For schematics and engineering drawings, use rendered page images with a vision-capable model. Do not infer exact electrical connectivity from extracted labels alone; prefer a netlist/native structured source when exact connectivity matters.
 
-## `praxflow-system-discovery`
+## `system-discovery`
 
-**Use in:** the system repository after relevant source ingestion.
-
-**Typical invocation:**
+**Invocation:**
 
 ```text
-$praxflow-system-discovery
+$praxflow system-discovery
 ```
+
+**Use in:** the system repository after relevant source ingestion.
 
 **Does:** identifies evidence-backed contexts, responsibilities, interface ownership, and unresolved product decisions.
 
@@ -69,12 +67,12 @@ docs/system/OPEN_DECISIONS.md
 
 **Decision policy:** classify unresolved decisions `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`. Recommend deep design review for `HIGH`/`CRITICAL`; do not invoke it automatically.
 
-## `praxflow-spec-materialize`
+## `spec-materialize`
 
-**Typical invocation:**
+**Invocation:**
 
 ```text
-$praxflow-spec-materialize
+$praxflow spec-materialize
 source: issue #123
 ```
 
@@ -82,55 +80,55 @@ source: issue #123
 
 **Writes:** role-specific files under `docs/spec/` plus `SPEC_SOURCE.json`.
 
-## `praxflow-spec-validate`
+## `spec-validate`
 
-**Typical invocation:**
+**Invocation:**
 
 ```text
-$praxflow-spec-validate
+$praxflow spec-validate
 ```
 
-**Checks:** completeness, unresolved `TODO_VERIFY`, source ownership, contradictions with ADRs, testability, implementation readiness.
+**Checks:** completeness, unresolved `TODO_VERIFY`, source ownership, contradictions with ADRs, testability, and implementation readiness.
 
 **Writes:** `docs/spec/VALIDATION_REPORT.md`.
 
 **Result:** `PASS`, `PASS_WITH_WARNINGS`, or `BLOCKED`.
 
-## `praxflow-protocol-validate`
+## `protocol-validate`
+
+**Invocation:**
+
+```text
+$praxflow protocol-validate
+```
 
 **Use in:** protocol repositories.
 
-**Typical invocation:**
-
-```text
-$praxflow-protocol-validate
-```
-
-**Checks:** addresses, function/command codes, frame lengths, CRC, endianness, signedness, scale/offset, units, permissions, enumerations, error codes, source pages, unresolved verification markers.
+**Checks:** addresses, function/command codes, frame lengths, CRC, endianness, signedness, scale/offset, units, permissions, enumerations, error codes, source pages, and unresolved verification markers.
 
 **Writes:** `docs/spec/PROTOCOL_VALIDATION_REPORT.md`.
 
-## `praxflow-interface-change`
+## `interface-change`
 
-**Typical invocation:**
+**Invocation:**
 
 ```text
-$praxflow-interface-change
+$praxflow interface-change
 goal: Add StartTest command.
 ```
 
-**Does:** identifies owner repository, affected consumers, compatibility risk, required update order, verification plan.
+**Does:** identifies owner repository, affected consumers, compatibility risk, required update order, and verification plan.
 
 **Writes:** `system/docs/changes/IC-XXXX-<slug>.md`.
 
 **Rule:** owner spec first; consumers never redefine a shared contract locally.
 
-## `praxflow-system-verify`
+## `system-verify`
 
-**Typical invocation:**
+**Invocation:**
 
 ```text
-$praxflow-system-verify
+$praxflow system-verify
 change: IC-0001
 ```
 
@@ -138,14 +136,14 @@ change: IC-0001
 
 **Writes:** `system/docs/verification/VER-<id>.md`.
 
-**Result:** `PASS`, `BLOCKED`, or `FAIL`.
+**Per-check status:** `PASS`, `FAIL`, `BLOCKED`, `MANUAL_PENDING`, or `NOT_APPLICABLE`.
 
-## `praxflow-manifest-release`
+## `manifest-release`
 
-**Typical invocation:**
+**Invocation:**
 
 ```text
-$praxflow-manifest-release
+$praxflow manifest-release
 version: 1.0.0
 verification: system/docs/verification/VER-RC-001.md
 ```
@@ -160,3 +158,9 @@ releases/vX.Y.Z.md
 ```
 
 The XML pins the tested repository revisions so the complete product can be reproduced.
+
+## Mode routing
+
+If the user invokes `$praxflow` without naming a mode, the Agent may infer the mode only when the requested action is unambiguous. Otherwise it asks once which workflow stage is intended.
+
+Each mode retains its own stop condition. PraxFlow must not silently continue from evidence extraction into design, from design into implementation, or from verification into release.

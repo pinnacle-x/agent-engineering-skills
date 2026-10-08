@@ -3,7 +3,7 @@
 Invocation:
 
 ```text
-$praxflow-protocol-validate
+$praxflow protocol-validate
 ```
 
 Review should cover addresses, command/function codes, frame length, CRC, endianness, signedness, scale, offset, units, permissions, enumerations, error codes, source pages, and unresolved verification markers.
