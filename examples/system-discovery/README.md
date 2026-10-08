@@ -3,7 +3,7 @@
 Invocation:
 
 ```text
-$praxflow-system-discovery
+$praxflow system-discovery
 ```
 
 Expected outputs:
