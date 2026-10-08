@@ -4,7 +4,7 @@ PraxFlow uses human gates where an agent should not silently choose product beha
 
 ## Gate 1 — High-impact open decision
 
-Created by `praxflow-system-discovery`.
+Created by `$praxflow system-discovery`.
 
 | Severity | Default action |
 |---|---|
@@ -19,9 +19,9 @@ A deep-design tool such as `/grill-with-docs` is optional. PraxFlow decides that
 
 ## Gate 2 — Specification readiness
 
-Before production code, `praxflow-spec-validate` must not be `BLOCKED`.
+Before production code, `$praxflow spec-validate` must not be `BLOCKED`.
 
-For protocol repositories, `praxflow-protocol-validate` must also be acceptable.
+For protocol repositories, `$praxflow protocol-validate` must also be acceptable.
 
 ## Gate 3 — Human spec approval
 
@@ -35,4 +35,4 @@ Automated tests cannot mark a physical verification step as passed unless eviden
 
 ## Gate 5 — Product release
 
-`praxflow-manifest-release` requires a referenced system verification report with overall `PASS`. Release manifests pin immutable tested revisions.
+`$praxflow manifest-release` requires a referenced system verification report with overall `PASS`. Release manifests pin immutable tested revisions.
