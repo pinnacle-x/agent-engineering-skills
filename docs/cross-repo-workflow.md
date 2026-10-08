@@ -9,7 +9,7 @@ Example: adding a `StartTest` command affects `protocol`, `controller`, `pc`, an
 From a workspace that can see the relevant repositories:
 
 ```text
-$praxflow-interface-change
+$praxflow interface-change
 goal: Add StartTest command.
 ```
 
@@ -34,7 +34,7 @@ If `protocol` owns the public command:
 
 ```text
 protocol spec update
-  -> protocol validation
+  -> $praxflow protocol-validate
   -> human approval
   -> protocol implementation (if executable code exists)
   -> controller consumer update
@@ -53,7 +53,7 @@ Each repository keeps its own branch, commit, merge request, and review history.
 After all affected repositories are ready:
 
 ```text
-$praxflow-system-verify
+$praxflow system-verify
 change: IC-0001
 ```
 
@@ -61,4 +61,4 @@ The verification report records exact SHAs for every affected repository.
 
 ## 5. Release only the tested combination
 
-A product release manifest must reference the exact verified combination, not merely floating `develop` branches.
+A product release manifest must reference the exact verified combination, not merely floating `develop` branches. Use `$praxflow manifest-release` only after system verification is `PASS`.
