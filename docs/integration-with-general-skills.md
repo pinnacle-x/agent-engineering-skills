@@ -19,11 +19,11 @@ Use any compatible general-purpose skill pack or native agent capability for:
 - architecture review
 - handoff between sessions
 
-Matt Pocock's engineering skills are one compatible option, but PraxFlow core skills must also work when those skills are absent.
+Matt Pocock's engineering skills are one compatible option, but PraxFlow must also work when those skills are absent.
 
-### PraxFlow skills
+### PraxFlow
 
-Use PraxFlow for:
+PraxFlow is one Skill with modes for:
 - repository role bootstrap
 - PDF evidence ingestion
 - system/context discovery
@@ -38,7 +38,7 @@ Use PraxFlow for:
 
 PraxFlow does not start a deep-design review automatically.
 
-`praxflow-system-discovery` classifies open decisions. If one or more decisions are `HIGH` or `CRITICAL`, it recommends an interactive deep-design review and presents the decision summary. A human decides whether to enter that process.
+`$praxflow system-discovery` classifies open decisions. If one or more decisions are `HIGH` or `CRITICAL`, it recommends an interactive deep-design review and presents the decision summary. A human decides whether to enter that process.
 
 If a companion skill such as `grill-with-docs` is installed, it may be used. Otherwise use the current agent's native planning/brainstorming capability or another compatible design-review skill.
 
@@ -51,15 +51,15 @@ Portable flow:
 ```text
 evidence/raw
   ↓
-praxflow-system-discovery
+$praxflow system-discovery
   ↓
 conditional deep-design review
   ↓
 canonical specification source
   ↓
-praxflow-spec-materialize
+$praxflow spec-materialize
   ↓
-praxflow-spec-validate
+$praxflow spec-validate
 ```
 
 A canonical specification source may be produced by a general spec skill, the agent's native planning workflow, an issue tracker artifact, or a reviewed design document.
@@ -89,7 +89,7 @@ Do not force design/specification loops onto every atomic implementation task.
 Before implementation when a public contract changes:
 
 ```text
-praxflow-interface-change
+$praxflow interface-change
   ↓
 owner spec update + approval
   ↓
@@ -97,7 +97,7 @@ owner implementation
   ↓
 consumer implementations
   ↓
-praxflow-system-verify
+$praxflow system-verify
 ```
 
 ## Architecture review
@@ -106,4 +106,4 @@ Use an architecture-review capability after meaningful code exists. PraxFlow doe
 
 ## Agent adapters
 
-Agent-specific invocation syntax belongs in installation or adapter documentation, not in the canonical PraxFlow skills. See `docs/installation.md` and `docs/portability.md`.
+Agent-specific invocation syntax belongs in installation or adapter documentation, not in the canonical PraxFlow Skill. See `docs/installation.md` and `docs/portability.md`.
