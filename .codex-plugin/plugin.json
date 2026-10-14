@@ -1,7 +1,7 @@
 {
   "name": "praxflow",
-  "version": "0.3.0",
-  "description": "Codex packaging adapter for the portable PraxFlow Agent Skill.",
+  "version": "0.4.0",
+  "description": "Lightweight cross-repository governance for product engineering.",
   "author": {
     "name": "pinnacle-x",
     "url": "https://github.com/pinnacle-x"
@@ -9,21 +9,20 @@
   "homepage": "https://github.com/pinnacle-x/PraxFlow",
   "repository": "https://github.com/pinnacle-x/PraxFlow",
   "license": "MIT",
-  "keywords": ["agent-skills", "codex", "multi-repo", "engineering", "pdf", "protocol", "manifest"],
+  "keywords": ["agent-skills", "codex", "deepseek", "multi-repo", "governance", "manifest", "verification"],
   "skills": "./skills/",
   "interface": {
     "displayName": "PraxFlow",
-    "shortDescription": "Portable product engineering workflow for multi-repository projects",
-    "longDescription": "PraxFlow provides one agent-neutral Skill with modes for repository bootstrap, PDF ingestion, system discovery, specification materialization and validation, protocol validation, cross-repository interface change control, system verification, and manifest release. This manifest packages the shared PraxFlow Skill for Codex.",
+    "shortDescription": "Cross-repository interface, verification, and release governance",
+    "longDescription": "PraxFlow is a narrow agent-neutral Skill for owner-first public interface changes, integrated verification tied to exact repository revisions, and reproducible manifest releases. It intentionally leaves PDF reading, repository discovery, protocol analysis, specification work, implementation, testing, and review to the active agent and companion skills.",
     "developerName": "pinnacle-x",
     "category": "Developer Tools",
     "capabilities": ["Read", "Write", "Interactive"],
     "websiteURL": "https://github.com/pinnacle-x/PraxFlow",
     "defaultPrompt": [
-      "Use PraxFlow repo-bootstrap for this repository.",
-      "Use PraxFlow pdf-ingest for the PDFs in input/ with source traceability.",
-      "Use PraxFlow system-discovery to find contexts and unresolved decisions.",
-      "Use PraxFlow protocol-validate before protocol implementation."
+      "Use PraxFlow to plan this cross-repository public interface change.",
+      "Use PraxFlow to verify this exact multi-repository product revision set.",
+      "Use PraxFlow to create a reproducible release manifest from the verified revisions."
     ]
   }
 }
