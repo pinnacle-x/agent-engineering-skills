@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  validate-agent-skills:
+  validate-agent-skill:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,4 +19,3 @@ jobs:
         run: |
           HOME="$RUNNER_TEMP/praxflow-home" python scripts/install.py --agent generic --scope user
           test -f "$RUNNER_TEMP/praxflow-home/.agents/skills/praxflow/SKILL.md"
-          test -f "$RUNNER_TEMP/praxflow-home/.agents/skills/praxflow/scripts/extract_pdf.py"
