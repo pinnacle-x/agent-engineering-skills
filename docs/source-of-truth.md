@@ -1,61 +1,41 @@
 # Source of Truth
 
-PraxFlow uses explicit ownership to prevent multi-repository drift.
+PraxFlow uses explicit ownership only to prevent **cross-repository semantic drift**.
 
 ## Principle
 
-**One fact has one owner repository.** Other repositories consume or reference that fact instead of maintaining independent semantic copies.
+A public fact or contract has one semantic owner repository. Consumers reference that owner rather than independently redefining the same meaning.
 
-## Recommended ownership
+PraxFlow does not prescribe how ordinary project facts, PDFs, specifications, or implementation documents must be stored. Follow each repository's existing `AGENTS.md`, documentation, tracker, and source layout.
 
-| Information | Owner repository |
+## Typical ownership
+
+| Information | Typical owner |
 |---|---|
-| Product/system boundary | `system` |
-| Context relationships | `system/CONTEXT-MAP.md` |
-| System requirements | `system/docs/spec/` |
-| Shared communication protocol | `protocol/docs/spec/` |
-| PC internal design | `pc` |
-| Controller internal design | `controller` |
-| Module internal design | corresponding module repo |
-| Repository membership/development checkout | `manifest/default.xml` |
-| Product release composition | `manifest/releases/*.xml` |
+| Product/system-level contract | system/product repository |
+| Shared communication protocol | protocol/contract repository |
+| PC internals | PC repository |
+| Controller internals | controller repository |
+| Module internals | corresponding module repository |
+| Repository composition | manifest/product-composition repository |
+| Immutable released composition | manifest/product-composition repository |
 
-## Evidence layers
-
-PraxFlow distinguishes evidence from interpretation:
-
-```text
-input/*.pdf
-    ↓
-docs/raw/*
-    ↓
-CONTEXT / ADR / approved specification
-    ↓
-implementation
-```
-
-- `input/*` is immutable source evidence.
-- `docs/raw/*` is faithful extraction, not design.
-- `CONTEXT.md` is confirmed domain language.
-- `CONTEXT-MAP.md` maps contexts and responsibilities.
-- `docs/adr/*` explains significant accepted decisions.
-- `docs/spec/*` is the repository-local implementation contract.
-- source code implements the approved contract; it does not redefine it.
-
-## Conflict handling
-
-If two sources disagree:
-
-1. record the conflict explicitly
-2. preserve both source references
-3. mark the dependent item unresolved
-4. block implementation when the conflict could change behavior or safety
-5. resolve through the owner repository/human decision
-
-Never resolve a conflict by silently preferring whichever document is easier to implement.
+These are defaults, not mandatory directory names. Existing project ownership rules win.
 
 ## Consumer rule
 
-A consumer repository may cache generated artifacts for build convenience only when the generation/source relationship is explicit. It must not become a second semantic owner.
+A consumer may cache or generate a local representation for build convenience, but it must not silently become a second semantic owner.
 
-For public interface changes, use `praxflow-interface-change` and update the owner first.
+When a public contract changes:
+
+1. identify the owner;
+2. record affected consumers;
+3. update/approve the owner contract first;
+4. update consumers afterward;
+5. verify the exact combined repository revisions.
+
+Use `$praxflow interface-change` for this process.
+
+## Conflict handling
+
+If owner/consumer definitions disagree, record the conflict and resolve it through the owner or an explicit human design decision. Do not silently choose whichever version is easier to implement.
