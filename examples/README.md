@@ -1,14 +1,10 @@
 # PraxFlow Examples
 
-Examples are synthetic and must not contain private product data. They demonstrate what goes into a skill and what expected output should look like.
+PraxFlow keeps examples only for the governance it owns.
 
-Available examples:
+- `interface-change/` — owner-first public contract change record.
+- `manifest-release/` — immutable release composition tied to successful verification.
 
-- `demo-temperature-system/` — compact multi-repository industrial product example
-- `pdf-ingest/` — expected PDF evidence extraction pattern
-- `system-discovery/` — system facts, context map, and open decisions
-- `protocol-validation/` — protocol validation expectations
-- `interface-change/` — owner-first cross-repository change plan
-- `manifest-release/` — release manifest expectations
+Integrated verification structure is represented by `templates/SYSTEM_VERIFICATION.md`.
 
-Examples are intended to become regression fixtures as PraxFlow matures.
+PDF extraction, system discovery, protocol validation, specification work, and implementation examples are intentionally not part of PraxFlow; use the active agent and the project's normal engineering workflow.

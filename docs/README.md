@@ -1,23 +1,15 @@
 # PraxFlow Documentation
 
-This directory is the maintained source of truth for the PraxFlow engineering process.
+PraxFlow now documents only the cross-repository governance it owns.
 
-## Reading order
+## Read in this order
 
-1. `quick-start.md` — run a first project with concrete commands.
-2. `workflow.md` — understand the full lifecycle and output files.
-3. `skill-reference.md` — inspect the unified PraxFlow Skill and each workflow mode.
-4. `decision-gates.md` — understand when the agent stops for human input.
-5. `cross-repo-workflow.md` — use when a public contract affects multiple repositories.
-6. `repository-roles.md` and `source-of-truth.md` — ownership rules.
-7. `installation.md` and `portability.md` — runtime/install details.
+1. `workflow.md` — when PraxFlow is needed and the three supported modes.
+2. `cross-repo-workflow.md` — owner-first public interface changes.
+3. `source-of-truth.md` — ownership and non-duplication rules.
+4. `repository-roles.md` — typical product repository ownership.
+5. `installation.md` — shared `.agents/skills` installation.
 
-## Canonical Skill
+The executable source of truth is `skills/praxflow/SKILL.md`.
 
-The executable workflow source is `skills/praxflow/SKILL.md`. PraxFlow stages are modes of this one Skill rather than separate Skill packages.
-
-## Maintenance rule
-
-Update Markdown first. Word/PDF files in `exports/` are generated publication snapshots, not the canonical editing source.
-
-Use Git history for documentation versioning. Keep Markdown filenames stable; only exported artifacts need explicit version suffixes such as `V1.0`.
+PDF reading, repository discovery, design, specification, protocol analysis, implementation, testing, and code review are intentionally outside PraxFlow and should use the active agent or companion engineering Skills.

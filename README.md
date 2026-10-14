@@ -1,39 +1,47 @@
 # PraxFlow
 
-PraxFlow is a portable Agent Skills workflow for repeatable product engineering across system, protocol, PC, controller, module, hardware, and manifest repositories.
+PraxFlow is a **small cross-repository governance Skill** for product engineering. It intentionally does not duplicate capabilities that modern agents already provide.
 
-The canonical workflow logic lives in one skill: `skills/praxflow/SKILL.md`. Agent-specific packaging is an adapter around that same source.
+DeepSeek, Codex, and other capable agents can already read PDFs and code, inspect repositories, analyze protocols, draft specifications, run tests, and review implementation. Use those native capabilities directly. Use `grill-with-docs` for important unresolved design choices.
 
-## Start here
+PraxFlow is only for three product-level concerns that must remain consistent across independent repositories and sessions:
 
-- [Quick start](docs/quick-start.md) — exact commands for the first project run
-- [Full workflow](docs/workflow.md) — canonical end-to-end process
-- [Skill reference](docs/skill-reference.md) — PraxFlow modes, inputs, outputs, and gates
-- [Decision gates](docs/decision-gates.md) — when human approval or deep design review is required
-- [Cross-repository workflow](docs/cross-repo-workflow.md) — owner-first public interface changes
-- [Repository roles](docs/repository-roles.md) — system/protocol/PC/controller/module/manifest ownership
-- [Source of truth](docs/source-of-truth.md) — evidence, specs, ADRs, and implementation ownership
-- [Examples](examples/README.md) — synthetic product examples and expected outputs
-- [Templates](templates/) — reusable output schemas/templates
-- [Exported documents](docs/exports/README.md) — Word/PDF-style release documents
+1. public interface changes;
+2. integrated verification tied to exact repository revisions;
+3. reproducible release manifests.
 
 ## Skill
 
-PraxFlow installs as a single Agent Skill named `praxflow`.
+PraxFlow installs as one Agent Skill:
 
 ```text
-$praxflow repo-bootstrap
-$praxflow pdf-ingest input/DeviceManual.pdf
-$praxflow system-discovery
-$praxflow spec-materialize
-$praxflow spec-validate
-$praxflow protocol-validate
+skills/praxflow/SKILL.md
+```
+
+Supported modes:
+
+```text
 $praxflow interface-change
 $praxflow system-verify
 $praxflow manifest-release
 ```
 
-Each mode preserves its own inputs, outputs, stop conditions, and approval gates inside the same `SKILL.md`.
+Everything else should use the active agent or companion engineering Skills.
+
+## Recommended stack
+
+```text
+Agent (DeepSeek / Codex)
+  ├─ read PDF / code / docs
+  ├─ analyze / plan / implement / test / review
+  │
+  ├─ grill-with-docs          # only when major design choices need human review
+  │
+  └─ praxflow                # only when cross-repo governance is required
+       ├─ interface-change
+       ├─ system-verify
+       └─ manifest-release
+```
 
 ## Repository model
 
@@ -41,18 +49,11 @@ Each mode preserves its own inputs, outputs, stop conditions, and approval gates
 PraxFlow/
 ├── skills/
 │   └── praxflow/
-│       ├── SKILL.md          # canonical executable workflow
-│       └── scripts/
-│           └── extract_pdf.py
-├── docs/                     # canonical process and reference documentation
-├── examples/                 # synthetic, reviewable examples
-├── templates/                # reusable output schemas/templates
-├── scripts/                  # installers and validators
-└── tests/                    # future regression tests
+│       └── SKILL.md
+├── docs/
+├── examples/
+├── templates/
+└── scripts/
 ```
 
-Markdown files under `docs/` are the maintained source of truth for the process. Binary Word/PDF exports under `docs/exports/` are publication artifacts and may carry explicit version numbers.
-
-## Installation
-
-See [docs/installation.md](docs/installation.md).
+See `docs/installation.md` and `docs/workflow.md`.

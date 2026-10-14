@@ -1,54 +1,41 @@
 # Cross-Repository Public Interface Workflow
 
-Use this process when one product change modifies a contract consumed by more than one independent Git repository.
+Use PraxFlow only when one product change modifies a public contract consumed by multiple independent repositories.
 
-Example: adding a `StartTest` command affects `protocol`, `controller`, `pc`, and `system`.
+Example: adding a `StartTest` command affects a protocol owner plus controller and PC consumers.
 
-## 1. Analyze before implementation
+## 1. Plan the contract change
 
-From a workspace that can see the relevant repositories:
+From a workspace that can inspect the relevant repositories:
 
 ```text
 $praxflow interface-change
 goal: Add StartTest command.
 ```
 
-Expected plan:
+Expected record:
 
 ```text
 system/docs/changes/IC-0001-start-test-command.md
 ```
 
-The plan identifies:
+The plan identifies the owner, consumers, compatibility impact, implementation order, migration/versioning needs, and verification requirements.
 
-- owner repository
-- affected repositories
-- compatibility risk
-- required specification changes
-- required implementation order
-- required verification
+## 2. Owner first
 
-## 2. Owner-first rule
-
-If `protocol` owns the public command:
+The owner contract must be updated and approved through the project's normal process before consumers change the public semantics.
 
 ```text
-protocol spec update
-  -> $praxflow protocol-validate
-  -> human approval
-  -> protocol implementation (if executable code exists)
-  -> controller consumer update
-  -> PC consumer update
-  -> integration verification
+owner contract update + approval
+  -> owner implementation when applicable
+  -> consumer implementations
+  -> local tests in each repository
+  -> integrated system verification
 ```
 
-Consumers must not create locally divergent meanings because the current owner contract is inconvenient.
+PraxFlow does not dictate how the owner contract is written or validated. Use the active agent and the repository's normal engineering process.
 
-## 3. Separate Git history
-
-Each repository keeps its own branch, commit, merge request, and review history. Do not mix unrelated repositories into one commit.
-
-## 4. Verify exact revisions
+## 3. Verify the exact combination
 
 After all affected repositories are ready:
 
@@ -57,8 +44,14 @@ $praxflow system-verify
 change: IC-0001
 ```
 
-The verification report records exact SHAs for every affected repository.
+The verification record must capture exact commit SHAs and manual/hardware evidence.
 
-## 5. Release only the tested combination
+## 4. Release only the verified combination
 
-A product release manifest must reference the exact verified combination, not merely floating `develop` branches. Use `$praxflow manifest-release` only after system verification is `PASS`.
+Only after verification is `PASS`:
+
+```text
+$praxflow manifest-release
+```
+
+The release manifest pins the exact verified revisions, not floating branch names.
