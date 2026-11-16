@@ -19,3 +19,6 @@ jobs:
         run: |
           HOME="$RUNNER_TEMP/praxflow-home" python scripts/install.py --agent generic --scope user
           test -f "$RUNNER_TEMP/praxflow-home/.agents/skills/praxflow/SKILL.md"
+          test -f "$RUNNER_TEMP/praxflow-home/.agents/skills/project-bootstrap/SKILL.md"
+          test -f "$RUNNER_TEMP/praxflow-home/.agents/skills/project-bootstrap/references/AGENTS.template.md"
+          test -f "$RUNNER_TEMP/praxflow-home/.agents/skills/project-bootstrap/references/rules.template.md"
