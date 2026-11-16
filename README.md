@@ -1,15 +1,24 @@
 # PraxFlow
 
-This repository contains **two independent, portable Agent Skills**:
+PraxFlow is **one portable Agent Skill** that adds a small set of project-governance capabilities not covered by ordinary agents or the companion Grill engineering Skills. It is not a second general-purpose development workflow.
 
-- **`project-bootstrap`** — initialize or reconcile a project's root `AGENTS.md`, explicit `.agents/rules/` and minimum documentation without overwriting existing source or configuration.
-- **`praxflow`** — lightweight governance for public interface changes, exact-revision multi-repository verification and reproducible release manifests.
+## Modes
 
-They can be installed and used separately. `project-bootstrap` does not invoke PraxFlow; PraxFlow does not create `AGENTS.md`.
+```text
+$praxflow bootstrap
+$praxflow interface-change
+$praxflow system-verify
+$praxflow manifest-release
+```
+
+- **bootstrap**: initialize or reconcile root `AGENTS.md` and explicitly indexed `.agents/rules/`; do not recreate issue-tracker, domain documentation or source files.
+- **interface-change**: coordinate the owner, consumers, compatibility and rollout for an **approved** shared contract across independent repositories. Design interviews, competing designs and ADR decisions belong to `grill-with-docs`.
+- **system-verify**: link integration evidence and manual/hardware results to exact commit SHAs across repositories.
+- **manifest-release**: pin a release to the exact verified repository revision set.
+
+Run ordinary discovery, PDF/code analysis, specifications, implementation, local tests and review with the active agent and general engineering Skills. Use `grill-with-docs` for important unresolved design decisions. PraxFlow does not duplicate those capabilities.
 
 ## Install
-
-The installer discovers Skills under `skills/`. By default it installs both to the user-level `~/.agents/skills/` path:
 
 ```bash
 git clone https://github.com/pinnacle-x/PraxFlow.git
@@ -18,56 +27,50 @@ python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
 
-Install only the new Skill if desired:
-
-```bash
-python scripts/install.py --agent generic --scope user --skill project-bootstrap
-```
-
-After installation, verify the active harness discovers the Skills. If it does not support `$skill-name` shorthand, invoke the Skill by name using a natural-language request.
-
-## Bootstrap a project
-
-From the target project root, invoke:
+Expected installation:
 
 ```text
-$project-bootstrap
+~/.agents/skills/
+└── praxflow/
+    ├── SKILL.md
+    └── references/
 ```
 
-Or: "Use the project-bootstrap Skill to initialize or reconcile this repository's AGENTS.md, explicitly indexed .agents/rules, and minimal docs, preserving existing files."
+If a harness does not support the `$praxflow` shorthand, invoke the installed Skill in natural language and name the mode.
 
-The bootstrap workflow is non-destructive and idempotent in intent: it inspects first, only adds needed rules, links to existing conventions, and does not touch production code. See [bootstrap guide](docs/project-bootstrap.md).
+## Project startup
 
-## PraxFlow governance modes
-
-Use PraxFlow only for the three cross-repository concerns it owns:
+From the target project:
 
 ```text
-$praxflow interface-change
-$praxflow system-verify
-$praxflow manifest-release
+$praxflow bootstrap
 ```
 
-- `interface-change` records contract owner/consumers, compatibility, owner-first update order, migration and verification requirements.
-- `system-verify` binds integration evidence to the exact commit SHA of every included repository.
-- `manifest-release` pins precisely that verified revision combination.
+Bootstrap writes the smallest useful portable entry and rule index. It does not guarantee that every harness discovers arbitrary files at `.agents/rules/`; `AGENTS.md` must reference actual rule paths and loading conditions.
 
-Use the active agent for reading, implementing and repository-local tests. Use `grill-with-docs` separately when important **design choices** require interactive review and ADRs; Grill is not an automatic substitute for owner/consumer governance.
+## Workflow
 
-## Source layout
+```text
+PraxFlow bootstrap (once)
+    → active agent + Grill for design when needed
+    → PraxFlow interface-change only for shared-contract governance
+    → implementation and local tests
+    → PraxFlow system-verify
+    → PraxFlow manifest-release after verification PASS
+```
+
+## Repository structure
 
 ```text
 PraxFlow/
 ├── skills/
-│   ├── project-bootstrap/
-│   │   ├── SKILL.md
-│   │   └── references/
 │   └── praxflow/
-│       └── SKILL.md
+│       ├── SKILL.md
+│       └── references/
 ├── docs/
 ├── examples/
 ├── templates/
 └── scripts/
 ```
 
-See [installation](docs/installation.md), [workflow](docs/workflow.md) and [cross-repository interface guide](docs/cross-repo-workflow.md).
+See [bootstrap](docs/project-bootstrap.md), [installation](docs/installation.md), [workflow](docs/workflow.md) and [shared-contract coordination](docs/cross-repo-workflow.md).
