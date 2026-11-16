@@ -1,30 +1,33 @@
-# Project Bootstrap Guide
+# PraxFlow Bootstrap Mode
 
-`project-bootstrap` is a standalone, prompt-driven Agent Skill. It creates or reconciles a project's **portable instruction entry point**, not its product requirements, source tree, Git configuration or engineering implementation.
+Repository instruction bootstrap is now **part of the single `praxflow` Skill**, not a separately installed or separately invoked `project-bootstrap` Skill.
 
-## Install
+## Use
 
-From a checkout of this repository:
-
-```bash
-python scripts/install.py --agent generic --scope user --skill project-bootstrap
-```
-
-The installed Skill should be discoverable at `~/.agents/skills/project-bootstrap/SKILL.md` when the active harness supports this shared location.
-
-## Use in a new project
-
-Open the project root in a supported agent and request:
+Install PraxFlow once, then open the target repository in the agent and request:
 
 ```text
-$project-bootstrap
+$praxflow bootstrap
 ```
 
-Or, independent of invocation shorthand:
+Or use cross-harness natural language:
 
-> Use the project-bootstrap Skill to set up an AGENTS.md entry point and explicitly indexed .agents/rules for this repository. Create only the rules and docs that are actually needed. Do not invent requirements or modify source files.
+> Use the praxflow Skill in bootstrap mode to create or reconcile this repository's AGENTS.md and explicitly indexed .agents/rules. Preserve existing source, documents, configuration and Git state.
 
-For a new software repository, one possible result is:
+## Scope
+
+This mode **only** supplies portable project instructions and rule discovery:
+
+1. Inspect root `AGENTS.md`, README, source layout, Git status, docs and any existing instruction conventions.
+2. Create or reconcile `AGENTS.md` in place, preserving existing content.
+3. Organize rules under `.agents/rules/` only when appropriate and refer to each real file explicitly in `AGENTS.md`.
+4. Explain always-on versus task-conditional rules; do not assume any harness auto-loads `.agents/rules`.
+5. Use `skills/praxflow/references/AGENTS.template.md` and `skills/praxflow/references/rules.template.md` as optional examples.
+6. Inspect diff/status, avoid duplicate sections, and report actual changes and conflicts.
+
+This mode does **not** initialize Git, change remotes, create source code, alter build/CI configuration, generate invented specs or ADRs, configure the issue tracker, or replicate the domain-doc setup from `setup-matt-pocock-skills`.
+
+## Possible project layout (not mandatory)
 
 ```text
 project/
@@ -32,63 +35,27 @@ project/
 ├── .agents/
 │   └── rules/
 │       ├── general.md
-│       ├── development.md
-│       ├── testing.md
-│       └── documentation.md
-└── ...existing project files
+│       ├── development.md       # only if useful
+│       ├── testing.md           # only if useful
+│       └── documentation.md     # only if useful
+└── ... existing source and docs
 ```
 
-This is **not** a mandatory fixed tree. A small/new or documentation-only project might need only `AGENTS.md` and `general.md`. Formal documentation folders are created only when they have a real use.
+Other valid projects may already have adequate rules in different locations. Link to existing rules where possible instead of duplicating their content. Only create `docs/` or other files when they serve real project needs.
 
-## Use in an existing project
+## Acceptance
 
-```text
-Use project-bootstrap to audit and reconcile the existing AGENTS.md
-and rule files. Preserve current instructions, source layout, and
-working configuration; show the actual diff.
-```
+- All required rule links in `AGENTS.md` refer to existing files.
+- Only appropriate files were created or edited; source/config remains intact.
+- Rules do not contradict one another or make false auto-discovery promises.
+- A second run would not duplicate entries.
+- Actual build/test outcomes are not invented.
+- If the current harness cannot discover the Skill, state that limitation and propose the smallest adapter.
 
-The Skill should inspect first, avoid duplicate sections, preserve existing documentation conventions, and report conflicts rather than overwrite them. Running it twice should not generate duplicate rule entries.
+## Division of responsibilities
 
-## AGENTS.md and rules
-
-A root `AGENTS.md` is the single portable entry. The rules directory is an **explicit project convention**, not a universal auto-discovery feature:
-
-- Always read `.agents/rules/general.md` (if created).
-- Read `.agents/rules/development.md` for implementation changes.
-- Read `.agents/rules/testing.md` for verification tasks.
-- Read `.agents/rules/documentation.md` for documentation changes and behavior changes that affect documentation.
-
-Only refer to files that exist. The Skill bundles examples under `references/` but must adapt them rather than blindly copy.
-
-## Relationship with other Skills
-
-- `project-bootstrap`: repository instructions and rule discovery; suitable before any project-specific engineering work.
-- `setup-matt-pocock-skills`: optional, separate issue-tracker and domain-doc configuration. It may add an `Agent skills` section to `AGENTS.md` after bootstrap.
-- `grill-with-docs`: clarify major unresolved design choices and create ADRs; do not use it just to initialize a repository.
-- `praxflow interface-change`: plan and document the public contract owner/consumer rollout when independently versioned repositories share an interface.
-- `praxflow system-verify` and `praxflow manifest-release`: verify the exact combined revisions and pin them for release.
-
-A typical sequence is:
-
-```text
-project-bootstrap → read AGENTS.md/rules → normal engineering / Grill as needed
-               → interface-change if shared contracts change
-               → implementation and local tests
-               → system-verify → manifest-release if applicable
-```
-
-## Manual acceptance checks
-
-After invocation:
-
-1. `AGENTS.md` exists and each required rule path referenced in it exists.
-2. Rule-index entries identify when they must be read; they do not promise automatic scanning by all harnesses.
-3. Existing content was preserved, and `git diff` contains no unrelated source/build/CI modifications.
-4. Re-running bootstrap would not duplicate sections or destroy previous rules.
-5. No unverified project facts, test outcomes or release versions were created.
-6. The active harness has discovered the Skill; installed files alone are not proof of activation.
-
-## Cross-harness caveat
-
-Agent Skills and `AGENTS.md` support vary by harness and version. A separate, minimal adapter may be needed to enable discovery or recognition. Keep the canonical files under `AGENTS.md` and `.agents/` without vendor-specific syntax.
+- `praxflow bootstrap`: portable AGENTS.md and rules.
+- `setup-matt-pocock-skills`: issue tracker, triage and domain docs when desired.
+- `grill-with-docs`: decisions, tradeoffs, and ADRs.
+- `praxflow interface-change`: approved shared-contract owner/consumer governance.
+- `praxflow system-verify` / `manifest-release`: exact-revision validation and release composition.
