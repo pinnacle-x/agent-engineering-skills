@@ -1,43 +1,70 @@
 ---
 name: praxflow
-description: Lightweight cross-repository governance for product engineering. Use only for public interface changes, integrated system verification, and reproducible multi-repository releases. Let the agent and companion skills handle PDF reading, repository discovery, design, specification, protocol analysis, implementation, testing, and code review.
+description: Portable repository instruction bootstrap and lightweight cross-repository governance. Use for AGENTS.md/rule discovery setup, shared-contract owner/consumer coordination, exact-revision integrated verification, or reproducible release manifests; delegate design interviews, ADRs, implementation and routine testing to the active agent and companion Skills.
 ---
 
 # PraxFlow
 
-PraxFlow is deliberately narrow. Modern agents can already read PDFs and code, inspect repositories, analyze protocols, draft specifications, run tests, and review implementation. PraxFlow must not duplicate those capabilities.
+PraxFlow is deliberately narrow and **one Agent Skill**. It supplies missing project governance capabilities without duplicating normal agent work, `grill-with-docs`, or `setup-matt-pocock-skills`. The active agent handles document/code reading, specification, implementation, repository-local tests, and code review. Grill owns unresolved design decisions and ADRs; PraxFlow does **not** conduct design interviews or redefine interface semantics.
 
-Use PraxFlow only where a multi-repository product needs durable governance that is easy to lose across independent agent sessions or repositories:
+Use PraxFlow for these non-overlapping responsibilities:
 
-1. owner-first public interface changes;
-2. integrated verification tied to exact repository revisions;
-3. reproducible releases that pin the verified repository combination.
+1. **bootstrap** — create/reconcile the portable root `AGENTS.md` and explicitly indexed `.agents/rules/` for a repository; do not duplicate issue-tracker/domain-doc setup from `setup-matt-pocock-skills`;
+2. **interface-change** — coordinate an **already designed** public contract across independent repositories: identify owner/consumers, compatibility consequences, owner-first rollout, migration and test obligations; no design interviews or ADR drafting;
+3. **system-verify** — bind integrated verification evidence to exact repository revisions;
+4. **manifest-release** — pin the exact verified multi-repository composition.
 
 ## Invocation
 
 ```text
+$praxflow bootstrap
 $praxflow interface-change
 $praxflow system-verify
 $praxflow manifest-release
 ```
 
-If `$praxflow` is invoked without a mode, infer the mode only when the request clearly matches one of the three modes. Otherwise explain that PraxFlow is not needed and use the agent's native capability or an appropriate companion skill.
+If `$praxflow` is invoked without a mode, infer a mode only when the task clearly matches one of the four modes. Otherwise use the agent's native capability or an appropriate companion Skill. If the harness lacks `---
+name: praxflow
+description: Portable repository instruction bootstrap and lightweight cross-repository governance. Use for AGENTS.md/rule discovery setup, shared-contract owner/consumer coordination, exact-revision integrated verification, or reproducible release manifests; delegate design interviews, ADRs, implementation and routine testing to the active agent and companion Skills.
+---
+
+# PraxFlow
+
+PraxFlow is deliberately narrow and **one Agent Skill**. It supplies missing project governance capabilities without duplicating normal agent work, `grill-with-docs`, or `setup-matt-pocock-skills`. The active agent handles document/code reading, specification, implementation, repository-local tests, and code review. Grill owns unresolved design decisions and ADRs; PraxFlow does **not** conduct design interviews or redefine interface semantics.
+
+Use PraxFlow for these non-overlapping responsibilities:
+
+1. **bootstrap** — create/reconcile the portable root `AGENTS.md` and explicitly indexed `.agents/rules/` for a repository; do not duplicate issue-tracker/domain-doc setup from `setup-matt-pocock-skills`;
+2. **interface-change** — coordinate an **already designed** public contract across independent repositories: identify owner/consumers, compatibility consequences, owner-first rollout, migration and test obligations; no design interviews or ADR drafting;
+3. **system-verify** — bind integrated verification evidence to exact repository revisions;
+4. **manifest-release** — pin the exact verified multi-repository composition.
+
+## Invocation
+
+```text
+$praxflow bootstrap
+$praxflow interface-change
+$praxflow system-verify
+$praxflow manifest-release
+```
+
+ invocation syntax, ask it in natural language to use the installed `praxflow` Skill in the named mode.
 
 ## What PraxFlow does not do
 
 Do not use PraxFlow for:
 
 - PDF reading, OCR, extraction, or document interpretation;
-- repository bootstrap or creation of `AGENTS.md`;
+- Git repository initialization, Git remotes, issue-tracker configuration and domain-doc setup (delegate those to the active agent or `setup-matt-pocock-skills` as appropriate);
 - codebase/repository discovery;
-- domain modeling or design interviews;
+- domain modeling, design interviews and ADR writing (use `grill-with-docs` for unresolved important design decisions);
 - specification drafting or materialization;
 - generic specification validation;
-- protocol analysis or protocol validation;
+- creating or deciding protocol/API semantics, protocol analysis or protocol validation;
 - implementation, TDD, debugging, or code review;
 - routine single-repository work.
 
-Use the active agent's native capabilities for those tasks. For important unresolved design choices, use a dedicated design-review skill such as `grill-with-docs` when installed.
+Use the active agent for routine engineering, and `grill-with-docs` for unresolved important design choices. For `interface-change`, read the approved owner contract/ADR rather than independently deciding interface design. Do not automatically invoke another Skill from bootstrap.
 
 ## Global governance rules
 
@@ -54,9 +81,41 @@ These rules apply to all PraxFlow modes:
 
 ---
 
+# Mode: `bootstrap`
+
+Use once for a new/imported repository or to reconcile existing `AGENTS.md` instructions. The scope is **portable instructions and explicit rule discovery only**; it does not replicate issue tracker configuration, triage labels, glossary/ADR layout, or the full engineering life cycle already handled by companion engineering Skills.
+
+## Inspect before writing
+
+1. Identify the real repository root. Inspect `git status` if Git exists; do not run `git init`, alter remotes or create branches automatically.
+2. Read existing `AGENTS.md`, `README.md`, `.agents/`, relevant `docs/`, engineering configuration and source/build layout. Preserve any established patterns.
+3. Check actual rules and their references. Do not assume `.agents/rules/` will be auto-discovered by every harness.
+4. If existing instructions conflict, preserve them and surface the conflict; do not silently impose a new hierarchy.
+
+## Write minimal, non-destructive bootstrap
+
+1. Create root `AGENTS.md` if missing; otherwise reconcile the existing entry point **in place** without replacing unrelated content. Keep it concise.
+2. Create `.agents/rules/general.md` only when a reusable rule set is warranted and the repository does not already have an adequate equivalent. Add task-specific rules (`development.md`, `testing.md`, `documentation.md`) **only if meaningful**.
+3. Add an explicit index to `AGENTS.md` that lists only actual rule files, with a condition for loading each one. Never claim automatic discovery for arbitrary rule folders.
+4. Use `references/AGENTS.template.md` and `references/rules.template.md` as **editable examples**, not universal policies. Remove inapplicable lines and do not invent technical facts.
+5. Preserve existing docs and source; prefer links to established instructions over duplicating them. Do not generate placeholder requirements, ADRs, project status, versions or empty docs.
+6. Do not modify production code, hardware designs, build settings, CI, secrets, dependencies or git metadata. Do not copy global Skills into a project-local skills directory.
+7. Do not run Grill, PraxFlow's other modes or issue tracker setup as an automatic side effect.
+
+## Verify and report
+
+- Check that every referenced required path actually exists and that the rule index distinguishes always-on from conditional instructions.
+- Check for conflicts, duplication, circular references and hardcoded vendor-specific assumptions.
+- Inspect `git diff` / `git status` when available and verify unrelated code/configuration was not modified.
+- Re-running bootstrap should not append duplicate sections or overwrite existing rules.
+- Report created/edited/preserved files, rule-loading map, unresolved conflicts and any separate harness-specific discovery adapter needed.
+- Installed skill files alone do not guarantee harness discovery. Never claim tests passed unless actually executed.
+
+---
+
 # Mode: `interface-change`
 
-Use before implementing a change that modifies a contract consumed by more than one independent repository, such as a protocol command, register, public API, data schema, shared state, or hardware/software boundary.
+Use before implementing a change that modifies a contract consumed by more than one independent repository, such as a protocol command, register, public API, data schema, shared state, or hardware/software boundary. **This mode governs an agreed design; it does not replace Grill.** If important semantics or tradeoffs remain undecided, use `grill-with-docs` first and continue only with the approved contract/ADR.
 
 Do not use this mode for a change contained entirely inside one repository.
 
@@ -76,12 +135,12 @@ Do not require PraxFlow-specific spec files. Use whatever source of truth the re
 1. Identify the public contract being changed.
 2. Identify its owner repository.
 3. Identify every known consumer and affected repository.
-4. Classify the change as `compatible`, `conditionally-compatible`, or `breaking`.
-5. Record the current contract and proposed contract.
+4. Based on the already approved design, classify the change as `compatible`, `conditionally-compatible`, or `breaking` and flag uncertainty for human resolution.
+5. Reference the owner-controlled current and approved proposed contract; do not write a rival semantic contract or decide missing interface behavior.
 6. Define the owner-first update order.
 7. Define migration/versioning requirements when needed.
 8. Define automated, integration, and hardware/manual verification needed.
-9. Surface unresolved high-impact design choices instead of resolving them silently. Recommend `grill-with-docs` or another human-in-the-loop design review when appropriate.
+9. When design questions remain unresolved, stop before consumer implementation and request `grill-with-docs`; use its ADR rather than duplicating a design-review interview here.
 
 ## Output
 
@@ -99,7 +158,7 @@ The record must contain:
 - owner repository;
 - affected repositories;
 - current contract;
-- proposed contract;
+- approved proposed contract reference (and brief change summary);
 - compatibility classification;
 - required owner changes;
 - required consumer changes;
@@ -107,7 +166,7 @@ The record must contain:
 - migration/versioning notes;
 - required tests;
 - manual/hardware checkpoints;
-- unresolved decisions;
+- unresolved decisions delegated to Grill or the contract owner;
 - approval status.
 
 ## Gate
