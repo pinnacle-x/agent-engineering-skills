@@ -1,81 +1,78 @@
-# Installing PraxFlow
+# Installing the portable Agent Skills
 
-PraxFlow is one lightweight Agent Skill:
+This repository provides two independent Skills:
 
-```text
-skills/praxflow/SKILL.md
-```
+- `skills/project-bootstrap/SKILL.md` — repository instruction and rule initialization.
+- `skills/praxflow/SKILL.md` — cross-repository governance.
 
-It currently targets Codex and DeepSeek Harness through the shared Agent Skills location:
+Both can use the shared Agent Skills locations when supported by the active harness:
 
 - user/global: `~/.agents/skills/`
 - project-local: `.agents/skills/`
 
-## Install
+The installer supports `generic` and `codex` targets (and retains other legacy target aliases). All currently map to these shared paths.
+
+## Install both Skills
 
 ```bash
 git clone https://github.com/pinnacle-x/PraxFlow.git
 cd PraxFlow
-python scripts/install.py --agent deepseek --scope user
+python scripts/install.py --agent generic --scope user
+python scripts/validate_portability.py
 ```
 
-Codex uses the same destination:
-
-```bash
-python scripts/install.py --agent codex --scope user
-```
-
-After installation:
+The installer discovers all `skills/*/SKILL.md` entries by default. Expected paths:
 
 ```text
 ~/.agents/skills/
+├── project-bootstrap/
+│   ├── SKILL.md
+│   └── references/
 └── praxflow/
     └── SKILL.md
 ```
 
-Only one physical PraxFlow installation is required when both agents discover `~/.agents/skills`.
+## Install separately
 
-## Modes
+```bash
+python scripts/install.py --agent generic --scope user --skill project-bootstrap
+python scripts/install.py --agent generic --scope user --skill praxflow
+```
+
+## Install in a particular project
+
+```bash
+python scripts/install.py --agent generic --scope project --project /path/to/project --skill project-bootstrap
+```
+
+The installed Skill location is `/path/to/project/.agents/skills/project-bootstrap/`. Do not confuse that with the **generated rules** at `/path/to/project/.agents/rules/`.
+
+## Invoke
 
 ```text
+$project-bootstrap
 $praxflow interface-change
 $praxflow system-verify
 $praxflow manifest-release
 ```
 
-Do not use PraxFlow for PDF ingestion, repository bootstrap, system discovery, specification generation/validation, protocol analysis, implementation, or code review. Use the active agent and companion engineering Skills instead.
+`$...` is a syntax example for harnesses that support it. Otherwise request the Skill by name, e.g. "Use project-bootstrap to initialize this repository." The harness must actually discover the installed Skill; path presence alone does not guarantee activation.
 
-For major unresolved design choices, install and use `grill-with-docs` separately from its upstream skill repository.
+## Updating safely
 
-## Project-local installation
-
-```bash
-python scripts/install.py --agent deepseek --scope project --project /path/to/project
-```
-
-## Link mode for PraxFlow development
-
-```bash
-python scripts/install.py --agent deepseek --scope user --mode link
-```
-
-On Windows, symbolic links may require Developer Mode or elevated privileges. Use the default copy mode if linking is unavailable.
-
-## Updating
-
-Copy mode:
+For a copy-mode installation, first update the source checkout:
 
 ```bash
 git pull
-python scripts/install.py --agent deepseek --scope user --force
+python scripts/install.py --agent generic --scope user --skill project-bootstrap --force
 ```
 
-Link mode:
+`--force` **replaces the installed Skill directory**. Do not store project-specific edits there. It does not change an existing target project's `AGENTS.md` or rules. If you use link mode for developing the Skill, only `git pull` is required.
 
-```bash
-git pull
-```
+On Windows, directory links may need Developer Mode or elevated permissions; copy mode avoids that issue.
 
-## DeepSeek discovery
+## Scope boundaries
 
-If `~/.agents/skills/praxflow/SKILL.md` exists but DeepSeek does not list it, verify that its filesystem Skill provider includes the default `~/.agents` root and that `DSH_AGENTS_HOME` has not redirected the agent home.
+`project-bootstrap` is a standalone initialization Skill. It does not install engineering Skills, configure issue trackers, initialize Git or invoke PraxFlow automatically.
+
+`praxflow` does not bootstrap repositories, read PDFs for its own sake, generate specifications, implement features or review routine code. Use the active agent and appropriate engineering Skills for those tasks. For major open design decisions, invoke `grill-with-docs` separately.
