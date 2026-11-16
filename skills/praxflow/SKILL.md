@@ -23,32 +23,7 @@ $praxflow system-verify
 $praxflow manifest-release
 ```
 
-If `$praxflow` is invoked without a mode, infer a mode only when the task clearly matches one of the four modes. Otherwise use the agent's native capability or an appropriate companion Skill. If the harness lacks `---
-name: praxflow
-description: Portable repository instruction bootstrap and lightweight cross-repository governance. Use for AGENTS.md/rule discovery setup, shared-contract owner/consumer coordination, exact-revision integrated verification, or reproducible release manifests; delegate design interviews, ADRs, implementation and routine testing to the active agent and companion Skills.
----
-
-# PraxFlow
-
-PraxFlow is deliberately narrow and **one Agent Skill**. It supplies missing project governance capabilities without duplicating normal agent work, `grill-with-docs`, or `setup-matt-pocock-skills`. The active agent handles document/code reading, specification, implementation, repository-local tests, and code review. Grill owns unresolved design decisions and ADRs; PraxFlow does **not** conduct design interviews or redefine interface semantics.
-
-Use PraxFlow for these non-overlapping responsibilities:
-
-1. **bootstrap** — create/reconcile the portable root `AGENTS.md` and explicitly indexed `.agents/rules/` for a repository; do not duplicate issue-tracker/domain-doc setup from `setup-matt-pocock-skills`;
-2. **interface-change** — coordinate an **already designed** public contract across independent repositories: identify owner/consumers, compatibility consequences, owner-first rollout, migration and test obligations; no design interviews or ADR drafting;
-3. **system-verify** — bind integrated verification evidence to exact repository revisions;
-4. **manifest-release** — pin the exact verified multi-repository composition.
-
-## Invocation
-
-```text
-$praxflow bootstrap
-$praxflow interface-change
-$praxflow system-verify
-$praxflow manifest-release
-```
-
- invocation syntax, ask it in natural language to use the installed `praxflow` Skill in the named mode.
+If `$praxflow` is invoked without a mode, infer a mode only when the task clearly matches one of the four modes. Otherwise use the agent's native capability or an appropriate companion Skill. If the harness lacks the `$praxflow` invocation syntax, ask it in natural language to use the installed `praxflow` Skill in the named mode.
 
 ## What PraxFlow does not do
 
