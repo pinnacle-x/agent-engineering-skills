@@ -4,6 +4,10 @@ Use PraxFlow only when one product change modifies a public contract consumed by
 
 Example: adding a `StartTest` command affects a protocol owner plus controller and PC consumers.
 
+## 0. Resolve design decisions when necessary
+
+If the interface semantics, compatibility requirements, or migration strategy are not yet agreed, use `grill-with-docs` first. Its ADR documents the **approved design**; it does not replace identifying every owner/consumer, approving the owner-first rollout, or recording integration evidence. Pass the agreed ADR into the next step.
+
 ## 1. Plan the contract change
 
 From a workspace that can inspect the relevant repositories:
