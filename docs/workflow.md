@@ -1,103 +1,69 @@
-# PraxFlow Workflow
+# Portable Agent Workflow
 
-PraxFlow is not a full development lifecycle. It is a thin governance layer used only when work crosses independent repositories.
+Use `project-bootstrap` once for repository instruction setup. Use the regular agent and engineering Skills for most project work. Use `praxflow` only when cross-repository governance is required.
 
-## Normal work
+## 1. Initialize or reconcile the repository
 
-Use the active agent and general engineering Skills directly for:
+```text
+$project-bootstrap
+```
 
-- PDF/document reading;
-- repository/code discovery;
-- domain modeling and design;
-- specification work;
-- protocol analysis;
-- implementation/TDD/debugging/review;
-- repository-local build and tests.
+This creates or reconciles root `AGENTS.md` and explicitly indexed `.agents/rules/` without overwriting existing project conventions. Repeat only when initial rules need repair or adaptation. See [bootstrap guide](project-bootstrap.md).
 
-Use `grill-with-docs` when an important design choice needs interactive human review and durable design documentation.
+## 2. Normal engineering work
 
-## When PraxFlow is needed
+Use the active agent and available companion Skills directly to inspect code/PDFs, reason about requirements, perform domain modeling, plan, implement, test and review.
 
-### 1. Public interface change
+Call `grill-with-docs` when important unresolved **design questions** require an interactive decision process and durable ADRs. Grill determines what the contract should mean; it does not by itself assign owners and consumers or enforce a multi-repository rollout.
 
-Before changing a contract consumed by multiple repositories:
+## 3. Public interface changes across repositories
+
+Before modifying a public contract consumed by independent repositories:
 
 ```text
 $praxflow interface-change
 ```
 
-PraxFlow records ownership, consumers, compatibility impact, owner-first update order, migration/versioning, and required verification.
+This mode records ownership, consumers, compatibility, migration, owner-first order and required verification in `docs/changes/IC-XXXX-<slug>.md` in the designated system/product repository.
 
-Output:
+If the interface design is unresolved, run Grill first, then use the agreed design in the interface-change record. Do not use this mode for repository-local refactors.
 
-```text
-system/docs/changes/IC-XXXX-<slug>.md
-```
+## 4. Exact-revision integrated verification
 
-Do not use this mode for repository-local refactors.
-
-### 2. Integrated system verification
-
-After all affected repositories are implemented and locally tested:
+After owner and consumer repositories are implemented and locally tested:
 
 ```text
 $praxflow system-verify
 ```
 
-PraxFlow records the exact commit SHA of every included repository and binds test/integration/manual evidence to that revision set.
+Record each repository's commit SHA and the actual integration and hardware/manual evidence in `docs/verification/VER-<id>.md`. Unperformed manual/hardware checks remain `MANUAL_PENDING`.
 
-Output:
+## 5. Reproducible release
 
-```text
-system/docs/verification/VER-<id>.md
-```
-
-Manual/hardware checks remain `MANUAL_PENDING` until explicit evidence exists.
-
-### 3. Reproducible release
-
-Only after integrated verification is `PASS`:
+Only when verification is `PASS`:
 
 ```text
 $praxflow manifest-release
 ```
 
-PraxFlow creates an immutable product-composition record that pins the exact verified revisions.
+Pin the exact verified revisions in an immutable release manifest (for example `releases/vX.Y.Z.xml` and `releases/vX.Y.Z.md`).
 
-Typical outputs:
-
-```text
-releases/vX.Y.Z.xml
-releases/vX.Y.Z.md
-```
-
-A non-XML manifest format is also acceptable if it pins the same immutable revision set.
-
-## Compact lifecycle
+## Summary
 
 ```text
-Agent reads requirements / PDFs / repositories
-        ↓
-Agent + grill-with-docs when major design choices require review
-        ↓
-Agent implements and runs repository-local tests
-        ↓
-Shared/public contract changing?
-        └─ yes → $praxflow interface-change BEFORE consumer semantic changes
-        ↓
-All affected repositories ready
-        ↓
-$praxflow system-verify
-        ↓
-PASS + all manual/hardware checks complete
-        ↓
-$praxflow manifest-release
+Project bootstrap (once) → AGENTS.md + .agents/rules
+             ↓
+Read project rules → normal engineering agent work
+             ↓
+Unresolved design? → grill-with-docs → approved design
+             ↓
+Cross-repo contract change? → praxflow interface-change
+             ↓
+Implement owner first → implement consumers → local tests
+             ↓
+Cross-repo system? → praxflow system-verify
+             ↓
+PASS only → praxflow manifest-release
 ```
 
-## Core policy
-
-- one public contract has one owner;
-- owner changes first, consumers follow;
-- verification records exact repository revisions;
-- manual/hardware checks require explicit evidence;
-- releases pin exactly the revisions that passed verification.
+Policies: one semantic owner per public contract; owner changes first; actual test evidence is required; release manifests record the exact verified revision set.
