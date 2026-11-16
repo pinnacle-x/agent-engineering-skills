@@ -1,69 +1,67 @@
-# Portable Agent Workflow
+# PraxFlow Workflow
 
-Use `project-bootstrap` once for repository instruction setup. Use the regular agent and engineering Skills for most project work. Use `praxflow` only when cross-repository governance is required.
+PraxFlow fills gaps in the regular agent + Grill engineering workflow; it does not replace it.
 
-## 1. Initialize or reconcile the repository
+## 1. Repository bootstrap (once per repository)
 
 ```text
-$project-bootstrap
+$praxflow bootstrap
 ```
 
-This creates or reconciles root `AGENTS.md` and explicitly indexed `.agents/rules/` without overwriting existing project conventions. Repeat only when initial rules need repair or adaptation. See [bootstrap guide](project-bootstrap.md).
+Reconcile the root `AGENTS.md`, add only needed `.agents/rules/` and include explicit rule-loading conditions. Preserve existing engineering files and issue-tracker/domain-doc conventions. See [bootstrap](project-bootstrap.md).
 
-## 2. Normal engineering work
+## 2. Normal engineering and Grill
 
-Use the active agent and available companion Skills directly to inspect code/PDFs, reason about requirements, perform domain modeling, plan, implement, test and review.
+Use the active agent and companion engineering Skills for reading, specifications, planning, implementation, repository-local tests and code review.
 
-Call `grill-with-docs` when important unresolved **design questions** require an interactive decision process and durable ADRs. Grill determines what the contract should mean; it does not by itself assign owners and consumers or enforce a multi-repository rollout.
+When major design choices are unresolved, use `grill-with-docs` to interview, compare alternatives and create durable decisions/ADRs. This includes **what a protocol or public interface should mean**. Do not do a duplicate design interview in PraxFlow.
 
-## 3. Public interface changes across repositories
+## 3. Cross-repository public contract coordination (only if applicable)
 
-Before modifying a public contract consumed by independent repositories:
+After the design is agreed and **before** consumer semantic changes:
 
 ```text
 $praxflow interface-change
 ```
 
-This mode records ownership, consumers, compatibility, migration, owner-first order and required verification in `docs/changes/IC-XXXX-<slug>.md` in the designated system/product repository.
+Record the owner and consumers, approved contract reference, compatibility, owner-first rollout, migration and required verification. Output: `docs/changes/IC-XXXX-<slug>.md` in the designated system/product owner repository. This is a governance record, not a second design specification. See [cross-repo-workflow](cross-repo-workflow.md).
 
-If the interface design is unresolved, run Grill first, then use the agreed design in the interface-change record. Do not use this mode for repository-local refactors.
+A repository-local refactor needs neither this mode nor an extra change record.
 
-## 4. Exact-revision integrated verification
+## 4. Integrated verification
 
-After owner and consumer repositories are implemented and locally tested:
+After affected repositories are implemented and locally tested:
 
 ```text
 $praxflow system-verify
 ```
 
-Record each repository's commit SHA and the actual integration and hardware/manual evidence in `docs/verification/VER-<id>.md`. Unperformed manual/hardware checks remain `MANUAL_PENDING`.
+Record each repository's exact commit SHA and actual automated/integration/hardware evidence in `docs/verification/VER-<id>.md`. Unperformed manual/hardware checks remain `MANUAL_PENDING`.
 
 ## 5. Reproducible release
 
-Only when verification is `PASS`:
+Only after integrated verification is `PASS`:
 
 ```text
 $praxflow manifest-release
 ```
 
-Pin the exact verified revisions in an immutable release manifest (for example `releases/vX.Y.Z.xml` and `releases/vX.Y.Z.md`).
+Pin exactly the verified repository revisions in immutable release artifacts.
 
-## Summary
+## One workflow, no duplicate responsibilities
 
 ```text
-Project bootstrap (once) → AGENTS.md + .agents/rules
-             ↓
-Read project rules → normal engineering agent work
-             ↓
-Unresolved design? → grill-with-docs → approved design
-             ↓
-Cross-repo contract change? → praxflow interface-change
-             ↓
-Implement owner first → implement consumers → local tests
-             ↓
-Cross-repo system? → praxflow system-verify
-             ↓
-PASS only → praxflow manifest-release
+PraxFlow bootstrap → AGENTS.md + rule index
+         ↓
+Active agent: read requirements/code/docs
+         ↓
+Design open? → grill-with-docs → approved ADR/contract
+         ↓
+Cross-repo public interface? → PraxFlow interface-change
+         ↓
+Owner implementation → consumer implementation → local checks
+         ↓
+PraxFlow system-verify → PASS → manifest-release
 ```
 
-Policies: one semantic owner per public contract; owner changes first; actual test evidence is required; release manifests record the exact verified revision set.
+Rules: one semantic owner for each public contract; don't independently redesign it in consumers; don't claim tests that weren't run; and never release unverified revisions.
