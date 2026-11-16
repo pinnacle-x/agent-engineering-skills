@@ -1,19 +1,12 @@
-# Documentation
+# PraxFlow Documentation
 
-This repository publishes two independent Skills.
+PraxFlow is **one Skill** with four focused modes. Read:
 
-## Read in this order
+1. [Workflow](workflow.md) — how the active agent, Grill, and PraxFlow divide responsibilities.
+2. [Bootstrap](project-bootstrap.md) — portable AGENTS.md / .agents/rules setup.
+3. [Installation](installation.md) — one physical PraxFlow Skill installation.
+4. [Cross-repository coordination](cross-repo-workflow.md) — design handoff from Grill and owner-first public interface rollout.
+5. [Source of truth](source-of-truth.md) — contract ownership and non-duplication.
+6. [Repository roles](repository-roles.md) — optional product repository boundaries.
 
-1. `project-bootstrap.md` — bootstrap new/imported repositories with explicit rules.
-2. `installation.md` — install either or both Skills into shared Agent Skills locations.
-3. `workflow.md` — boundaries between bootstrap, normal engineering work, Grill and PraxFlow.
-4. `cross-repo-workflow.md` — owner-first public interface changes.
-5. `source-of-truth.md` — contract ownership and avoiding duplicate definitions.
-6. `repository-roles.md` — examples of product repository ownership.
-
-The executable Skill instructions live at:
-
-- `skills/project-bootstrap/SKILL.md`
-- `skills/praxflow/SKILL.md`
-
-The project bootstrap Skill only establishes portable repository instructions. The PraxFlow Skill only handles cross-repository governance; ordinary reading, implementation, tests and reviews use the active agent and its companion Skills.
+Executable instructions: `skills/praxflow/SKILL.md`.
