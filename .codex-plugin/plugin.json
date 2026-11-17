@@ -6,8 +6,8 @@
     "name": "pinnacle-x",
     "url": "https://github.com/pinnacle-x"
   },
-  "homepage": "https://github.com/pinnacle-x/PraxFlow",
-  "repository": "https://github.com/pinnacle-x/PraxFlow",
+  "homepage": "https://github.com/pinnacle-x/agent-engineering-skills",
+  "repository": "https://github.com/pinnacle-x/agent-engineering-skills",
   "license": "MIT",
   "keywords": [
     "agent-skills",
@@ -30,7 +30,7 @@
       "Write",
       "Interactive"
     ],
-    "websiteURL": "https://github.com/pinnacle-x/PraxFlow",
+    "websiteURL": "https://github.com/pinnacle-x/agent-engineering-skills",
     "defaultPrompt": [
       "Use project-bootstrap to initialize this repository's AGENTS.md and .agents/rules.",
       "Use cross-repo-governance to coordinate this approved shared interface change.",
