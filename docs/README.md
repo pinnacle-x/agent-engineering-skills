@@ -1,17 +1,12 @@
-# Agent Engineering Skills — documentation
+# Agent Engineering Skills — Documentation
 
-This repository contains **two independent Skills**:
+The two independently installable Skills:
 
-- `project-bootstrap` — initialize/reconcile the portable project entry point and explicitly indexed rule files.
-- `cross-repo-governance` — approved contract coordination, exact-revision integration verification and reproducible release manifests.
+- [Project Bootstrap](project-bootstrap.md): repository instructions and on-demand, evidence-based rule maintenance within `.agents/rules/`, with just a stable directory pointer in `AGENTS.md`.
+- [Engineering Governance](engineering-governance.md): optional change impact, verification and releases for one or multiple Git repositories.
 
-Read:
+Also see [installation](installation.md), [agent-led workflow](workflow.md), [sources of truth](source-of-truth.md) and [project organization](repository-roles.md).
 
-1. [Installation](installation.md) — install both or either Skill.
-2. [Bootstrap](project-bootstrap.md) — portable `AGENTS.md` and `.agents/rules/`.
-3. [Workflow](workflow.md) — boundaries with the active agent and Grill.
-4. [Cross-repo coordination](cross-repo-workflow.md) — owner-first shared interface rollout.
-5. [Source of truth](source-of-truth.md) — one semantic owner per public contract.
-6. [Repository roles](repository-roles.md) — optional product repository boundaries.
+Executable instructions live in `skills/project-bootstrap/SKILL.md` and `skills/engineering-governance/SKILL.md`.
 
-Executable instructions: `skills/project-bootstrap/SKILL.md` and `skills/cross-repo-governance/SKILL.md`.
+There is no mandatory Spec/ADR/TDD document pipeline. The active agent follows actual project requirements and creates appropriate documentation using established locations or, absent a convention, `docs/` for project-wide material.

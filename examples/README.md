@@ -1,10 +1,8 @@
-# Agent Engineering Skills Examples
+# Examples
 
-The `project-bootstrap` Skill contains starter references under `skills/project-bootstrap/references/`.
+These examples show optional governance scenarios; they do **not** prescribe mandatory workflow documents.
 
-Cross-Repo Governance examples focus on capabilities not covered by ordinary agent work or Grill:
+- [Change impact](change-impact/README.md): a shared Modbus contract affecting modules within one Git.
+- [Release](release/README.md): one-Git vs multi-Git revision traceability.
 
-- `interface-change/` — owner-first rollout of an **approved** shared contract;
-- `manifest-release/` — immutable release composition tied to successful integrated verification.
-
-Integrated verification structure appears in `templates/SYSTEM_VERIFICATION.md`.
+The optional rule format lives in `skills/project-bootstrap/references/rules.template.md`. No `.agents/rules/` files are created by default.

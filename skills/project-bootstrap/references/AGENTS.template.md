@@ -1,31 +1,27 @@
 # Project Agent Instructions
 
-This is an **example** to adapt when no root `AGENTS.md` exists. Do not paste project-specific claims or add references to absent rule files.
+Adapt to the existing project. Do not invent technical facts or change unrelated instructions.
 
-## Entry
+## Orientation
 
-- Read this `AGENTS.md` first, then follow the applicable rules listed below.
-- Inspect `README.md` if it exists and relevant source files before proposing changes.
-- Derive current behavior from actual files and verified documentation; do not invent project state.
-- Report conflicting guidance instead of silently choosing a convenient version.
+- Read relevant source, current build/test instructions, README and existing project guidance before changes.
+- Treat code and observed tests as evidence for implemented behavior while respecting standards, approved requirements and authoritative contracts.
+- Let the active agent choose appropriate specification, TDD, implementation and documentation approaches.
 
-## Rule discovery
+## Documentation
 
-Files under `.agents/rules/` are **not assumed to be automatically loaded** by all harnesses.
+- Use existing project documentation conventions.
+- Without an established location, put project-wide documents in `docs/` and module-specific documents near their modules.
+- Create and maintain the documentation warranted by user/project needs; no fixed document count or detail limit.
 
-- Always: `.agents/rules/general.md`
-- Changes to implementation: `.agents/rules/development.md` (only when present)
-- Testing/verification: `.agents/rules/testing.md` (only when present)
-- Updates to documentation or public behavior: `.agents/rules/documentation.md` (only when present)
+## Project Rules
 
-**When creating AGENTS.md:** delete all rule-index lines for files that have not been created. Prefer explicit condition + file path over wildcard loading.
-
-## Skills
-
-Discover available installed Agent Skills before using them. Use a Skill only if it exists in the active environment. Design review, ordinary implementation, and cross-repository release coordination are distinct tasks; do not assume they use the same Skill.
+- Project-specific rules are stored in `.agents/rules/`. The directory is created on demand and can be absent.
+- When it exists, inspect its contents and read the rules relevant to the task; when absent, proceed without extra project-specific rules.
+- Do not assume the runtime automatically loads rules from that directory.
+- Adding, modifying, merging or deleting rules is handled **inside that directory**; this `AGENTS.md` does not enumerate rules or their applicability.
 
 ## Completion
 
-- Run applicable checks; distinguish passing tests from tests that were not performed.
-- Update affected project documentation, but do not bump versions or change release records without a project requirement.
-- Summarize changed files, verification evidence and remaining blockers.
+- Run applicable checks and report actual results, including checks not performed.
+- Keep relevant project documentation, source and requirements consistent; surface conflicts.

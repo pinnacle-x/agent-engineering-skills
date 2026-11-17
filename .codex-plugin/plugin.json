@@ -1,7 +1,7 @@
 {
   "name": "engineering-agent-skills",
-  "version": "0.5.0",
-  "description": "Independent portable project bootstrap and cross-repository governance Agent Skills.",
+  "version": "0.6.0",
+  "description": "Independent portable project bootstrap and risk-based single-/multi-Git engineering governance Skills.",
   "author": {
     "name": "pinnacle-x",
     "url": "https://github.com/pinnacle-x"
@@ -13,16 +13,17 @@
     "agent-skills",
     "codex",
     "project-bootstrap",
+    "engineering-governance",
+    "single-repo",
     "multi-repo",
-    "governance",
-    "manifest",
-    "verification"
+    "verification",
+    "release"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Engineering Agent Skills",
-    "shortDescription": "Portable project initialization and cross-repository governance",
-    "longDescription": "Two independent Agent Skills: project-bootstrap creates a portable AGENTS.md and explicit rule index; cross-repo-governance coordinates approved shared contracts, verifies exact repository revisions and creates reproducible release manifests. Design decisions belong to Grill; implementation and local tests belong to the active agent.",
+    "shortDescription": "Project instructions and risk-based single-/multi-Git governance",
+    "longDescription": "Two independent Agent Skills. project-bootstrap initializes AGENTS.md with a stable .agents/rules/ directory instruction and maintains approved, evidenced rules entirely inside that directory. engineering-governance optionally covers change impact, verification, and reproducible releases for single- or multi-Git projects. The agent owns routine design, coding, tests and documentation; Grill and Wayfinder are optional.",
     "developerName": "pinnacle-x",
     "category": "Developer Tools",
     "capabilities": [
@@ -32,10 +33,10 @@
     ],
     "websiteURL": "https://github.com/pinnacle-x/agent-engineering-skills",
     "defaultPrompt": [
-      "Use project-bootstrap to initialize this repository's AGENTS.md and .agents/rules.",
-      "Use cross-repo-governance to coordinate this approved shared interface change.",
-      "Use cross-repo-governance to verify this multi-repository revision set.",
-      "Use cross-repo-governance to produce a manifest for the verified release."
+      "Use project-bootstrap to reconcile AGENTS.md with only a stable .agents/rules/ directory policy; do not create rules by default.",
+      "Use project-bootstrap add-rule for this repeated, confirmed problem; maintain rules and any internal index within .agents/rules/ without editing AGENTS.md.",
+      "Use engineering-governance to assess a shared change affecting modules within one Git repository.",
+      "Use engineering-governance to verify and release a product using the appropriate one-Git or multi-Git strategy."
     ]
   }
 }

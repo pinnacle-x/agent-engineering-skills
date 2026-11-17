@@ -1,41 +1,22 @@
-# Source of Truth
+# Sources of Truth
 
-Cross-Repo Governance uses explicit ownership only to prevent **cross-repository semantic drift**.
+## Current implementation and intended behavior
 
-## Principle
+- **Current implemented behavior:** source files, build configurations and observed tests.
+- **Intended behavior:** user-approved requirements, external standards, protocols, hardware specifications, and accepted product decisions.
+- **Integration and delivery evidence:** actual test results, artifact identities and immutable Git revision(s).
+- **Architectural rationale:** existing project documents and decisions where they remain relevant.
 
-A public fact or contract has one semantic owner repository. Consumers reference that owner rather than independently redefining the same meaning.
+Conflicts between code and a requirement are discrepancies to resolve, not permission to silently rewrite the requirement.
 
-Cross-Repo Governance does not prescribe how ordinary project facts, PDFs, specifications, or implementation documents must be stored. Follow each repository's existing `AGENTS.md`, documentation, tracker, and source layout.
+## Shared contracts across modules or repositories
 
-## Typical ownership
+Each shared contract should have a clear semantic owner (a file/module within one Git or an independently versioned repository). Consumers should use or reference that owner instead of maintaining competing definitions.
 
-| Information | Typical owner |
-|---|---|
-| Product/system-level contract | system/product repository |
-| Shared communication protocol | protocol/contract repository |
-| PC internals | PC repository |
-| Controller internals | controller repository |
-| Module internals | corresponding module repository |
-| Repository composition | manifest/product-composition repository |
-| Immutable released composition | manifest/product-composition repository |
+When a public contract changes, identify the owner, affected consumers, compatibility and necessary tests. In one Git, owner and consumers can change together. In multiple Git repositories, coordinate agreed owner-first updates and verify the exact combined revisions.
 
-These are defaults, not mandatory directory names. Existing project ownership rules win.
+Use `$engineering-governance change-impact` only where the impact merits it. The Skill does not prescribe documents, issue trackers or a mandatory Spec/ADR pipeline.
 
-## Consumer rule
+## Documentation
 
-A consumer may cache or generate a local representation for build convenience, but it must not silently become a second semantic owner.
-
-When a public contract changes:
-
-1. identify the owner;
-2. record affected consumers;
-3. update/approve the owner contract first;
-4. update consumers afterward;
-5. verify the exact combined repository revisions.
-
-Use `$cross-repo-governance interface-change` for this process.
-
-## Conflict handling
-
-If owner/consumer definitions disagree, record the conflict and resolve it through the owner or an explicit human design decision. Do not silently choose whichever version is easier to implement.
+Respect the project's existing locations. Without prior convention, project-level documentation defaults to `docs/` and module docs live near the modules. The active agent determines appropriate content, structure and level of detail for project needs.

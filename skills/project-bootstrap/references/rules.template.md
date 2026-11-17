@@ -1,32 +1,40 @@
-# Optional rule file examples
+# Optional task-specific project rule format
 
-Create only the rule files justified by the project, one file per heading below. These are examples, not inferred facts. If existing repository instructions already cover a topic, link to those instead of copying them.
+This is a format example for **approved, problem-driven rules**, not a bundle of defaults. Bootstrap does not create `.agents/rules/` until an actual rule is needed.
 
-## `.agents/rules/general.md`
+## Rule file: `.agents/rules/<topic>.md`
 
-- Keep changes within the requested task.
-- Inspect existing files and related documentation before editing.
-- Preserve existing conventions, verified decisions, and intentionally configured behavior.
-- Do not invent specifications, project status, test results or tool availability.
-- Surface important ambiguity or conflicts rather than silently redefining the project.
+```markdown
+# Rule: <specific recurring failure being prevented>
 
-## `.agents/rules/development.md` (optional)
+## Applies when
+<affected task, module, conditions or file types>
 
-- Read the affected module and its callers before editing.
-- Prefer minimal changes that follow the project's established architecture.
-- Do not change public interfaces without identifying affected consumers and approvals.
-- Follow project-specific formatting/build guidance if it exists; do not invent commands.
+## Confirmed problem
+<observed repeated failures and verified root cause>
 
-## `.agents/rules/testing.md` (optional)
+## Required check or behavior
+<one actionable, scoped instruction the agent can verify>
 
-- Use existing test and build commands when available.
-- Report exactly which checks were run and their actual outcomes.
-- Keep hardware/manual checks as pending until evidence exists.
-- Do not mark unperformed tests as passing.
+## Exceptions and limitations
+<when this rule must not be applied>
+```
 
-## `.agents/rules/documentation.md` (optional)
+Do not reference each rule from root `AGENTS.md`. That file only describes the `.agents/rules/` directory; the agent lists and reads relevant files when it exists.
 
-- Update documents that are made inaccurate by the change.
-- Preserve stable decisions and maintain references to the source of truth.
-- Avoid creating placeholder docs or duplicate requirement definitions.
-- Do not change version numbers unless the project's release policy or task requires it.
+## Optional index: `.agents/rules/INDEX.md`
+
+For multiple rules that benefit from a compact map, use an index **inside** the rules directory:
+
+```markdown
+# Rule Index
+
+| Rule file | Applies when |
+| --- | --- |
+| stm32-dma.md | Changing STM32 DMA / cache code |
+| modbus-registers.md | Changing Modbus register definitions |
+```
+
+These entries are **illustrations, not files to pre-create**. When rules are added, revised, merged, renamed or deleted, reconcile the index with the actual files. If the directory contains only a few obvious rules, omit the index.
+
+Prefer revising or removing obsolete rules instead of growing an unbounded rule collection. Never apply a rule outside its stated scope or claim automatic Harness loading.

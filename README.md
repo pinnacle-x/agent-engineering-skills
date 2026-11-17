@@ -1,15 +1,20 @@
 # Agent Engineering Skills
 
-This repository maintains **two independent Agent Skills** with different responsibilities and no mandatory dependency between them:
+Two **independent, portable Agent Skills** to support—rather than replace—the engineering judgment and capabilities of the active agent.
 
-- **`project-bootstrap`** — initialize or reconcile a repository's portable root `AGENTS.md` and explicit `.agents/rules/` index without overwriting existing project conventions.
-- **`cross-repo-governance`** — govern an **approved** public contract across independent repositories, record integrated verification tied to exact commit revisions, and create reproducible release manifests.
+- **`project-bootstrap`** — create or reconcile `AGENTS.md` and, **only when a recurring, confirmed problem warrants one**, maintain a scoped rule in `.agents/rules/*.md` via `add-rule`.
+- **`engineering-governance`** — optional, risk-based change impact, integrated verification and release management for **single-Git and multi-Git** projects.
 
-They complement—not replace—the active agent and engineering Skills. Use `grill-with-docs` for major design decisions and ADRs; neither Skill duplicates those interviews.
+## Engineering principles
+
+- **Agent-first:** The agent owns code exploration, planning, specifications, TDD when useful, implementation, debugging, review and project documentation.
+- **Evidence and sources:** Source code and actual tests establish current implemented behavior; external standards, approved product requirements and shared contracts remain authoritative for intended behavior.
+- **Documentation by purpose:** Preserve existing organization. Without a convention, use `docs/` for project-level docs and a module folder for module-specific docs. Let the agent create and maintain the documentation actually warranted by the project or task; do not enforce a fixed document count, format or level of detail.
+- **Rules only when justified:** `AGENTS.md` contains one stable pointer to `.agents/rules/` and tells the agent to inspect applicable rules there if the directory exists. Bootstrap creates no empty rules directory. Add, revise, merge or delete approved rules entirely within `.agents/rules/`; maintain an optional index there, not in `AGENTS.md`.
+- **Proportionate governance:** Routine single-module changes do not need governance ceremonies. Significant interface, integration and release risks may merit governance regardless of the number of Git repositories.
+- **Optional companions:** Grill and Wayfinder can help with difficult undecided design or large ambiguous projects, but are not mandatory steps or dependencies.
 
 ## Install
-
-The existing installer discovers Skills from `skills/*/SKILL.md`:
 
 ```bash
 git clone https://github.com/pinnacle-x/agent-engineering-skills.git
@@ -18,61 +23,38 @@ python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
 
-To install only one:
+To install only one Skill:
 
 ```bash
 python scripts/install.py --agent generic --scope user --skill project-bootstrap
-python scripts/install.py --agent generic --scope user --skill cross-repo-governance
+python scripts/install.py --agent generic --scope user --skill engineering-governance
 ```
 
-Expected paths when both are installed:
-
-```text
-~/.agents/skills/
-├── project-bootstrap/
-│   ├── SKILL.md
-│   └── references/
-└── cross-repo-governance/
-    └── SKILL.md
-```
-
-Some harnesses require a small configuration adapter to discover this path. File presence is not evidence of runtime activation.
+When supported, these install into `~/.agents/skills/`. Not every Harness discovers this directory automatically; verify runtime support.
 
 ## Invocation
 
 ```text
 $project-bootstrap
+$project-bootstrap add-rule
 
-$cross-repo-governance interface-change
-$cross-repo-governance system-verify
-$cross-repo-governance manifest-release
+$engineering-governance
+$engineering-governance change-impact
+$engineering-governance verify
+$engineering-governance release
 ```
 
-For harnesses that do not support `$...` shorthand, request the installed Skill by name in natural language.
+If the Harness lacks these shortcuts, request the installed Skill by name in normal language.
 
-## Responsibilities and boundaries
-
-| Task | Owner |
-| --- | --- |
-| Portable AGENTS.md and rule index | project-bootstrap |
-| Issue tracker/domain-doc engineering setup | setup-matt-pocock-skills (optional) |
-| Important design decisions, API/protocol semantics, ADRs | grill-with-docs (when needed) |
-| Implementation, repository-local tests and review | active agent and engineering Skills |
-| Approved multi-repository contract rollout | cross-repo-governance interface-change |
-| Exact multi-repository revision verification | cross-repo-governance system-verify |
-| Immutable release composition | cross-repo-governance manifest-release |
-
-## Repository layout
+## Source layout
 
 ```text
 skills/
 ├── project-bootstrap/
 │   ├── SKILL.md
 │   └── references/
-└── cross-repo-governance/
+└── engineering-governance/
     └── SKILL.md
 ```
 
-See [installation](docs/installation.md), [bootstrap](docs/project-bootstrap.md), [workflow](docs/workflow.md) and [cross-repository coordination](docs/cross-repo-workflow.md).
-
-The GitHub repository URL retains its existing spelling until a separate repository rename is performed. The **Skill names and invocation commands** above are the canonical new names.
+See [installation](docs/installation.md), [bootstrap and adding rules](docs/project-bootstrap.md), [agent-led workflow](docs/workflow.md) and [single-/multi-Git governance](docs/engineering-governance.md).
