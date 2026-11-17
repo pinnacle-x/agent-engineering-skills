@@ -1,16 +1,14 @@
-# New project — repeated design decisions
+# New project — Grill/Wayfinder and current architecture
 
-A new industrial-device product has no existing source code. The user has confirmed a temperature-control goal but has not chosen the MCU, communications interface or control architecture.
+A new industrial-device product needs an MCU, communication protocol and temperature-control architecture, but no established product source exists.
 
-```text
-$project-bootstrap
-```
+1. Use `$project-bootstrap` to record known goals/constraints and stable project entry guidance. Do not create fictional architecture files just to fill a template.
+2. Use upstream `/setup-matt-pocock-skills` once with **Local Markdown** as the issue tracker (when not using GitHub Issues).
+3. Invoke `/grill-with-docs` for focused choices. If the scope is too broad for one session, invoke `/wayfinder`: it stores a local decision Map and child tickets under configured `.scratch/` locations.
+4. After extensive accepted decisions, optionally invoke `/to-spec` to write `.scratch/<feature>/spec.md`. Retain ADRs for qualifying long-lived design decisions. Confirm what was actually persisted; Grill does not promise a file for every agreed detail.
+5. Once an architecture is approved and sufficiently concrete, `$project-bootstrap update-design` can establish or update `docs/architecture.md` and `docs/design-overview.md` (or the project's existing locations), **without copying the entire tracker/spec**.
+6. `AGENTS.md` references the current long-lived design and configured tracker/domain paths. No `docs/README.md` index is required unless the project already uses one or needs it.
+7. The Agent executes the approved scope directly. As code is built, it checks and syncs affected architecture/overview sections, clearly distinguishing current implementation from future accepted targets.
+8. Revisit Grill/Wayfinder only for important new decisions. Check `.gitignore` before relying on local `.scratch/` on another machine.
 
-1. Establish confirmed requirements and initial constraints; record the important choices still open.
-2. If the project's overall boundaries are ambiguous, a Wayfinder round can clarify scope and system priorities. Use Grill for a focused high-impact choice such as MCU/system architecture.
-3. A **user-accepted** decision becomes an effective project design document. Place the record in the project's chosen location (for example `docs/architecture.md`) and link it under **Active approved designs** in the document index (for example `docs/README.md`).
-4. Root `AGENTS.md` points to that **index**, not to every individual design record.
-5. The agent reads the relevant approved design and directly builds the agreed scope.
-6. When a new subsystem or interface decision emerges, use Grill/Wayfinder again as appropriate, confirm the outcome and update the design document and index. Replace or mark obsolete plans `Superseded`; avoid two competing active schemes.
-
-This is **an iterative loop**, not a single upfront workshop and not a mandatory new meeting for every small code change.
+An accepted Wayfinder Map is a decision record; an optional task spec is a snapshot; current architecture and high-level design remain living project documentation.

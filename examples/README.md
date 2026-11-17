@@ -1,8 +1,7 @@
 # Examples
 
-- [Existing project bootstrap](existing-project/README.md): derive confirmed requirements and technical constraints after inspecting an actual codebase.
-- [Release](release/README.md): single-Git vs multi-Git traceability.
+- [New project with native local Markdown](new-project/README.md): iterative Grill/Wayfinder decisions, saved ADRs/specs and evolving architecture.
+- [Existing source project](existing-project/README.md): source-based facts, local tracker reuse, and synchronized long-lived design after code changes.
+- [Release](release/README.md): one-Git vs multi-Git revision traceability.
 
-The agent directly handles normal code changes, including related-module analysis. There is no separate impact-analysis Skill command.
-
-`project-bootstrap` creates `.agents/rules/` only when adding an approved project rule; any rule index stays inside that directory.
+`.scratch/` and the upstream issue-tracker/domain configuration are **not** created by installing our Skills. The project owner can configure upstream Local Markdown with `/setup-matt-pocock-skills`. System architecture and high-level design follow the project's existing docs conventions, and rules remain on-demand under `.agents/rules/`.

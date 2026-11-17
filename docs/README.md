@@ -1,10 +1,10 @@
 # Agent Engineering Skills — Documentation
 
-- [Project bootstrap](project-bootstrap.md) — greenfield and source-first existing project entry, with a stable project-document index linked from `AGENTS.md`.
-- [Continuous design workflow](workflow.md) — repeated Grill/Wayfinder clarification at consequential design points, confirmed scheme documentation and direct agent execution.
-- [Document discovery and lifecycle](document-discovery.md) — how to maintain active, pending and superseded design links without growing `AGENTS.md`.
-- [Sources of truth](source-of-truth.md) — current code facts versus accepted requirements and effective design.
-- [Engineering governance](engineering-governance.md) — optional system verification/release across one or multiple Git repositories.
-- [Installation](installation.md) and [repository/module boundaries](repository-roles.md).
+- [Project Bootstrap](project-bootstrap.md): new/existing project entry, Local Markdown reuse, and `update-design` synchronization of current system architecture/high-level design.
+- [Engineering Workflow](workflow.md): recurring Grill/Wayfinder decisions, optional `to-spec` and Agent direct execution with design synchronization.
+- [Document Discovery](document-discovery.md): reuse native upstream local Markdown Maps/specs, glossary and ADRs without a mandatory second index.
+- [Sources of Truth](source-of-truth.md): actual code versus confirmed intent and living engineering design.
+- [Engineering Governance](engineering-governance.md): optional verification and reproducible release across single-/multi-Git.
+- [Installation](installation.md) and [repository roles](repository-roles.md).
 
-Executable Skills: `skills/project-bootstrap/SKILL.md` and `skills/engineering-governance/SKILL.md`. The repository's own documentation layout is not imposed on the user's projects.
+Executable Skill instructions: `skills/project-bootstrap/SKILL.md` and `skills/engineering-governance/SKILL.md`. Their bundled references are examples, not default target-project files.

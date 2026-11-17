@@ -1,41 +1,51 @@
 # Agent Engineering Skills
 
-Two **independent Agent Skills** help an active agent enter a project, discover authoritative design documents, and coordinate integration or release when needed.
+Two independent portable Agent Skills supporting **direct Agent engineering work**, with upstream Grill/Wayfinder for consequential decisions and **no mandatory parallel specification index**.
 
-- **`project-bootstrap`** — greenfield or existing-source project entry; evidence-based current-state baseline; confirmed requirements/constraints; a stable project-document index linked from `AGENTS.md`; on-demand project rules under `.agents/rules/`.
-- **`engineering-governance`** — optional `verify` and `release` for single-Git and multi-Git projects.
+- **`project-bootstrap`** — enter greenfield or existing-source projects; establish evidence-backed requirements/constraints and project entry pointers; **create or update current system architecture and high-level design** through `update-design`; maintain approved rules on demand.
+- **`engineering-governance`** — optional `verify` and `release` for single-Git or multi-Git products.
 
-## The engineering loop
+## Preferred project flow
 
 ```text
-New project / existing source baseline
-                ↓
-Identify next important unresolved design question
-                ↓
-Grill or Wayfinder as appropriate → user/project confirms decision
-                ↓
-Update the authoritative scheme document and document index
-                ↓
-Agent reads current active scheme + actual source → executes directly
-                ↓
-Actual checks and feedback → next decision or continuation
+New project goals / existing project actual source
+                 ↓
+Grill (focused) or Wayfinder (multi-session), when decisions are unresolved
+                 ↓
+Use upstream glossary / ADRs / decision Map / to-spec as appropriate
+                 ↓
+Confirm what is approved and find its real saved location
+                 ↓
+Agent reads code + confirmed scheme and executes directly
+                 ↓
+Verify changed behavior and sync affected architecture/overview docs
+                 ↺  Repeat when important new decisions emerge
 ```
 
-**This loop repeats throughout the project**, rather than treating Grill/Wayfinder as an initialization-only step. A well-scoped change already covered by accepted design can be implemented directly; every minor coding question does not require another design session.
+**Grill/Wayfinder do not guarantee every confirmed detail is stored in a durable project file.** `grill-with-docs` stores terms and qualifying ADRs; `wayfinder` stores a Map and decision tickets. `to-spec` can consolidate longer decision work into a task specification. Check the saved artifacts and persist any important missing confirmed decisions in the existing appropriate project record. A proposal is not approved merely because a Skill generated it.
 
-For **existing projects**, current source/build/runtime evidence establishes **present implementation facts**. From that baseline, maintain confirmed requirements, technical constraints and design records. Source behavior alone does not establish an approved future requirement. Uncertain intent stays pending.
+## Prefer upstream Local Markdown; no GitHub Issues requirement
 
-For **new projects**, start from accepted goals and constraints, iteratively clarify architectural and subsystem choices, then carry out each confirmed scope directly.
+Use upstream `/setup-matt-pocock-skills` once per target project and choose **Local Markdown** as the issue tracker when GitHub/GitLab Issues are not desired. The upstream configuration normally records:
 
-## Document discoverability
+- `docs/agents/issue-tracker.md` — where the local Map/spec live.
+- `docs/agents/domain.md` — how to read glossary and ADRs.
+- `.scratch/<effort>/map.md` and `.scratch/<effort>/issues/NN-<slug>.md` — Wayfinder's native decision artifacts.
+- `.scratch/<feature>/spec.md` — `to-spec`'s native task specification.
 
-- Root `AGENTS.md` points to **one stable project document index** (normally `docs/README.md`, or the existing project index) and to the `.agents/rules/` directory.
-- The **document index** lists the actual current baseline, accepted requirements/constraints, active design documents and open/superseded decisions, with real paths and applicability. It is a map, not a competing source of requirements.
-- After each meaningful confirmed design round, the **agent updates the source document and index**. No repeated bootstrap invocation or growth of `AGENTS.md` is needed.
-- Use the project's existing documentation structure; without one, project-wide documents belong under `docs/` and module docs alongside their modules. Maintain the detail required by the project rather than a fixed document count.
-- The `.agents/rules/` directory is **not** created until an approved rule is necessary. Individual rules and any internal index are maintained there without changing `AGENTS.md`.
+These are **upstream-owned locations**, not additional templates we require. The project may use other established paths. `.scratch/` may be ignored by Git: inspect `.gitignore` and decide whether those decisions need preservation across checkouts.
 
-## Install
+## Long-lived engineering documents
+
+Keep **current system architecture** and **high-level design** under project version control when appropriate. Existing project paths win; common defaults are `docs/architecture.md` and `docs/design-overview.md`. These describe the current engineering system and confirmed future changes, not duplicated Wayfinder tickets or a second Spec.
+
+- The Agent checks whether a code change affects these documents and syncs relevant sections as part of ordinary work.
+- For explicit review, creation or catch-up synchronization, use `$project-bootstrap update-design`.
+- Existing source and observed results describe **what is actually implemented**; approved requirements, ADRs and selected task spec describe **intended behavior**. If they disagree, flag the discrepancy instead of silently rewriting a requirement.
+
+Root `AGENTS.md` points to the actual stable architecture/overview paths and the upstream domain/tracker configuration when present. A project with a useful index may keep it, but **`docs/README.md` is not a mandatory second index**. Project rules still use only the directory pointer `.agents/rules/`; do not create that folder until an approved rule is needed.
+
+## Installation
 
 ```bash
 git clone https://github.com/pinnacle-x/agent-engineering-skills.git
@@ -44,36 +54,24 @@ python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
 
-Install independently:
+To install one Skill:
 
 ```bash
 python scripts/install.py --agent generic --scope user --skill project-bootstrap
 python scripts/install.py --agent generic --scope user --skill engineering-governance
 ```
 
-Typical supported shared installation path: `~/.agents/skills/`. Confirm the active Harness actually discovers installed Skills.
-
-## Invoke
+## Invocation
 
 ```text
 $project-bootstrap
+$project-bootstrap update-design
 $project-bootstrap add-rule
 
 $engineering-governance verify
 $engineering-governance release
 ```
 
-The agent calls Grill or Wayfinder as needed for **new important design questions**, and then **executes the confirmed solution itself**. There is no separate execution or change-impact Skill.
+If shorthand is not available, request a Skill by name in natural language. Grill/Wayfinder and upstream tracker setup are **separate installs**, not dependencies shipped in this repository.
 
-## Layout
-
-```text
-skills/
-├── project-bootstrap/
-│   ├── SKILL.md
-│   └── references/
-└── engineering-governance/
-    └── SKILL.md
-```
-
-See [bootstrap](docs/project-bootstrap.md), [workflow](docs/workflow.md), [document discovery](docs/document-discovery.md), [sources of truth](docs/source-of-truth.md), [governance](docs/engineering-governance.md), and [installation](docs/installation.md).
+See [project bootstrap](docs/project-bootstrap.md), [local Markdown and document discovery](docs/document-discovery.md), [engineering workflow](docs/workflow.md), [sources of truth](docs/source-of-truth.md), [governance](docs/engineering-governance.md), and [installation](docs/installation.md).
