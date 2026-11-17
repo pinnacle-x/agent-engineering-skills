@@ -1,68 +1,52 @@
 ---
 name: engineering-governance
-description: Optional risk-based engineering change impact, integrated verification, and reproducible releases for single-Git or multi-Git products. Detect repository scope; avoid imposing multi-repo manifests or governance files on routine single-repo development.
+description: Optional integrated verification and reproducible release coordination for single-Git or multi-Git products. The agent directly assesses change effects and performs engineering work; this Skill has verify and release modes only.
 ---
 
 # Engineering Governance
 
-Use this Skill only when change impact across modules, public interfaces, integrated verification, or a reproducible release merits additional coordination. **The number of Git repositories is not itself a reason to activate governance.**
+Use this Skill only when a product-level integration verification or reproducible release merits coordinated evidence. One Git repository can contain several tightly coupled modules; multiple Git repositories need independently pinned revisions.
 
-The active agent owns requirements analysis, specifications, design, coding, TDD where useful, tests, review and task-appropriate documentation. Grill and Wayfinder are optional helpers for unresolved design and unusually ambiguous long-running projects; they are not prerequisites.
+The **active agent** handles ordinary analysis, including the effects of changes on dependent modules, and executes engineering tasks directly. Do not introduce a separate change-impact invocation or a required planning ceremony.
 
 ## Invocation
 
 ```text
 $engineering-governance
-$engineering-governance change-impact
 $engineering-governance verify
 $engineering-governance release
 ```
 
-Without a mode, inspect the user's goal and choose the relevant mode(s), or report that normal agent work suffices. If the Harness does not recognize shorthand, request the installed Skill by name and state the goal.
+Without a mode, choose verify or release from the user's request; for routine engineering work, say the Skill is unnecessary. If shorthand is not supported, request the Skill by name in natural language.
 
-## First: identify scope and risk
+## Scope and sources
 
-1. Inspect existing source/build/test instructions and Git roots; do not assume that module folders are independent Git repositories.
-2. Classify: **single Git, simple change**; **single Git, coupled modules**; or **multiple Git repositories**. A project can have multiple components without multiple `.git` roots.
-3. Check whether the proposed change touches public contracts, compatibility, deployed devices, safety-relevant behavior, integration or release composition.
-4. If the change is routine and contained within a single module, **do not require governance records**; let the agent implement and test normally.
-5. Follow existing repositories' conventions and documentation locations. Never require fixed governance directory names, ticket IDs, Spec formats or a fixed number of documents.
-
-## Mode: change-impact
-
-Use for a materially shared interface or coupled behavior change, in **one or multiple Git repositories**.
-
-1. Identify the actual contract or behavior owner (file/module/repository), its consumers, and relevant external requirements. Existing code is evidence of implementation, not authority to override approved standards or contracts.
-2. Read the existing contract and affected consumers. Assess compatible, conditionally compatible, or breaking effects; flag uncertain cases instead of inventing semantics.
-3. Coordinate authoritative change before dependent consumer changes **when a distinct shared contract is maintained**. In one Git repository, this may mean updating the protocol definition and all module consumers together in a single commit; it does **not** mandate separate owner and consumer repositories.
-4. Describe required migration, compatibility and appropriate tests based on impact. Agent handles implementation and tests.
-5. Use an existing issue/PR/plan or a brief response to record impact. **Only create a persistent change record when required** by the project's process, its risk or the user. `templates/CHANGE_IMPACT.md` is optional.
-6. If important design decisions are unresolved, let the active agent clarify or use Grill/Wayfinder if helpful. Do not force design interviews or ADRs.
+1. Inspect actual Git roots, module boundaries, current source, authoritative requirements, interfaces, build instructions and current evidence. Folders named PC/Firmware/Protocol do **not** necessarily mean separate Git repositories.
+2. Source and observed results establish present engineering facts. Approved requirements, standards and external contracts remain authoritative for intended behavior. Escalate conflicts, do not silently rewrite either side.
+3. The agent identifies affected modules and contracts as part of direct engineering work, regardless of whether this Skill is invoked.
+4. Follow existing documentation locations and project processes. Do not force numbered change records, issue trackers, XML or a fixed number of documents.
 
 ## Mode: verify
 
-Use when the user wants **integrated evidence** for an affected system or release candidate; do not duplicate routine repository-local tests.
+Use when the user wants **integrated evidence** for an affected system or release candidate; this does not replace ordinary local checks.
 
-1. Discover the existing build/test commands and required integration/hardware checkpoints from actual project files and requirements.
-2. For a **single Git repository**, identify one commit SHA plus affected modules and any uncommitted state; run or review relevant module and integration checks.
-3. For **multiple Git repositories**, identify the exact commit SHA per participating repository and verify owner/consumer compatibility for that version combination.
-4. Record commands and outcomes actually observed. Use `PASS`, `FAIL`, `BLOCKED`, `MANUAL_PENDING` or `NOT_APPLICABLE` per required check; never claim unperformed/manual/hardware checks passed.
-5. Present results in the response, existing test reports or normal project records. Create a dedicated verification document **only when appropriate**; `templates/SYSTEM_VERIFICATION.md` is optional.
-6. A release gate passes only if all **required** checks are passed or genuinely not applicable. Note remaining risks and unknowns explicitly.
+1. Discover test/build instructions and required system, interface, deployment and hardware acceptance conditions from real project artifacts.
+2. **Single Git:** identify the exact commit SHA (plus any dirty/uncommitted state) and all affected modules. Run or review relevant integration and module checks for that revision.
+3. **Multi Git:** identify each included repository's exact commit SHA and check interface and dependency compatibility for that concrete combination.
+4. Record **actual** commands, evidence and outcomes. Use `PASS`, `FAIL`, `BLOCKED`, `MANUAL_PENDING` or `NOT_APPLICABLE` for each required check. Never turn an unperformed manual/hardware check into `PASS`.
+5. Present results in the response or existing project reports; create a verification document only when required for the project's verification, traceability or delivery. `templates/SYSTEM_VERIFICATION.md` is an optional reference.
+6. Overall verification passes only when all required checks are `PASS` or genuinely `NOT_APPLICABLE`. Explicitly report uncertainty and blockers.
 
 ## Mode: release
 
-Use only when a release is actually requested. Confirm version, release scope and appropriate verification before creating release artifacts.
+Only use when an actual release is requested. Confirm version, revision scope and the verification evidence required by the project's acceptance criteria.
 
-- **Single Git:** use an immutable commit SHA and, when the project uses them, an appropriate Git tag. Existing build artifacts, changelog and documentation follow the project's conventions. **Do not create a multi-repository manifest or XML by default.**
-- **Multiple Git:** pin the actually tested SHA of every included repository in the project's preferred product-composition format (e.g. an existing manifest). Only introduce a manifest format if it is needed for a reproducible multi-repository release.
-- In all cases: confirm the released revision(s) match required successful verification; identify dirty/uncommitted state; do not invent tests, silently overwrite an existing release/version, or use moving branch names as immutable revision identifiers.
-- Produce or update release notes and other documents according to the project's real documentation and delivery requirements; there is **no minimum-documentation restriction**.
+1. Confirm that the release revision(s) exactly match the verified revision(s). Reject unrecorded or dirty workspace state where it would prevent reproducibility.
+2. **Single Git:** pin one immutable commit SHA, with a project tag if appropriate. Do not generate a multi-repository manifest for a single Git project.
+3. **Multi Git:** pin the exact verified SHA per included repository in the existing/preferred product-composition format; introduce a manifest only when needed for reproducible combination releases.
+4. Preserve existing releases; do not overwrite a published version silently or replace immutable revisions with floating branch names.
+5. Produce the documentation and artifacts warranted by actual project requirements, with no artificial restrictions on detail or count. Report required checks not yet performed; do not label the release verified if required checks remain pending.
 
-## Output philosophy
+## Separation
 
-Return a concise, evidence-based result by default, but provide the documentation and traceability that the project's scope, requirements or user request warrant. Rules and templates are aids, **not mandatory bureaucracy**.
-
-## Separation from project-bootstrap
-
-`project-bootstrap` manages portable `AGENTS.md` and confirmed, opt-in project-specific rules. This Skill does not create them, and neither Skill requires the other to be installed.
+`project-bootstrap` covers new and existing project entry points, evidence-backed requirements and constraints, and approved project rules. Neither Skill requires the other. Grill and Wayfinder may clarify important unresolved decisions when useful; **the agent executes approved solutions directly**.

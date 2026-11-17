@@ -1,22 +1,24 @@
 # Sources of Truth
 
-## Current implementation and intended behavior
+## Existing projects: source-first facts, separately confirmed intent
 
-- **Current implemented behavior:** source files, build configurations and observed tests.
-- **Intended behavior:** user-approved requirements, external standards, protocols, hardware specifications, and accepted product decisions.
-- **Integration and delivery evidence:** actual test results, artifact identities and immutable Git revision(s).
-- **Architectural rationale:** existing project documents and decisions where they remain relevant.
+The **current codebase and actual engineering state** are the factual standard for what the project presently contains and does. Inspect current source, project/build configuration, interface definitions, relevant hardware artifacts and observed test/runtime evidence. Cite concrete file paths and observations in project records.
 
-Conflicts between code and a requirement are discrepancies to resolve, not permission to silently rewrite the requirement.
+Two kinds of statements must remain distinct:
 
-## Shared contracts across modules or repositories
+- **Current implementation facts:** directly supported by inspected source/configuration or actual verification; an old README alone cannot override current source.
+- **Confirmed requirements and technical constraints:** behavior, standards, interfaces, resource limits and architectural decisions supported by accepted requirements, authoritative standards, explicit user confirmation or reliable engineering evidence. Distinguish currently verified technical platform constraints from future design decisions.
 
-Each shared contract should have a clear semantic owner (a file/module within one Git or an independently versioned repository). Consumers should use or reference that owner instead of maintaining competing definitions.
+Build or maintain `docs/requirements.md` and `docs/technical-constraints.md` when the project has no existing equivalent documentation structure; otherwise update the established authoritative files. Mark requirements inferred only from source as **pending confirmation**, not approved intent. Discrepancies with standards or user expectations require explicit resolution.
 
-When a public contract changes, identify the owner, affected consumers, compatibility and necessary tests. In one Git, owner and consumers can change together. In multiple Git repositories, coordinate agreed owner-first updates and verify the exact combined revisions.
+## New projects
 
-Use `$engineering-governance change-impact` only where the impact merits it. The Skill does not prescribe documents, issue trackers or a mandatory Spec/ADR pipeline.
+There may be no source baseline. Use the user's confirmed goals and agreed technical decisions as the initial basis, and keep unsettled choices distinct from confirmed requirements.
 
-## Documentation
+## Shared contracts
 
-Respect the project's existing locations. Without prior convention, project-level documentation defaults to `docs/` and module docs live near the modules. The active agent determines appropriate content, structure and level of detail for project needs.
+A shared interface or protocol should have a clear owner, whether that owner is a file or module inside one Git repository or a separate Git repository. Dependent components should not silently redefine it. The active agent checks affected consumers when making changes; no separate Skill mode is required.
+
+## Documents
+
+Respect existing project locations. Without prior convention, use `docs/` for project-level docs and module directories for module-specific documents. Documentation detail follows project needs and external requirements.

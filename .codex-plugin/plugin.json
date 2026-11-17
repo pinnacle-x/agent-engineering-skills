@@ -1,7 +1,7 @@
 {
   "name": "engineering-agent-skills",
-  "version": "0.6.0",
-  "description": "Independent portable project bootstrap and risk-based single-/multi-Git engineering governance Skills.",
+  "version": "0.7.0",
+  "description": "Independent project bootstrap for new/existing codebases and integrated verification/release for single- or multi-Git products.",
   "author": {
     "name": "pinnacle-x",
     "url": "https://github.com/pinnacle-x"
@@ -13,6 +13,7 @@
     "agent-skills",
     "codex",
     "project-bootstrap",
+    "existing-codebase",
     "engineering-governance",
     "single-repo",
     "multi-repo",
@@ -22,8 +23,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Engineering Agent Skills",
-    "shortDescription": "Project instructions and risk-based single-/multi-Git governance",
-    "longDescription": "Two independent Agent Skills. project-bootstrap initializes AGENTS.md with a stable .agents/rules/ directory instruction and maintains approved, evidenced rules entirely inside that directory. engineering-governance optionally covers change impact, verification, and reproducible releases for single- or multi-Git projects. The agent owns routine design, coding, tests and documentation; Grill and Wayfinder are optional.",
+    "shortDescription": "Source-first project bootstrap and optional integration/release governance",
+    "longDescription": "project-bootstrap supports new projects or existing source-first adoption, producing evidence-backed confirmed requirements and technical constraints, AGENTS.md, and on-demand approved rules. engineering-governance provides optional integrated verification and reproducible releases. The active agent executes engineering tasks directly; Grill and Wayfinder may clarify major unresolved decisions.",
     "developerName": "pinnacle-x",
     "category": "Developer Tools",
     "capabilities": [
@@ -33,10 +34,11 @@
     ],
     "websiteURL": "https://github.com/pinnacle-x/agent-engineering-skills",
     "defaultPrompt": [
-      "Use project-bootstrap to reconcile AGENTS.md with only a stable .agents/rules/ directory policy; do not create rules by default.",
-      "Use project-bootstrap add-rule for this repeated, confirmed problem; maintain rules and any internal index within .agents/rules/ without editing AGENTS.md.",
-      "Use engineering-governance to assess a shared change affecting modules within one Git repository.",
-      "Use engineering-governance to verify and release a product using the appropriate one-Git or multi-Git strategy."
+      "Use project-bootstrap to initialize a new project from confirmed goals and constraints without inventing a codebase.",
+      "Use project-bootstrap to inspect this existing source project and establish evidenced, confirmed requirements and technical-constraints documents.",
+      "Use project-bootstrap add-rule to maintain approved, evidenced rules inside .agents/rules/ without editing AGENTS.md.",
+      "Use engineering-governance verify for system-level integration evidence.",
+      "Use engineering-governance release for the verified single-Git or multi-Git product revision(s)."
     ]
   }
 }
