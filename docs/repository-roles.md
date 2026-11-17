@@ -1,6 +1,6 @@
 # Repository Roles
 
-PraxFlow does not require a fixed repository layout. It only needs public-contract ownership and product composition to be unambiguous.
+Cross-Repo Governance does not require a fixed repository layout. It only needs public-contract ownership and product composition to be unambiguous.
 
 Typical roles in a multi-repository product are:
 
@@ -34,4 +34,4 @@ Owns the set of repositories and immutable released revision combinations.
 
 ## Existing projects
 
-These names are examples, not required names. If an existing project uses different repositories or ownership boundaries, preserve them. PraxFlow should discover and record the actual owner/consumer relationship rather than reorganizing the product.
+These names are examples, not required names. If an existing project uses different repositories or ownership boundaries, preserve them. Cross-Repo Governance should discover and record the actual owner/consumer relationship rather than reorganizing the product.
