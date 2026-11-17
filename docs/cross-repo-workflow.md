@@ -1,54 +1,48 @@
 # Cross-Repository Public Contract Coordination
 
-Use PraxFlow only when an **approved** public contract must be changed across independent repositories. Grill determines the design where substantive choices remain; PraxFlow coordinates its safe implementation by the contract owner and consumers.
+Use `cross-repo-governance` only for approved public contracts consumed by independent repositories. It handles **coordination**, not semantic design.
 
-Example: adding a new `StartTest` protocol command affects a protocol owner plus firmware and PC consumers.
+For example, a `StartTest` command impacts a protocol owner plus controller and PC consumers.
 
-## 0. Resolve semantics with Grill when needed
+## 0. Resolve substantive design decisions first
 
-If the interface semantics, tradeoffs, migration strategy, or expected behavior are not agreed, use `grill-with-docs` first and record the decision/ADR. **Do not** recreate the design discussion in PraxFlow. If no such open decision exists, skip Grill.
+If command semantics, compatibility strategy or other high-impact decisions are not agreed, use `grill-with-docs` first. Record the decision/ADR. Do not repeat the interview in Cross-Repo Governance.
 
-## 1. Coordinate the agreed change
-
-From a workspace that can inspect the relevant repositories:
+## 1. Coordinate the approved change
 
 ```text
-$praxflow interface-change
-goal: Coordinate the approved StartTest command across the protocol owner,
-      controller, and PC repositories.
-approved_contract: [path or ADR reference]
+$cross-repo-governance interface-change
+goal: Coordinate the approved StartTest command across repositories.
+approved_contract: <owner contract or ADR reference>
 ```
 
-Output: `docs/changes/IC-0001-start-test-command.md` in the designated product/system repository.
+The record `docs/changes/IC-0001-start-test-command.md` names the contract owner, consumers, compatibility/migration impacts, owner-first implementation order, and required verification.
 
-The record identifies contract owner, consumers, approved contract reference, compatibility effects, owner-first rollout order, migration and validation requirements. It is not a rival contract or second ADR.
-
-## 2. Update owner first
+## 2. Owner first
 
 ```text
-approved owner contract
-  → owner implementation
-  → consumer implementations
-  → local tests in each repository
+approved owner contract → owner implementation
+                        → consumer implementations
+                        → repository-local tests
 ```
 
-Do not change consumer semantics before the approved owner contract is updated. Use the active agent and normal engineering Skills for implementation and local tests.
+Consumers must not invent a separate public contract. Unresolved design conflicts return to the contract owner/Grill.
 
-## 3. Verify the exact combined revisions
+## 3. Verify exact repository revisions
 
 ```text
-$praxflow system-verify
+$cross-repo-governance system-verify
 change: IC-0001
 ```
 
-Record exact commit SHAs for each repository and actual automated, integration and manual/hardware evidence.
+Record exact commits and actual integration/manual evidence.
 
-## 4. Release only a verified combination
+## 4. Release verified composition
 
-Only after verification is `PASS`:
+Only after verification `PASS`:
 
 ```text
-$praxflow manifest-release
+$cross-repo-governance manifest-release
 ```
 
-The immutable manifest pins the exact verified revisions. If there is no cross-repository change or release requirement, skip unnecessary PraxFlow modes.
+The immutable manifest pins the exact verified commit set, never floating branch names.
