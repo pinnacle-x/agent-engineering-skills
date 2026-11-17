@@ -1,11 +1,11 @@
 ---
 name: engineering-governance
-description: Optional integrated verification and reproducible releases for single-Git or multi-Git products, using current code evidence and the effective approved design discoverable from the project's document index.
+description: Optional integrated verification and reproducible releases for single-Git or multi-Git products, using source evidence, current architecture and high-level design, and approved decisions/specs discoverable through project and upstream tracker guidance.
 ---
 
 # Engineering Governance
 
-Use for product-level integration evidence or reproducible releases. It does not manage ordinary engineering execution or act as a separate change-impact process. The active agent implements the current approved design directly.
+Use when system-level integration evidence or reproducible release coordination is needed. The active Agent handles normal code changes, affected-module checks and architecture/overview synchronization directly.
 
 ## Invocation
 
@@ -15,34 +15,35 @@ $engineering-governance verify
 $engineering-governance release
 ```
 
-If called without a mode, choose verify or release based on the user's actual goal. If the task is ordinary project work, this Skill may be unnecessary. Alternative Harnesses may require invocation by name.
+Without a mode, infer verify or release from the user request, or state that normal Agent work suffices. Skills are independently installable.
 
-## Before verification or release
+## Determine scope and applicable authority
 
-1. Inspect the actual Git root(s), changed modules, source/build/test commands, hardware constraints, and any pending workspace changes.
-2. Read the project's **document index** linked from `AGENTS.md` (normally `docs/README.md`, or the existing equivalent). Identify the **active/confirmed** requirements, technical constraints, current approved scheme, authoritative interface and acceptance criteria relevant to this release or system test.
-3. Distinguish **what is implemented** (source and observed evidence) from **what was approved** (current effective requirements/design). Do not treat stale/superseded proposals as release requirements, or silently rewrite approved requirements to match code.
-4. If an important acceptance requirement or scheme remains unconfirmed, report that gap and obtain the required decision. Grill/Wayfinder may help resolve major new design choices before work resumes; they are not a mandatory verification tool.
-5. One repository can contain several components without multiple Git histories. Follow existing document and verification conventions rather than imposing fixed filenames or extra reports.
+1. Inspect the actual Git root(s), current source/build/test/hardware configuration, affected modules and dirty/uncommitted state. Folder count does not determine repository count.
+2. Read root `AGENTS.md` and its real references to current system architecture/high-level design, confirmed requirements and technical constraints. Prefer existing project paths.
+3. If upstream Grill is configured, read its domain/tracker guidance (often `docs/agents/domain.md` and `docs/agents/issue-tracker.md`). Use relevant applicable ADRs and identify the **actual task's** Wayfinder Map or spec when referenced/locatable. Do not pick an arbitrary `.scratch/` spec merely because it exists.
+4. The actual source and observed checks show **what is implemented**; confirmed project decisions/requirements show **what was intended**. Flag conflicts and unapproved proposals instead of rewriting requirements. If important acceptance conditions remain undecided, ask for confirmation.
+5. `.scratch/` records can be ignored or untracked. If required evidence depends on them, check they exist and are accessible; otherwise report the missing source instead of claiming it was reviewed.
+6. Do not impose a separate change-impact process, new index, mandatory manifest or fixed number of documentation records.
 
 ## Mode: verify
 
-1. Discover actual commands and needed system/interface/hardware checks from the current effective project requirements, scheme and build/test artifacts.
-2. **Single Git:** identify one exact commit SHA and all relevant modules, noting dirty/uncommitted state; run or assess integrated checks for that code revision.
-3. **Multi Git:** identify the exact commit SHA of each participating repository and verify contract compatibility for that version combination.
-4. Record commands, observed evidence, and per-check results: `PASS`, `FAIL`, `BLOCKED`, `MANUAL_PENDING` or `NOT_APPLICABLE`. Never mark an unperformed manual/hardware test as passed.
-5. Use current project reporting conventions; a dedicated report such as `templates/SYSTEM_VERIFICATION.md` is optional unless required by project needs.
-6. Overall PASS requires all **required** checks to pass or genuinely not apply. Highlight acceptance/design discrepancies and unresolved requirements.
+1. Determine relevant system, interface, deployment and hardware acceptance checks from actual project code and current approved design.
+2. **Single Git:** identify one exact commit SHA and affected modules plus any dirty state, then run/review appropriate integrated checks for the revision.
+3. **Multi Git:** pin the exact SHA of each included repository and verify cross-component compatibility for that tested combination.
+4. Record actual commands, artifact/revision identities, observed evidence and result per required check: `PASS`, `FAIL`, `BLOCKED`, `MANUAL_PENDING` or `NOT_APPLICABLE`.
+5. Use existing report conventions; `templates/SYSTEM_VERIFICATION.md` is optional. Do not claim hardware/manual or unrun tests passed.
+6. Overall verification succeeds only when every required check passes or genuinely does not apply. Highlight implementation/design discrepancies and documentation that still needs synchronization.
 
 ## Mode: release
 
-1. Confirm a requested version, release scope and required verification evidence for the **effective approved scheme**.
-2. Ensure exact release revisions match successful verification. Dirty or untracked source that prevents reproducibility is a blocker.
-3. **Single Git:** use a verified SHA and an appropriate tag if used by the project; no default multi-repository manifest.
-4. **Multi Git:** pin the actually tested SHA per included repo in the established/preferred composition format. Use a manifest when necessary for a reproducible multi-repository release.
-5. Do not silently rewrite published release versions or substitute floating branch names for immutable revisions.
-6. Deliver documentation and artifacts warranted by project/contract requirements, without an artificial limit on documentation depth.
+1. Confirm requested version, scope, verified revision(s) and applicable acceptance conditions.
+2. Only release revisions matching required successful verification. Dirty/unrecorded content that prevents reproduction is a blocker.
+3. **Single Git:** use one verified SHA and project tag/release conventions, without a multi-repository manifest by default.
+4. **Multi Git:** pin every included, actually verified SHA in the project's existing/preferred composition format; introduce a manifest only when reproducibility demands it.
+5. Preserve previously published releases, do not substitute a moving branch for immutable identity, and report any required checks not performed.
+6. Ensure long-lived architecture/overview documents accurately identify the current implementation and known pending approved target changes before presenting a release as fully documented.
 
 ## Separation
 
-`project-bootstrap` establishes a project entry, evidence-backed baseline and a document index. **The active agent maintains approved design documents and that index throughout the project**, including after repeated Grill/Wayfinder rounds; governance only consumes the current effective scheme when verifying or releasing. Neither Skill depends on the other being installed.
+`project-bootstrap` establishes a project entry and can synchronize current system architecture/high-level design via `update-design`. This governance Skill consumes those documents and the native upstream decision records; it does not duplicate them or control ordinary Agent execution.

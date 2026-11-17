@@ -1,39 +1,29 @@
-# Sources of Truth — Current State and Effective Scheme
+# Sources of Truth
 
-A successful project needs **two different kinds of authority**, neither of which can silently replace the other.
+## Current implementation versus approved intent
 
-## 1. Current implementation facts
+- **As built:** actual source, build configuration, hardware artifacts and observed results are facts of the **current implementation**. Record file paths and relevant revisions/check evidence.
+- **As designed:** approved requirements, accepted technical choices, applicable ADRs, accepted interface contracts and the task's confirmed spec/decision record govern **intended behavior**.
+- **Pending or replaced:** drafts, unapproved discussions and superseded decisions are not instructions to silently implement.
 
-For an existing project, current source, build/deployment configuration, actual hardware/project files and observed test/runtime results determine **what currently exists or happens**. Inspect the relevant revision/workspace and retain file/evidence references.
+A defect or design discrepancy is a discrepancy to resolve, not permission to silently rewrite approved requirements or ADRs.
 
-An older README or remembered design cannot overrule a directly inspected current implementation fact.
+## Upstream decision artifacts
 
-## 2. Confirmed requirements and effective design
+Grill's glossary and qualifying ADRs, and Wayfinder's configured Map/decision tickets, remain the canonical decision sources. `to-spec` produces a task-oriented snapshot in the configured tracker, typically `.scratch/<feature>/spec.md` for Local Markdown. Do not copy a complete spec or decision Map into another mandatory docs index.
 
-Accepted user decisions, external standards, signed-off contracts, verified engineering constraints and project-approved design records determine **what should be implemented**.
+When an important approved decision exists only in conversation, preserve the missing durable content in the project's appropriate authoritative record. Do not pretend every Grill outcome is saved as an ADR.
 
-Start from current code when adopting an existing project, then establish `requirements.md` and `technical-constraints.md` or their actual established equivalents. Code-only inferred intent is **Pending confirmation**; it is not automatically an approved requirement.
+## Living engineering design
 
-For new projects without source, start from confirmed user goals and constraints; use repeated design rounds as needed to establish the first and subsequent schemes.
+System architecture and high-level design describe the **current** system, plus clearly separated approved future targets where appropriate. They should be reviewed when code or design choices materially affect them, using the actual source and approved decisions. Their purpose is not to replay every decision or ticket.
 
-## 3. Document discoverability and lifecycle
+Existing project filenames and hierarchy take priority; when absent and justified, use `docs/architecture.md` and `docs/design-overview.md`. The Agent maintains these in ordinary work or through `$project-bootstrap update-design`.
 
-Root `AGENTS.md` links **one actual project document index** (normally `docs/README.md`). The index identifies the current implementation baseline, confirmed requirements/constraints and the **active, approved** design documents. Pending drafts and superseded designs remain distinguishable and cannot silently govern implementation.
+## Finding documents across sessions
 
-After a consequential design decision is confirmed through a Grill/Wayfinder discussion or another accepted project process, **update the authoritative document and index**. The agent then executes against that active scheme and actual source.
+`AGENTS.md` provides real stable pointers to current long-lived docs and upstream tracker/domain configuration. No new mandatory `docs/README.md` index is required. Because `.scratch/` may be ignored or local-only, portability of task specs must be checked explicitly. The correct active spec must be determined by task/branch/project reference, not guessed simply because a file exists.
 
-Project documents may live in existing docs directories or modules. The index links to their **real paths** and keeps status/application up to date, without forcing a new directory hierarchy.
+## Shared contracts
 
-## 4. Conflicts
-
-If actual code differs from approved design, treat it as a **tracked discrepancy**:
-
-- The code still describes current behavior.
-- The accepted requirement/design describes expected behavior.
-- Resolve whether to change code, revise design with confirmation, or preserve an intentional compatibility exception.
-
-Do not silently change accepted requirements to match an implementation mistake, or pretend code already implements a design that it does not.
-
-## 5. Shared contracts
-
-A protocol/interface has one semantic owner within a module or repository, even when copied/generated representations exist elsewhere. The agent checks dependent consumers during ordinary engineering work; integration evidence can later use `engineering-governance verify` when necessary.
+Keep one authoritative owner of a shared protocol/interface. The Agent checks affected consumers while doing engineering work; `engineering-governance verify` can gather system-level evidence for the verified revision combination.

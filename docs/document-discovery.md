@@ -1,91 +1,68 @@
-# Document Discovery and Design Lifecycle
+# Discovering Grill Decisions and Current Engineering Design
 
-The goal is to ensure the agent can find an **effective, currently confirmed design** after a new session, after multiple Grill/Wayfinder discussions, or when picking up an older repository.
+**The project does not need a second scheme index by default.** Prefer the upstream Grill domain guidance and local-Markdown tracker, combined with a small set of durable, directly referenced current design documents.
 
-## Two stable entry points
+## Configure the upstream Local Markdown tracker
 
-Root `AGENTS.md` should contain:
+Run upstream `/setup-matt-pocock-skills` in the target project and choose **Local Markdown**. It configures how the upstream Skills access local files and writes the appropriate agent entry block.
 
-```markdown
-## Project Documentation
-- Project document index: [docs/README.md](docs/README.md) (if present).
-- Before engineering work, consult the index and read the relevant Active / Confirmed documents.
-- After an important design decision is accepted or superseded, update the authoritative document and the index.
-- Pending or superseded proposals are not implementation instructions.
-
-## Project Rules
-- Project rules live in `.agents/rules/` and are created only when needed.
-- If it exists, inspect and read applicable rules. Do not assume runtime auto-loading.
-```
-
-Replace `docs/README.md` with the project's established index path if different. **Do not list every design document in AGENTS.md**. Document files, Grill/Wayfinder output paths and their statuses are maintained in the project index.
-
-The agent must not assume the index exists just because the default path is named. If an actual project document exists but has no index, establish one with working links; avoid empty placeholders.
-
-## What the document index tracks
-
-Each entry should have enough metadata to choose the right document without loading the entire repository:
-
-| Category | Recommended information |
-| --- | --- |
-| Current implementation | Actual source paths, relevant commit/working-state evidence, scope |
-| Confirmed requirements | Link to the governing requirement document, scope, confirmation authority |
-| Technical constraints | Link to verified or approved constraints, module/system scope |
-| Active design | Link to the **currently approved** architecture or scheme, applicable task/area, confirmation reference |
-| Pending | Link or short description of unresolved decisions, without portraying drafts as accepted |
-| Superseded | Historical design reference and the active replacement; never a current instruction |
-
-A table is optional: existing project indexes may use links/headings. **Valid links, applicability and effective status are essential.** The index is a navigation map, **not a second copy of the detailed architecture**.
-
-## What makes a design record usable
-
-A confirmed design document, whether produced by Grill/Wayfinder or written directly by the agent from an approved decision, should make the agent's task feasible. As applicable, record:
-
-- goal and affected scope;
-- decisions and important boundaries/interfaces;
-- relevant constraints and accepted tradeoffs;
-- unresolved questions and assumptions;
-- confirmation source (user acceptance, approved contract or project authority);
-- status: `Active` / `Pending` / `Superseded`;
-- paths to authoritative implementation/contracts and validation expectations where relevant.
-
-Do not require a fixed ADR format or extensive documentation for each question. Preserve upstream Grill/Wayfinder outputs where useful, and link their actual paths rather than duplicating entire contents.
-
-## When to use Grill or Wayfinder again
-
-Consider another design round when a **new consequential decision** arises: changed requirements, new phase of a broad project, architecture or subsystem boundary choice, significant interface compatibility change, constraint conflict, or implementation evidence invalidating a previous design.
-
-For a focused unresolved design, `grill-with-docs` is a reasonable choice. For broad multi-stage ambiguity, `wayfinder` is a reasonable choice. Neither tool decides approval by itself; the project authority confirms the actual scheme.
-
-A local implementation fix with clear applicable design need not start another Grill/Wayfinder interview.
-
-## After the decision is confirmed
-
-1. Locate the existing authoritative document, or use the confirmed design output as that document.
-2. Update the content or link to the new active design. Preserve important decision context, but do not let two contradictory documents both claim to be active.
-3. Update the project document index: actual paths, scope, new status, replacement of superseded documents and unresolved questions.
-4. The agent reads the relevant active scheme and current source, then **executes directly**.
-5. Compare implementation and verification evidence with the accepted scheme; if reality diverges, treat it as a discrepancy and loop back to clarification when needed.
-
-## Existing-source-specific safeguard
-
-Current source and observed behavior are authoritative for **what is currently implemented**, not automatically for intended requirements. Start by establishing the baseline; document and index confirmed requirements/technical constraints only when backed by reliable evidence or approval. Track source-only inferred requirements as pending.
-
-Updating code does not authorize silently rewriting approved project requirements to match the code. Conversely, a stale design document cannot override observed facts about the current implementation. Resolve the divergence explicitly.
-
-## Example layouts (not required)
+Typical paths, subject to actual project configuration:
 
 ```text
 project/
-├── AGENTS.md                      # stable index pointer and rules-directory policy
+├── AGENTS.md                      # project instructions, navigation
 ├── docs/
-│   ├── README.md                  # links to actual active/pending/superseded docs
-│   ├── requirements.md            # existing project, when no equivalent exists
-│   ├── technical-constraints.md   # existing project, when no equivalent exists
-│   └── architecture.md            # only if real confirmed architecture is recorded
-├── .agents/
-│   └── rules/                     # not created by default
-└── ... existing source
+│   ├── agents/
+│   │   ├── issue-tracker.md        # upstream local tracker settings
+│   │   └── domain.md               # upstream glossary/ADR consumer guidance
+│   ├── architecture.md             # living system architecture, when needed
+│   ├── design-overview.md          # living high-level design, when needed
+│   └── adr/                        # qualifying permanent architectural decisions
+├── GLOSSARY.md                     # if the project has resolved domain terminology
+└── .scratch/
+    ├── <effort>/
+    │   ├── map.md                  # wayfinder's decision Map
+    │   └── issues/
+    │       └── NN-<slug>.md        # decision ticket and resolved answer
+    └── <feature>/
+        └── spec.md                 # to-spec's task snapshot
 ```
 
-The project may instead use `docs/design/`, module-local docs or a pre-existing index. Preserve those locations; root `AGENTS.md` must point to the **actual** index.
+This tree is illustrative, **not** a bootstrap-created scaffold. Upstream setup may choose `CLAUDE.md` instead of `AGENTS.md`; do not overwrite or duplicate existing guidance.
+
+## What the upstream Skills actually save
+
+| Upstream workflow | Durable artifact | Important limitation |
+| --- | --- | --- |
+| `grill-with-docs` | `GLOSSARY.md` and an ADR when one qualifies | Many other settled details may remain only in the conversation |
+| `wayfinder` | Map and resolved decision tickets in configured tracker | Map is an index to decisions, not a complete build specification |
+| `to-spec` | `.scratch/<feature>/spec.md` in Local Markdown mode | Task snapshot, not a current architecture document; upstream setup is prerequisite |
+| `setup-matt-pocock-skills` | Tracker/domain configuration and AGENTS/CLAUDE pointers | Does not select a particular active spec for every future task |
+
+`to-spec` expects the upstream tracker **and triage-label vocabulary**. If setup skipped label configuration because its associated upstream Skill was absent, finish the supported upstream configuration before expecting local Spec publication to work.
+
+The active Agent must resolve **which** spec/Map applies to the current task. A folder of historical specs is not self-selecting. Use the user-provided task path, established branch/issue association or explicit project references; ask when it remains ambiguous.
+
+## The minimum stable pointers
+
+Use root `AGENTS.md` to direct the Agent to real paths for:
+
+1. Upstream domain guidance (`docs/agents/domain.md` when configured), so applicable ADRs and glossary are read.
+2. Upstream issue tracker guidance (`docs/agents/issue-tracker.md` when configured), so relevant local Maps and task specs can be located.
+3. The project's current architecture and high-level design (existing paths, or `docs/architecture.md` and `docs/design-overview.md` when present), and important requirement/constraint sources.
+
+**Do not enumerate every Map, ticket or task spec in AGENTS.md.** A pre-existing project docs index may be retained; use one only if justified by actual document complexity, not as a mandatory duplicate of upstream tracker navigation.
+
+## Persistence and tracking warning
+
+`.scratch/` is a *path*, not a guarantee of Git tracking. Inspect `.gitignore` and `git ls-files` / `git status`. If the spec/decision Map is ignored or untracked, it may disappear or be inaccessible on another machine. Report the risk and let the project owner choose whether to track, export or archive it. Never auto-add, force-track, rewrite `.gitignore` or move files solely due to bootstrap.
+
+For durable system engineering, keep current architecture/overview docs in the project's normal version-controlled documentation location when warranted. These docs **summarize the current system**, not the entire history of local tracker decisions.
+
+## After engineering work
+
+Whenever a change alters architecture/high-level design, the Agent should update the affected long-lived documentation using actual source evidence and approved decisions. `$project-bootstrap update-design` can perform this as a requested dedicated task. Use `Current / Implemented`, `Confirmed target` and `Pending resolution` where needed. If a fresh decision invalidates an ADR or approved scheme, clarify it with Grill/Wayfinder rather than rewriting history as if it never existed.
+
+## Avoid unnecessary duplication
+
+Use existing project paths and upstream artifacts. No compulsory `docs/README.md` project index, duplicate spec exports or empty architecture templates. An existing index remains welcome when useful. Keep any replacement pointers valid when an actual authoritative path is moved.

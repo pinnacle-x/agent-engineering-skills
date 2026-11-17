@@ -1,9 +1,9 @@
 # Installing Agent Engineering Skills
 
-The repository contains two independent Skills:
+Two independent Skills are provided:
 
-- `project-bootstrap` — enter a new or existing source project, establish `AGENTS.md` and a **discoverable index** for authoritative requirements, constraints and confirmed designs, plus optional approved rules.
-- `engineering-governance` — optional integration verification and reproducible release for single-Git and multi-Git projects.
+- `project-bootstrap` — new/existing project entry; current source-based requirements/constraints; direct pointers to upstream Grill local tracker/domain documents; **system architecture/high-level design synchronization** with `update-design`; approved rules.
+- `engineering-governance` — optional integrated system verification and reproducible release.
 
 ## Install both
 
@@ -14,7 +14,7 @@ python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
 
-Expected on supported runtimes:
+On runtimes supporting the shared Skill location:
 
 ```text
 ~/.agents/skills/
@@ -22,6 +22,8 @@ Expected on supported runtimes:
 │   ├── SKILL.md
 │   └── references/
 │       ├── AGENTS.template.md
+│       ├── architecture.template.md
+│       ├── design-overview.template.md
 │       ├── docs-index.template.md
 │       ├── requirements.template.md
 │       ├── technical-constraints.template.md
@@ -30,44 +32,58 @@ Expected on supported runtimes:
     └── SKILL.md
 ```
 
-## Install independently
+Install individually:
 
 ```bash
 python scripts/install.py --agent generic --scope user --skill project-bootstrap
 python scripts/install.py --agent generic --scope user --skill engineering-governance
 ```
 
-Project-local Skills can be installed with:
+Or project-scoped:
 
 ```bash
 python scripts/install.py --agent generic --scope project --project /path/to/project --skill project-bootstrap
 ```
 
-These commands install the Skills, not an initialized target project. Open the project and run `$project-bootstrap` to establish the project entry and document index.
+The installer installs **Skills**, not target-project documentation, upstream Grill/Wayfinder or a tracker configuration.
 
-## Discovery contract for the target project
+## Set up Grill's Local Markdown tracker separately
 
-`AGENTS.md` should reference the **actual project document index** (default `docs/README.md`, or an existing equivalent). That index links to active/confirmed scheme documents, accepted requirements/constraints and pending/superseded designs. During future Grill/Wayfinder rounds, update the source document and index, not a growing `AGENTS.md` list.
+In the target repository, after installing compatible upstream Skills, use `/setup-matt-pocock-skills` and choose **Local Markdown**. This sets up local tracker guidance and domain-doc consumers in the project's existing `AGENTS.md` or `CLAUDE.md` as appropriate.
 
-Separately, `AGENTS.md` mentions the `.agents/rules/` directory. It is not created by installer or default bootstrap; approved rules and any internal index live there. The two directories serve different purposes.
+Typical upstream local locations:
 
-## Invocation
+- `docs/agents/issue-tracker.md` and `docs/agents/domain.md` for navigation rules.
+- `.scratch/<effort>/map.md` and decision issue files from Wayfinder.
+- `.scratch/<feature>/spec.md` from `to-spec`.
+- `GLOSSARY.md` and `docs/adr/` for domain terms and qualifying architecture decisions.
+
+Upstream `to-spec` also expects the configured triage-label vocabulary; if upstream setup skipped it, complete that configuration before invoking `to-spec`. The `ready-for-agent` label describes readiness, not automatic authorization to start coding.
+
+**Check `.gitignore`** for `.scratch/`: local Markdown files are not necessarily tracked or available after a fresh checkout. Configure retention with the project owner; this Skill does not auto-edit Git ignore rules or migrate the files.
+
+## Invoke our Skills
 
 ```text
 $project-bootstrap
+$project-bootstrap update-design
 $project-bootstrap add-rule
 
 $engineering-governance verify
 $engineering-governance release
 ```
 
-Grill and Wayfinder are optional recurring design-clarification steps, not required dependencies for installing these Skills. The agent directly executes confirmed schemes. If shorthand is unavailable, ask for the Skill by name.
+If shorthand is unsupported, request by Skill name. Grill/Wayfinder/to-spec are external user-invoked design workflows. The Agent itself executes engineering tasks and checks whether current architecture and high-level design require synchronization.
 
-## Updating
+## Project navigation
+
+`AGENTS.md` should link actual relevant project architecture/overview and approved requirements/constraints documents, plus the configured upstream tracker/domain guidance. A project may retain its existing docs index, but **no extra `docs/README.md` index is mandatory**. Rules stay directory-scoped at `.agents/rules/` and are created only when approved.
+
+## Upgrade
 
 ```bash
 git pull
 python scripts/install.py --agent generic --scope user --force
 ```
 
-`--force` replaces installed Skill directories; preserve local modifications. The installer cannot automatically remove previously renamed folders. Remove an obsolete `cross-repo-governance` installation manually after checking any local edits, to avoid two governance entry points. On Windows, directory symlinks can require Developer Mode or elevated permissions.
+`--force` replaces installed Skill directories; preserve local edits first. The installer does not remove renamed historical Skills automatically; inspect any old `cross-repo-governance` installation before removing it. Windows link-mode installation can require Developer Mode or elevated permissions.

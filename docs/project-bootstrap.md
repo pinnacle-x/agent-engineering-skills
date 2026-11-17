@@ -1,47 +1,46 @@
-# Project Bootstrap — Project Entry and Documentation Index
+# Project Bootstrap — Local Markdown and Living Design Documents
 
-`$project-bootstrap` enters a new project or an existing source project and establishes an agent-readable document map. It is **not a one-time approval of all future design decisions**.
+`project-bootstrap` supports new and existing engineering projects, and provides dedicated **system architecture** and **high-level design** synchronization. It neither replaces the upstream local tracker nor routes engineering execution through an additional Skill.
 
-## New project
+## Bootstrap a new project
 
-1. Establish confirmed goals and constraints; identify first important unknowns.
-2. Use `grill-with-docs` for a focused consequential decision or `wayfinder` for broad multi-stage ambiguity when suitable.
-3. Record the proposed outcome, obtain user/project confirmation, and ensure the **accepted design document** is available at an actual project path.
-4. Establish root `AGENTS.md` and a document index (normally `docs/README.md`). Link only real documents, not imagined architecture or placeholder files.
-5. Let the agent execute the confirmed scope directly. At later project phases or major design changes, repeat design confirmation and document/index maintenance.
+1. Establish confirmed goals, accepted constraints and still-open high-impact choices.
+2. When useful, the user invokes `grill-with-docs` for focused decisions or `wayfinder` for long multi-session exploration. Repeat as later major design questions arise.
+3. Use existing accepted glossary, ADRs, Wayfinder decisions and `to-spec` output **where actually persisted**. If confirmed content remains only in conversation, save the missing durable information in an appropriate existing project record.
+4. Create/reconcile root `AGENTS.md` as navigation to the project's real domain/tracker configuration and long-lived documents. Do **not** require a new `docs/README.md` index.
+5. Add current system architecture/high-level design documents only when meaningful content is confirmed or evidenced; otherwise avoid speculative templates/placeholder files.
 
-## Existing project: code first, then continually refine the scheme
+## Bootstrap an existing project
 
-1. Inspect real source, build/project files, interface/hardware artifacts, tests and current working state.
-2. Document present implementation facts with file references and relevant revision/test evidence. Do not replace current reality with older conversations.
-3. From that baseline, **establish confirmed requirements and technical constraints**, preserving approved external standards and decisions. Use the established authoritative documents; absent a convention, `docs/requirements.md` and `docs/technical-constraints.md` are defaults.
-4. Separate **current observed behavior** from **approved intended behavior**. Source-only assumptions about requirements belong under **Pending confirmation** until accepted.
-5. Set up the document index to link those records and any confirmed architecture, protocol, design outputs and current source-evidence records.
-6. New features, discovered conflicts and subsequent subsystem choices may invoke Grill/Wayfinder again. Each **confirmed** scheme is recorded and indexed before the agent executes that scope directly.
+1. Inspect actual source, hardware, build configuration, interfaces, tests, working tree and relevant files to establish **what exists now**.
+2. Keep approved external standards and requirements distinct from observed code behavior. Populate existing requirements/constraints documents, or defaults `docs/requirements.md` and `docs/technical-constraints.md` if required.
+3. Reconcile current architecture and high-level design with actual code and user-approved intent, documenting discrepancies rather than pretending they agree.
+4. Reuse upstream domain guidance, local tracker configuration and any existing project document map. Root `AGENTS.md` names their real stable entry paths, rather than an extra mandatory index.
 
-## Root AGENTS.md: stable paths
+## Local-only Grill workflow
 
-The root `AGENTS.md` points to:
-- the actual **project document index** (normally `docs/README.md`), which links to effective project documents and their statuses;
-- the `.agents/rules/` **directory**, which contains optional, approved, task-specific rules.
+Use upstream `/setup-matt-pocock-skills` once in the target project and choose **Local Markdown** if GitHub/GitLab Issues are not part of development. That upstream setup configures `docs/agents/issue-tracker.md` and `docs/agents/domain.md` (or established alternatives). It may update `AGENTS.md` or `CLAUDE.md` according to its own selection logic; preserve existing project instructions and avoid duplicate blocks.
 
-Do not add each document or rule file to `AGENTS.md`. The index and rules folder own their respective internal discovery details. If the project already uses a document map elsewhere, reuse it and reference its actual path.
+For local-mode Map/spec layout and hazards, see [Document Discovery](document-discovery.md).
 
-Suggested wording lives in `skills/project-bootstrap/references/AGENTS.template.md`. A document index example is `skills/project-bootstrap/references/docs-index.template.md`. These are adaptable references, not required final filenames.
+## Update architecture and high-level design
 
-## Updating documents after future design rounds
+```text
+$project-bootstrap update-design
+```
 
-A project is not frozen after bootstrap. Whenever a consequential design question is settled:
+This is an **on-demand project-document synchronization mode**. It is also a responsibility the Agent should perform in ordinary work whenever changes materially affect the long-lived design, without needing to invoke the Skill after every small code edit.
 
-1. Update the authoritative design/requirements/constraints document or link to the confirmed Grill/Wayfinder output.
-2. Update the document index with path, scope, confirmation status and supersession where relevant.
-3. The agent reads the active scheme and current source and executes directly.
-4. If later evidence or new requirements change the decision, repeat the loop; do not silently apply an obsolete scheme.
+- **System architecture:** subsystem/system boundaries, module responsibilities, deployment/hardware topology, external interfaces, major data/control flows and design constraints. Common default `docs/architecture.md`.
+- **High-level design:** important module-level responsibilities, dependencies, major protocols, data models, significant state/interaction flows, fault handling and relevant resource/timing behavior. Common default `docs/design-overview.md`.
+- **Evidence and lifecycle:** cite actual source/config paths, differentiate current implementation from confirmed not-yet-implemented targets, link relevant approved ADRs/task specs rather than copying them, and identify outstanding verification.
+- **Update policy:** prefer existing project documents. Edit relevant sections, do not generate dummy details, and do not rewrite approved requirements or ADR history solely to match code. If the discrepancy requires a new decision, return to Grill/Wayfinder.
+- **Pointers:** change `AGENTS.md` or an existing index only if the authoritative document path actually changed or a pointer is stale; ordinary design content updates should not churn navigation.
 
-The agent can maintain the document index as part of ordinary project work; **there is no need to call bootstrap for every new confirmed decision**.
+Optional examples are in `skills/project-bootstrap/references/architecture.template.md` and `design-overview.template.md`.
 
-## Rules
+## Rules remain separate
 
-No empty `.agents/rules/` directory is created during bootstrap. Use `$project-bootstrap add-rule` for specifically authorized or repeatedly evidenced rules. Maintain rule files and an optional `.agents/rules/INDEX.md` internally; no per-rule `AGENTS.md` edits.
+`AGENTS.md` points to `.agents/rules/` by directory only. No empty directory is created by bootstrap. `$project-bootstrap add-rule` manages approved evidence-based rules and any optional index **inside** that directory; no per-rule edits to `AGENTS.md`.
 
-See [Document Discovery](document-discovery.md) and [Sources of Truth](source-of-truth.md).
+The active Agent implements the project directly. `engineering-governance` remains optional for system verification and release.
