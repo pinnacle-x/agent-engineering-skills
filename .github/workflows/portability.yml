@@ -23,32 +23,34 @@ jobs:
 
           root = Path(".")
           skills = sorted(p.name for p in (root / "skills").iterdir() if (p / "SKILL.md").is_file())
-          assert skills == ["engineering-governance", "project-bootstrap"], skills
+          assert skills == ["engineering-governance", "project-context"], skills
+          assert not (root / "skills/project-bootstrap").exists()
+          assert not (root / "docs/project-bootstrap.md").exists()
 
-          bootstrap = (root / "skills/project-bootstrap/SKILL.md").read_text(encoding="utf-8")
+          context = (root / "skills/project-context/SKILL.md").read_text(encoding="utf-8")
           governance = (root / "skills/engineering-governance/SKILL.md").read_text(encoding="utf-8")
-          agent = (root / "skills/project-bootstrap/references/AGENTS.template.md").read_text(encoding="utf-8")
+          agent = (root / "skills/project-context/references/AGENTS.template.md").read_text(encoding="utf-8")
           readme = (root / "README.md").read_text(encoding="utf-8")
           workflow = (root / "docs/workflow.md").read_text(encoding="utf-8")
           discovery = (root / "docs/document-discovery.md").read_text(encoding="utf-8")
           installation = (root / "docs/installation.md").read_text(encoding="utf-8")
           new_example = (root / "examples/new-project/README.md").read_text(encoding="utf-8")
           existing_example = (root / "examples/existing-project/README.md").read_text(encoding="utf-8")
-          index_reference = (root / "skills/project-bootstrap/references/docs-index.template.md").read_text(encoding="utf-8")
+          index_reference = (root / "skills/project-context/references/docs-index.template.md").read_text(encoding="utf-8")
 
           # Both entry paths and the dedicated update-design mode are independently available.
           for token in ("## Mode: bootstrap", "## Mode: update-design", "## Mode: add-rule"):
-              assert token in bootstrap or (token == "## Mode: bootstrap" and "## Mode: bootstrap (default)" in bootstrap), token
-          assert "**New project**" in bootstrap and "**Existing-source project**" in bootstrap
+              assert token in context or (token == "## Mode: bootstrap" and "## Mode: bootstrap (default)" in context), token
+          assert "**New project**" in context and "**Existing-source project**" in context
           for text in ("source", "technical constraints", "confirmed", "Pending"):
-              assert text.lower() in bootstrap.lower(), text
+              assert text.lower() in context.lower(), text
           for name in ("architecture.template.md", "design-overview.template.md",
                        "docs-index.template.md", "AGENTS.template.md",
                        "requirements.template.md", "technical-constraints.template.md",
                        "rules.template.md"):
-              assert (root / "skills/project-bootstrap/references" / name).is_file(), name
-          assert "## Mode: update-design" in bootstrap
-          assert "$project-bootstrap update-design" in readme + installation
+              assert (root / "skills/project-context/references" / name).is_file(), name
+          assert "## Mode: update-design" in context
+          assert "$project-context update-design" in readme + installation
           assert "sync" in workflow.lower() and "architecture" in existing_example.lower()
 
           # Upstream native local Markdown is authoritative for Map, tickets and task spec.
@@ -56,7 +58,7 @@ jobs:
                         ".scratch/<effort>/map.md", ".scratch/<feature>/spec.md",
                         "docs/agents/issue-tracker.md", "docs/agents/domain.md",
                         ".gitignore"):
-              assert token in bootstrap, token
+              assert token in context, token
           assert "wayfinder" in new_example.lower() and "to-spec" in new_example
           assert ".scratch/" in discovery and "local markdown" in discovery.lower()
           assert "no extra" in readme.lower() or "not a mandatory" in readme.lower()
@@ -68,8 +70,8 @@ jobs:
                        ".agents/rules/"):
               assert path in agent, path
           assert "when present" in agent
-          assert "does **not** create an empty" in bootstrap
-          assert "never update root" in bootstrap.lower()
+          assert "does **not** create an empty" in context
+          assert "never update root" in context.lower()
           assert "## Mode: change-impact" not in governance
           for mode in ("verify", "release"):
               assert f"## Mode: {mode}" in governance
@@ -77,13 +79,13 @@ jobs:
           assert "architecture" in governance.lower() and "spec" in governance.lower()
 
           # Named execution workflow intermediaries are not part of our instructions.
-          for path in ("README.md", "docs/workflow.md", "skills/project-bootstrap/SKILL.md",
+          for path in ("README.md", "docs/workflow.md", "skills/project-context/SKILL.md",
                        "skills/engineering-governance/SKILL.md"):
               doc = (root / path).read_text(encoding="utf-8").lower()
               assert "$implement" not in doc and "$tdd" not in doc
 
           meta = json.loads((root / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
-          assert meta["version"] == "0.9.0"
+          assert meta["version"] == "0.10.0"
           assert any("update-design" in prompt for prompt in meta["interface"]["defaultPrompt"])
           for old in ("skills/cross-repo-governance", "templates/CHANGE_IMPACT.md",
                       "examples/change-impact", "docs/cross-repo-workflow.md"):
@@ -93,24 +95,31 @@ jobs:
       - name: Smoke-test generic user install
         run: |
           HOME="$RUNNER_TEMP/agent-skills-home" python scripts/install.py --agent generic --scope user
-          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/SKILL.md"
-          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/AGENTS.template.md"
-          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/architecture.template.md"
-          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/design-overview.template.md"
-          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/docs-index.template.md"
-          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/rules.template.md"
-          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/requirements.template.md"
-          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/technical-constraints.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-context/SKILL.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-context/references/AGENTS.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-context/references/architecture.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-context/references/design-overview.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-context/references/docs-index.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-context/references/rules.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-context/references/requirements.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-context/references/technical-constraints.template.md"
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/engineering-governance/SKILL.md"
           test ! -e "$RUNNER_TEMP/agent-skills-home/.agents/skills/cross-repo-governance"
           test ! -d "$RUNNER_TEMP/agent-skills-home/.agents/rules"
           test ! -e "$RUNNER_TEMP/agent-skills-home/.scratch"
       - name: Smoke-test independent Skill selection
         run: |
-          HOME="$RUNNER_TEMP/bootstrap-only" python scripts/install.py --agent generic --scope user --skill project-bootstrap
-          test -f "$RUNNER_TEMP/bootstrap-only/.agents/skills/project-bootstrap/references/architecture.template.md"
-          test -f "$RUNNER_TEMP/bootstrap-only/.agents/skills/project-bootstrap/references/design-overview.template.md"
-          test ! -e "$RUNNER_TEMP/bootstrap-only/.agents/skills/engineering-governance"
+          HOME="$RUNNER_TEMP/context-only" python scripts/install.py --agent generic --scope user --skill project-context
+          test -f "$RUNNER_TEMP/context-only/.agents/skills/project-context/references/architecture.template.md"
+          test -f "$RUNNER_TEMP/context-only/.agents/skills/project-context/references/design-overview.template.md"
+          test ! -e "$RUNNER_TEMP/context-only/.agents/skills/engineering-governance"
           HOME="$RUNNER_TEMP/governance-only" python scripts/install.py --agent generic --scope user --skill engineering-governance
           test -f "$RUNNER_TEMP/governance-only/.agents/skills/engineering-governance/SKILL.md"
-          test ! -e "$RUNNER_TEMP/governance-only/.agents/skills/project-bootstrap"
+          test ! -e "$RUNNER_TEMP/governance-only/.agents/skills/project-context"
+      - name: Smoke-test rename migration warning
+        run: |
+          mkdir -p "$RUNNER_TEMP/legacy-home/.agents/skills/project-bootstrap"
+          HOME="$RUNNER_TEMP/legacy-home" python scripts/install.py --agent generic --scope user --skill project-context > "$RUNNER_TEMP/rename-migration.log"
+          grep "Legacy Skill still installed" "$RUNNER_TEMP/rename-migration.log"
+          test -d "$RUNNER_TEMP/legacy-home/.agents/skills/project-bootstrap"
+          test -f "$RUNNER_TEMP/legacy-home/.agents/skills/project-context/SKILL.md"

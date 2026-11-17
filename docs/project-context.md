@@ -1,6 +1,6 @@
-# Project Bootstrap — Local Markdown and Living Design Documents
+# Project Context — Local Markdown and Living Design Documents
 
-`project-bootstrap` supports new and existing engineering projects, and provides dedicated **system architecture** and **high-level design** synchronization. It neither replaces the upstream local tracker nor routes engineering execution through an additional Skill.
+`project-context` supports new and existing engineering projects, and provides dedicated **system architecture** and **high-level design** synchronization. It neither replaces the upstream local tracker nor routes engineering execution through an additional Skill.
 
 ## Bootstrap a new project
 
@@ -26,7 +26,7 @@ For local-mode Map/spec layout and hazards, see [Document Discovery](document-di
 ## Update architecture and high-level design
 
 ```text
-$project-bootstrap update-design
+$project-context update-design
 ```
 
 This is an **on-demand project-document synchronization mode**. It is also a responsibility the Agent should perform in ordinary work whenever changes materially affect the long-lived design, without needing to invoke the Skill after every small code edit.
@@ -37,10 +37,10 @@ This is an **on-demand project-document synchronization mode**. It is also a res
 - **Update policy:** prefer existing project documents. Edit relevant sections, do not generate dummy details, and do not rewrite approved requirements or ADR history solely to match code. If the discrepancy requires a new decision, return to Grill/Wayfinder.
 - **Pointers:** change `AGENTS.md` or an existing index only if the authoritative document path actually changed or a pointer is stale; ordinary design content updates should not churn navigation.
 
-Optional examples are in `skills/project-bootstrap/references/architecture.template.md` and `design-overview.template.md`.
+Optional examples are in `skills/project-context/references/architecture.template.md` and `design-overview.template.md`.
 
 ## Rules remain separate
 
-`AGENTS.md` points to `.agents/rules/` by directory only. No empty directory is created by bootstrap. `$project-bootstrap add-rule` manages approved evidence-based rules and any optional index **inside** that directory; no per-rule edits to `AGENTS.md`.
+`AGENTS.md` points to `.agents/rules/` by directory only. No empty directory is created by bootstrap. `$project-context add-rule` manages approved evidence-based rules and any optional index **inside** that directory; no per-rule edits to `AGENTS.md`.
 
 The active Agent implements the project directly. `engineering-governance` remains optional for system verification and release.

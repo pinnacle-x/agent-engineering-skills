@@ -1,7 +1,7 @@
 {
   "name": "engineering-agent-skills",
-  "version": "0.9.0",
-  "description": "Source-first project bootstrap with native Grill local-Markdown reuse and living architecture/overview synchronization; optional multi-/single-Git verification and release.",
+  "version": "0.10.0",
+  "description": "Source-first project context with native Grill local-Markdown reuse and living architecture/overview synchronization; optional multi-/single-Git verification and release.",
   "author": {
     "name": "pinnacle-x",
     "url": "https://github.com/pinnacle-x"
@@ -12,7 +12,7 @@
   "keywords": [
     "agent-skills",
     "codex",
-    "project-bootstrap",
+    "project-context",
     "local-markdown",
     "architecture",
     "design-overview",
@@ -27,7 +27,7 @@
   "interface": {
     "displayName": "Engineering Agent Skills",
     "shortDescription": "Local Markdown decision reuse and living engineering docs",
-    "longDescription": "project-bootstrap enters new or existing codebases, reuses upstream Grill/Wayfinder's configured Local Markdown Maps/specs, ADRs and glossary without forcing a duplicate docs index; adds update-design to maintain current system architecture and high-level design against source evidence and confirmed decisions. The Agent directly executes product work and synchronizes affected docs. engineering-governance offers optional integrated verification and reproducible releases for single- or multi-Git products.",
+    "longDescription": "project-context enters new or existing codebases, reuses upstream Grill/Wayfinder's configured Local Markdown Maps/specs, ADRs and glossary without forcing a duplicate docs index; adds update-design to maintain current system architecture and high-level design against source evidence and confirmed decisions. The Agent directly executes product work and synchronizes affected docs. engineering-governance offers optional integrated verification and reproducible releases for single- or multi-Git products.",
     "developerName": "pinnacle-x",
     "category": "Developer Tools",
     "capabilities": [
@@ -37,10 +37,10 @@
     ],
     "websiteURL": "https://github.com/pinnacle-x/agent-engineering-skills",
     "defaultPrompt": [
-      "Use project-bootstrap to enter this new or existing engineering project. Prefer current source evidence and configured upstream local Markdown tracker/domain guidance, not a duplicate document index.",
-      "Use project-bootstrap update-design to inspect current source and confirmed decisions, then update the actual system architecture and high-level design documents without overwriting approved requirements.",
+      "Use project-context to enter this new or existing engineering project. Prefer current source evidence and configured upstream local Markdown tracker/domain guidance, not a duplicate document index.",
+      "Use project-context update-design to inspect current source and confirmed decisions, then update the actual system architecture and high-level design documents without overwriting approved requirements.",
       "Use upstream Grill/Wayfinder and optional to-spec for important decisions in configured Local Markdown. Let the Agent execute the approved scope directly and sync affected long-lived docs.",
-      "Use project-bootstrap add-rule only for an approved, evidenced project rule; maintain rule files inside .agents/rules/ without editing AGENTS.md per rule.",
+      "Use project-context add-rule only for an approved, evidenced project rule; maintain rule files inside .agents/rules/ without editing AGENTS.md per rule.",
       "Use engineering-governance verify or release only for warranted integration and reproducible delivery."
     ]
   }

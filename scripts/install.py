@@ -160,6 +160,15 @@ def main() -> int:
         print(f"installed {name} -> {dst}")
 
     print()
+    # A renamed Skill is installed alongside any old name; do not delete user data.
+    legacy = root / "project-bootstrap"
+    if "project-context" in installed and (legacy.exists() or legacy.is_symlink()):
+        print(
+            f"WARNING: Legacy Skill still installed: {legacy}. "
+            "Inspect and remove it manually after checking for local edits; "
+            "otherwise both old and new Skills may appear."
+        )
+
     print(f"Agent Skills installed for target '{args.agent}' in: {root}")
     print("Installed: " + ", ".join(installed))
     return 0

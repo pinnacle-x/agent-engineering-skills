@@ -5,7 +5,7 @@
 - **Greenfield project:** begin from confirmed product goals and external constraints, not invented source.
 - **Existing project:** inspect actual source/configuration/hardware artifacts/tests first. Document implemented facts with evidence, then establish confirmed requirements and technical constraints without assuming the code represents approved intent.
 
-Use `$project-bootstrap` to establish accurate project entry instructions and current long-lived documents. Do not create another index unless an existing project already uses one or its real documentation complexity warrants it.
+Use `$project-context` to establish accurate project entry instructions and current long-lived documents. Do not create another index unless an existing project already uses one or its real documentation complexity warrants it.
 
 ## Repeated decisions, directly executed
 
@@ -44,7 +44,7 @@ The Agent checks whether the current system architecture or high-level design wa
 For deliberate architecture/overview documentation work:
 
 ```text
-$project-bootstrap update-design
+$project-context update-design
 ```
 
 Reuse existing architecture/overview paths, else use `docs/architecture.md` and `docs/design-overview.md` when enough evidence exists. If design and implementation diverge, describe **Current**, **Confirmed target** and **Pending resolution** separately.

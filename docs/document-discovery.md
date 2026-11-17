@@ -61,7 +61,7 @@ For durable system engineering, keep current architecture/overview docs in the p
 
 ## After engineering work
 
-Whenever a change alters architecture/high-level design, the Agent should update the affected long-lived documentation using actual source evidence and approved decisions. `$project-bootstrap update-design` can perform this as a requested dedicated task. Use `Current / Implemented`, `Confirmed target` and `Pending resolution` where needed. If a fresh decision invalidates an ADR or approved scheme, clarify it with Grill/Wayfinder rather than rewriting history as if it never existed.
+Whenever a change alters architecture/high-level design, the Agent should update the affected long-lived documentation using actual source evidence and approved decisions. `$project-context update-design` can perform this as a requested dedicated task. Use `Current / Implemented`, `Confirmed target` and `Pending resolution` where needed. If a fresh decision invalidates an ADR or approved scheme, clarify it with Grill/Wayfinder rather than rewriting history as if it never existed.
 
 ## Avoid unnecessary duplication
 
