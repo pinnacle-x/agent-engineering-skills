@@ -58,7 +58,7 @@ jobs:
           assert "index is the agent\'s map" in docs_index.lower()
           assert "Individual rule paths" in bootstrap
           assert "Do not create an empty" in bootstrap
-          assert "Rule additions" in agents
+          assert "Manage individual rules" in agents
 
           # Major decisions can recur, but execution remains with the agent.
           assert "repeats throughout the project" in readme.lower()
