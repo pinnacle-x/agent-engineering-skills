@@ -1,8 +1,10 @@
 # Agent Engineering Skills — Documentation
 
-- [Project bootstrap](project-bootstrap.md) — new-project entry and source-first adoption of an existing codebase, including confirmed requirements and technical constraints; on-demand rules stored internally in `.agents/rules/`.
-- [Agent-led workflow](workflow.md) — direct execution after important design decisions are resolved, with optional Grill/Wayfinder for major uncertainty.
-- [Engineering governance](engineering-governance.md) — optional integrated verification and release for one or multiple Git repositories.
-- [Installation](installation.md), [sources of truth](source-of-truth.md), and [repository/module boundaries](repository-roles.md).
+- [Project bootstrap](project-bootstrap.md) — greenfield and source-first existing project entry, with a stable project-document index linked from `AGENTS.md`.
+- [Continuous design workflow](workflow.md) — repeated Grill/Wayfinder clarification at consequential design points, confirmed scheme documentation and direct agent execution.
+- [Document discovery and lifecycle](document-discovery.md) — how to maintain active, pending and superseded design links without growing `AGENTS.md`.
+- [Sources of truth](source-of-truth.md) — current code facts versus accepted requirements and effective design.
+- [Engineering governance](engineering-governance.md) — optional system verification/release across one or multiple Git repositories.
+- [Installation](installation.md) and [repository/module boundaries](repository-roles.md).
 
-Executable Skill instructions are in `skills/project-bootstrap/SKILL.md` and `skills/engineering-governance/SKILL.md`.
+Executable Skills: `skills/project-bootstrap/SKILL.md` and `skills/engineering-governance/SKILL.md`. The repository's own documentation layout is not imposed on the user's projects.

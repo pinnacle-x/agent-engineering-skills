@@ -1,14 +1,18 @@
-# Engineering Governance — Integrated Verification and Release
+# Engineering Governance — Verification and Release
 
-`engineering-governance` provides optional `verify` and `release` modes when a system needs traceable integration results or reproducible delivery. The agent **directly** investigates effects on modules/interfaces while performing project work; governance does not duplicate that work.
+`engineering-governance` is optional and limited to integrated `verify` and `release` for single-Git or multi-Git products.
 
-| Situation | Verification scope | Release evidence |
-| --- | --- | --- |
-| One Git, isolated task | Normal agent checks; governance generally unnecessary | Existing project process |
-| One Git, coupled modules | Integrated checks associated with **one** immutable Git SHA | That revision and optional project tag |
-| Multiple independent Git repositories | Compatibility and integration checks against **each** included repo SHA | Verified immutable revision combination in a suitable manifest |
+The active agent determines and handles affected code/interfaces directly. It can return to Grill/Wayfinder when a new consequential design decision is unresolved; accepted outcomes are written into the project's authoritative documents and discoverable via the document index.
 
-A project containing `Firmware/`, `PC/` and `Protocol/` can still have a single `.git` root. Directory count does not determine Git count.
+## Verification reads the effective scheme
+
+Before integrated verification, consult the actual project document index referenced by `AGENTS.md`. Read current **Active / Confirmed** requirements, technical constraints, interfaces and accepted architecture relevant to the target system. Compare them with the actual code revision and observed results. Do **not** treat an old design draft as a specification for verification.
+
+| Project type | Evidence needed |
+| --- | --- |
+| Single Git, local work | Routine agent checks, governance often unnecessary |
+| Single Git with coupled modules | One exact SHA, module/interface checks, required hardware acceptance evidence |
+| Multiple Git repositories | Exact SHA of each participating repo and compatibility tests for the combination |
 
 ## Verify
 
@@ -16,9 +20,7 @@ A project containing `Firmware/`, `PC/` and `Protocol/` can still have a single 
 $engineering-governance verify
 ```
 
-Review the actual project’s required checks and run/coordinate relevant integration verification. Record commands, test results, exact revision(s), hardware/manual acceptance evidence and remaining unknowns. Unperformed required checks stay pending; do not label them as passing.
-
-A lasting verification document can use `templates/SYSTEM_VERIFICATION.md` when justified by actual project requirements, not as a mandatory file for every change.
+Run/review actual appropriate integration checks. Record commands and outcomes; keep required unperformed manual/hardware checks pending. Use existing project reporting conventions or an optional `templates/SYSTEM_VERIFICATION.md` when a persistent record is warranted.
 
 ## Release
 
@@ -26,13 +28,6 @@ A lasting verification document can use `templates/SYSTEM_VERIFICATION.md` when 
 $engineering-governance release
 ```
 
-Confirm release version, required verification and exact matching tested revision(s).
+Use the exact verified revision(s) and the current effective approved scheme. A single Git typically needs a SHA/tag, not a multi-repo XML. Multi-Git composition can require a manifest pinning exact verified SHAs.
 
-- **Single Git:** use the verified commit SHA and existing tag/release conventions. Do not generate multi-repository XML.
-- **Multi Git:** pin the exact verified SHA of each included repository, using the existing/preferred product-composition format. A manifest is appropriate when a product combines independently versioned repositories.
-
-Do not silently replace published releases, use moving branch names as fixed versions or pretend missing hardware checks passed. Preserve documentation and delivery evidence appropriate to project requirements.
-
-## Relationship to project bootstrap
-
-For an **existing** project, `project-bootstrap` establishes source-evidenced current state and the confirmed requirements and technical constraints. Those artifacts inform verification requirements; the agent resolves cross-module effects directly. No other Skill is a mandatory prerequisite.
+Do not silently reuse superseded schemes, publish unverified combinations or misstate pending hardware tests. The agent handles ordinary engineering execution directly.

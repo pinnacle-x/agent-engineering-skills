@@ -15,7 +15,7 @@ jobs:
           python-version: '3.x'
       - name: Validate portable Skill core
         run: python scripts/validate_portability.py
-      - name: Validate new and existing project contract
+      - name: Validate project entry and document discovery contract
         run: |
           python - <<'PY'
           import json
@@ -23,64 +23,76 @@ jobs:
           from pathlib import Path
 
           root = Path(".")
-          skills = sorted(p.name for p in (root / "skills").iterdir() if (p / "SKILL.md").is_file())
-          assert skills == ["engineering-governance", "project-bootstrap"], skills
+          skill_dirs = sorted(p.name for p in (root / "skills").iterdir() if (p / "SKILL.md").is_file())
+          assert skill_dirs == ["engineering-governance", "project-bootstrap"]
 
           bootstrap = (root / "skills/project-bootstrap/SKILL.md").read_text(encoding="utf-8")
-          gov = (root / "skills/engineering-governance/SKILL.md").read_text(encoding="utf-8")
-          agent_template = (root / "skills/project-bootstrap/references/AGENTS.template.md").read_text(encoding="utf-8")
-          rule_template = (root / "skills/project-bootstrap/references/rules.template.md").read_text(encoding="utf-8")
+          governance = (root / "skills/engineering-governance/SKILL.md").read_text(encoding="utf-8")
+          agents = (root / "skills/project-bootstrap/references/AGENTS.template.md").read_text(encoding="utf-8")
+          docs_index = (root / "skills/project-bootstrap/references/docs-index.template.md").read_text(encoding="utf-8")
           readme = (root / "README.md").read_text(encoding="utf-8")
           workflow = (root / "docs/workflow.md").read_text(encoding="utf-8")
-          docs = (root / "docs/project-bootstrap.md").read_text(encoding="utf-8")
-          existing_ex = (root / "examples/existing-project/README.md").read_text(encoding="utf-8")
+          discovery = (root / "docs/document-discovery.md").read_text(encoding="utf-8")
+          existing_example = (root / "examples/existing-project/README.md").read_text(encoding="utf-8")
+          new_example = (root / "examples/new-project/README.md").read_text(encoding="utf-8")
 
-          # Both project entry paths and source-backed confirmed documentation.
-          for s in ("## Path A: new project from zero", "## Path B: existing project with source",
-                    "docs/requirements.md", "docs/technical-constraints.md", "Pending confirmation"):
-              assert s in bootstrap, s
-          assert "Confirmed requirements" in bootstrap and "Confirmed technical constraints" in bootstrap
-          for path in ("requirements.template.md", "technical-constraints.template.md"):
-              assert (root / "skills/project-bootstrap/references" / path).is_file()
-          assert "docs/requirements.md" in docs and "docs/technical-constraints.md" in docs
-          assert "pending confirmation" in existing_ex.lower()
+          # New and existing entry, source-backed requirements/constraints, iterative decisions.
+          for token in ("## Path A: project from zero", "## Path B: existing project with source",
+                        "docs/requirements.md", "docs/technical-constraints.md",
+                        "Pending confirmation", "grill-with-docs", "wayfinder",
+                        "repeat", "document index"):
+              assert token.lower() in bootstrap.lower(), token
+          for path in ("requirements.template.md", "technical-constraints.template.md",
+                       "AGENTS.template.md", "docs-index.template.md", "rules.template.md"):
+              assert (root / "skills/project-bootstrap/references" / path).is_file(), path
+          assert "source" in existing_example.lower() and "confirmed" in existing_example.lower()
+          assert "grill" in new_example.lower() and "wayfinder" in new_example.lower()
 
-          # Only directory-level rule discovery in AGENTS.md, no default rule directory.
-          assert "## Mode: add-rule" in bootstrap
+          # AGENTS.md is a stable pointer to documents + rules; detailed indexing stays inside.
+          assert "docs/README.md" in agents and ".agents/rules/" in agents
+          assert "## Project Rules" in agents and "## Project documentation" in agents
+          assert "individual" in agents.lower() and "not in this" not in agents.lower()
+          assert "## Active approved designs" in docs_index
+          assert "## Pending design questions" in docs_index
+          assert "## Superseded or historical documents" in docs_index
+          assert "index is the agent\'s map" in docs_index.lower()
+          assert "Individual rule paths" in bootstrap
           assert "Do not create an empty" in bootstrap
-          assert "Do **not** update root" in bootstrap
-          assert "does not enumerate" not in agent_template.lower() or ".agents/rules/" in agent_template
-          assert ".agents/rules/" in agent_template
-          assert ".agents/rules/INDEX.md" in rule_template
-          assert "stm32-dma.md" not in agent_template
+          assert "Rule additions" in agents
 
-          # Direct agent execution; optional design helpers; governance has only two modes.
+          # Major decisions can recur, but execution remains with the agent.
+          assert "repeats throughout the project" in readme.lower()
+          assert "directly" in workflow.lower() and "grill-with-docs" in workflow
+          assert "wayfinder" in workflow and "after the decision is confirmed" in discovery.lower()
+          assert "document index" in governance.lower()
           for mode in ("verify", "release"):
-              assert f"## Mode: {mode}" in gov
-          assert "## Mode: change-impact" not in gov
-          assert "$engineering-governance change-impact" not in readme + workflow
-          assert "single Git" in gov and "Multi Git" in gov
-          assert "the agent executes" in readme.lower() and "agent executes directly" in workflow.lower()
-          assert "grill-with-docs" in workflow and "wayfinder" in workflow
-          for p in [root / "README.md", root / "docs/workflow.md", root / "skills/project-bootstrap/SKILL.md",
-                    root / "skills/engineering-governance/SKILL.md", root / "skills/project-bootstrap/references/AGENTS.template.md"]:
-              assert not re.search(r"\b(?:TDD|Implement|Spec)\b", p.read_text(encoding="utf-8"), re.I), p
+              assert f"## Mode: {mode}" in governance
+          assert "## Mode: change-impact" not in governance
+          assert "$engineering-governance change-impact" not in readme + workflow + governance
+          assert "Single Git" in governance and "Multi Git" in governance
+
+          # Don't introduce named intermediary coding workflow steps.
+          for path in (
+              "README.md", "docs/workflow.md", "skills/project-bootstrap/SKILL.md",
+              "skills/engineering-governance/SKILL.md",
+              "skills/project-bootstrap/references/AGENTS.template.md"
+          ):
+              txt = (root / path).read_text(encoding="utf-8")
+              assert not re.search(r"\b(?:TDD|Implement|Spec)\b", txt, re.I), path
 
           meta = json.loads((root / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
-          assert meta["version"] == "0.7.0"
-          assert "change-impact" not in json.dumps(meta)
-          for obsolete in ("skills/cross-repo-governance", "templates/INTERFACE_CHANGE.md",
-                           "templates/CHANGE_IMPACT.md", "docs/cross-repo-workflow.md",
-                           "examples/change-impact", "examples/interface-change",
-                           "examples/manifest-release"):
-              assert not (root / obsolete).exists(), obsolete
-          print("Project entry, evidence and governance contract: PASS")
+          assert meta["version"] == "0.8.0"
+          for old in ("skills/cross-repo-governance", "templates/CHANGE_IMPACT.md",
+                      "examples/change-impact", "docs/cross-repo-workflow.md"):
+              assert not (root / old).exists(), old
+          print("Iterative design discovery contract: PASS")
           PY
       - name: Smoke-test generic user install
         run: |
           HOME="$RUNNER_TEMP/agent-skills-home" python scripts/install.py --agent generic --scope user
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/SKILL.md"
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/AGENTS.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/docs-index.template.md"
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/rules.template.md"
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/requirements.template.md"
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/technical-constraints.template.md"
@@ -91,6 +103,7 @@ jobs:
         run: |
           HOME="$RUNNER_TEMP/bootstrap-only" python scripts/install.py --agent generic --scope user --skill project-bootstrap
           test -f "$RUNNER_TEMP/bootstrap-only/.agents/skills/project-bootstrap/SKILL.md"
+          test -f "$RUNNER_TEMP/bootstrap-only/.agents/skills/project-bootstrap/references/docs-index.template.md"
           test ! -e "$RUNNER_TEMP/bootstrap-only/.agents/skills/engineering-governance"
           HOME="$RUNNER_TEMP/governance-only" python scripts/install.py --agent generic --scope user --skill engineering-governance
           test -f "$RUNNER_TEMP/governance-only/.agents/skills/engineering-governance/SKILL.md"
