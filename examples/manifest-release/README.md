@@ -3,7 +3,7 @@
 Invocation:
 
 ```text
-$praxflow manifest-release
+$cross-repo-governance manifest-release
 version: 1.0.0
 verification: system/docs/verification/VER-RC-001.md
 ```
