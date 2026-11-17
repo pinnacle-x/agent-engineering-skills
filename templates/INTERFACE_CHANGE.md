@@ -2,30 +2,35 @@
 
 - Status: DRAFT
 - Owner repository: TODO
-- Affected repositories:
+- Affected consumer repositories:
   - TODO
+- Approved design / ADR reference: TODO
+- Owner-controlled contract reference: TODO
 
 ## Goal
 
-TODO
+TODO — state the coordination objective, not a new independent interface design.
 
-## Public contract change
+## Compatibility classification
 
-TODO
+TODO — compatible / conditionally-compatible / breaking; cite the approved contract and surface unknowns for the contract owner.
 
-## Compatibility impact
+## Required owner-first rollout
 
-TODO
+1. Confirm the approved owner contract and design/ADR reference.
+2. Update and approve the owner contract before consumer-side semantic changes.
+3. Implement the owner-side changes when applicable.
+4. Implement each consumer against the approved owner contract.
+5. Run repository-local verification and multi-repository system verification.
 
-## Required order
+## Consumer impact and migration
 
-1. Update owner spec.
-2. Validate owner spec.
-3. Obtain human approval.
-4. Implement owner changes if required.
-5. Update consumers.
-6. Run system verification.
+TODO — reference affected consumers, required versioning and migration.
 
 ## Required verification
 
-TODO
+TODO — exact repository revisions, applicable integration tests and required manual/hardware checks.
+
+## Open design issues
+
+TODO — refer unresolved design questions to Grill or the contract owner; do not invent new semantics here.

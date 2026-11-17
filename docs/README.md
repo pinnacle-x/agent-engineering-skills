@@ -1,15 +1,17 @@
-# PraxFlow Documentation
+# Agent Engineering Skills — documentation
 
-PraxFlow now documents only the cross-repository governance it owns.
+This repository contains **two independent Skills**:
 
-## Read in this order
+- `project-bootstrap` — initialize/reconcile the portable project entry point and explicitly indexed rule files.
+- `cross-repo-governance` — approved contract coordination, exact-revision integration verification and reproducible release manifests.
 
-1. `workflow.md` — when PraxFlow is needed and the three supported modes.
-2. `cross-repo-workflow.md` — owner-first public interface changes.
-3. `source-of-truth.md` — ownership and non-duplication rules.
-4. `repository-roles.md` — typical product repository ownership.
-5. `installation.md` — shared `.agents/skills` installation.
+Read:
 
-The executable source of truth is `skills/praxflow/SKILL.md`.
+1. [Installation](installation.md) — install both or either Skill.
+2. [Bootstrap](project-bootstrap.md) — portable `AGENTS.md` and `.agents/rules/`.
+3. [Workflow](workflow.md) — boundaries with the active agent and Grill.
+4. [Cross-repo coordination](cross-repo-workflow.md) — owner-first shared interface rollout.
+5. [Source of truth](source-of-truth.md) — one semantic owner per public contract.
+6. [Repository roles](repository-roles.md) — optional product repository boundaries.
 
-PDF reading, repository discovery, design, specification, protocol analysis, implementation, testing, and code review are intentionally outside PraxFlow and should use the active agent or companion engineering Skills.
+Executable instructions: `skills/project-bootstrap/SKILL.md` and `skills/cross-repo-governance/SKILL.md`.

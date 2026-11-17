@@ -1,10 +1,13 @@
-# Interface Change Example
+# Cross-Repository Interface Coordination Example
 
-Invocation:
+When the `StartTest` command's semantics are still undecided, resolve them with `grill-with-docs` first and record the approved design/ADR. Cross-Repo Governance does **not** repeat that design interview.
+
+Then invoke:
 
 ```text
-$praxflow interface-change
-goal: Add StartTest command.
+$cross-repo-governance interface-change
+goal: Coordinate the approved StartTest command across repositories.
+approved_contract: <owner contract or ADR reference>
 ```
 
 Expected output:
@@ -13,4 +16,4 @@ Expected output:
 system/docs/changes/IC-0001-start-test-command.md
 ```
 
-The change plan should name the owner repository and require owner-spec approval before consumer implementation.
+The record identifies the owner repository, consumers, compatibility and migration impacts, required owner-first order and verification obligations. The owner contract must be approved before consumer-side semantics change.

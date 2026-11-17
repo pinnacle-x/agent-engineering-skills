@@ -6,16 +6,33 @@ on:
   pull_request:
 
 jobs:
-  validate-agent-skill:
+  validate-agent-skills:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Validate portable skill core
+      - name: Validate portable Skill core
         run: python scripts/validate_portability.py
       - name: Smoke-test generic user install
         run: |
-          HOME="$RUNNER_TEMP/praxflow-home" python scripts/install.py --agent generic --scope user
-          test -f "$RUNNER_TEMP/praxflow-home/.agents/skills/praxflow/SKILL.md"
+          HOME="$RUNNER_TEMP/agent-skills-home" python scripts/install.py --agent generic --scope user
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/SKILL.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/AGENTS.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/rules.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/cross-repo-governance/SKILL.md"
+          test ! -d "$RUNNER_TEMP/agent-skills-home/.agents/skills/praxflow"
+          grep -Fq 'name: project-bootstrap' "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/SKILL.md"
+          grep -Fq 'name: cross-repo-governance' "$RUNNER_TEMP/agent-skills-home/.agents/skills/cross-repo-governance/SKILL.md"
+          grep -Fq '# Mode: `interface-change`' "$RUNNER_TEMP/agent-skills-home/.agents/skills/cross-repo-governance/SKILL.md"
+          grep -Fq '# Mode: `system-verify`' "$RUNNER_TEMP/agent-skills-home/.agents/skills/cross-repo-governance/SKILL.md"
+          grep -Fq '# Mode: `manifest-release`' "$RUNNER_TEMP/agent-skills-home/.agents/skills/cross-repo-governance/SKILL.md"
+      - name: Smoke-test independent Skill selection
+        run: |
+          HOME="$RUNNER_TEMP/bootstrap-only" python scripts/install.py --agent generic --scope user --skill project-bootstrap
+          test -f "$RUNNER_TEMP/bootstrap-only/.agents/skills/project-bootstrap/SKILL.md"
+          test ! -e "$RUNNER_TEMP/bootstrap-only/.agents/skills/cross-repo-governance"
+          HOME="$RUNNER_TEMP/governance-only" python scripts/install.py --agent generic --scope user --skill cross-repo-governance
+          test -f "$RUNNER_TEMP/governance-only/.agents/skills/cross-repo-governance/SKILL.md"
+          test ! -e "$RUNNER_TEMP/governance-only/.agents/skills/project-bootstrap"

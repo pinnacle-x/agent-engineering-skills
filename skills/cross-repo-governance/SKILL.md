@@ -1,62 +1,45 @@
 ---
-name: praxflow
-description: Lightweight cross-repository governance for product engineering. Use only for public interface changes, integrated system verification, and reproducible multi-repository releases. Let the agent and companion skills handle PDF reading, repository discovery, design, specification, protocol analysis, implementation, testing, and code review.
+name: cross-repo-governance
+description: Coordinate approved public contract changes across independent repositories, bind integrated verification to exact revisions, and create reproducible multi-repository release manifests. Do not duplicate Grill's design or ordinary agent implementation.
 ---
 
-# PraxFlow
+# Cross-Repo Governance
 
-PraxFlow is deliberately narrow. Modern agents can already read PDFs and code, inspect repositories, analyze protocols, draft specifications, run tests, and review implementation. PraxFlow must not duplicate those capabilities.
+This Skill is only for **multi-repository governance**. It does not initialize repositories, create AGENTS.md, conduct design interviews, create ADRs, implement code, or replace repository-local tests.
 
-Use PraxFlow only where a multi-repository product needs durable governance that is easy to lose across independent agent sessions or repositories:
-
-1. owner-first public interface changes;
-2. integrated verification tied to exact repository revisions;
-3. reproducible releases that pin the verified repository combination.
+The active agent and general engineering Skills handle repository inspection, protocol/code analysis, implementation, local tests and reviews. Use `grill-with-docs` **when substantial interface design decisions are unresolved**, then reference the approved ADR/contract in the governance record.
 
 ## Invocation
 
 ```text
-$praxflow interface-change
-$praxflow system-verify
-$praxflow manifest-release
+$cross-repo-governance interface-change
+$cross-repo-governance system-verify
+$cross-repo-governance manifest-release
 ```
 
-If `$praxflow` is invoked without a mode, infer the mode only when the request clearly matches one of the three modes. Otherwise explain that PraxFlow is not needed and use the agent's native capability or an appropriate companion skill.
+If the harness does not recognize this invocation shorthand, request the `cross-repo-governance` Skill by name and specify its mode. If the request does not require multi-repository governance, do not invoke this Skill.
 
-## What PraxFlow does not do
+## Scope and exclusions
 
-Do not use PraxFlow for:
-
-- PDF reading, OCR, extraction, or document interpretation;
-- repository bootstrap or creation of `AGENTS.md`;
-- codebase/repository discovery;
-- domain modeling or design interviews;
-- specification drafting or materialization;
-- generic specification validation;
-- protocol analysis or protocol validation;
-- implementation, TDD, debugging, or code review;
-- routine single-repository work.
-
-Use the active agent's native capabilities for those tasks. For important unresolved design choices, use a dedicated design-review skill such as `grill-with-docs` when installed.
+- **interface-change:** public contract ownership, consumers, approved compatibility/migration plan and owner-first rollout across separate repositories. Do **not** independently decide contract semantics or duplicate an ADR.
+- **system-verify:** integration evidence tied to exact commit SHA of every included repository; manual and hardware tests need explicit evidence.
+- **manifest-release:** immutable product composition manifest based on an overall `PASS` verification record.
+- **Excluded:** project initialization, writing AGENTS.md/rules, PDF extraction, ordinary source exploration, specification authoring, routine code review, unit tests or local refactors.
 
 ## Global governance rules
 
-These rules apply to all PraxFlow modes:
-
-- A public fact or interface has one owner repository.
-- Consumers reference the owner contract instead of maintaining divergent definitions.
-- Public contract changes are owner-first.
-- Unknown or conflicting facts are never guessed into a cross-repository contract.
-- Exact repository revisions must be recorded for integrated verification and release.
-- Manual or hardware checks are never marked `PASS` without explicit evidence.
-- A release must correspond to a successfully verified repository combination.
-- Existing released manifests are immutable unless the user explicitly authorizes a correction and the correction policy is documented.
+1. Every public contract has one semantic owner repository. Consumers reference the owner contract.
+2. Unknown/conflicting interface facts must be resolved by the contract owner or design review, never silently invented.
+3. Update and approve the owner contract **before** consumer semantic changes.
+4. Integrated verification records the exact revision of each participating repository.
+5. Hardware/manual steps remain `MANUAL_PENDING` until evidence supports completion.
+6. Release only a revision set that passed all required verification; do not silently alter released manifests.
 
 ---
 
 # Mode: `interface-change`
 
-Use before implementing a change that modifies a contract consumed by more than one independent repository, such as a protocol command, register, public API, data schema, shared state, or hardware/software boundary.
+Use before implementing a change that modifies a contract consumed by more than one independent repository, such as a protocol command, register, public API, data schema, shared state, or hardware/software boundary. **This mode governs an agreed design; it does not replace Grill.** If important semantics or tradeoffs remain undecided, use `grill-with-docs` first and continue only with the approved contract/ADR.
 
 Do not use this mode for a change contained entirely inside one repository.
 
@@ -69,19 +52,19 @@ Use the agent's normal repository-reading capability. When available, inspect:
 3. affected consumer repository rules and relevant contract references;
 4. the development manifest when one exists.
 
-Do not require PraxFlow-specific spec files. Use whatever source of truth the repositories already define.
+Do not require Cross-Repo Governance-specific spec files. Use whatever source of truth the repositories already define.
 
 ## Actions
 
 1. Identify the public contract being changed.
 2. Identify its owner repository.
 3. Identify every known consumer and affected repository.
-4. Classify the change as `compatible`, `conditionally-compatible`, or `breaking`.
-5. Record the current contract and proposed contract.
+4. Based on the already approved design, classify the change as `compatible`, `conditionally-compatible`, or `breaking` and flag uncertainty for human resolution.
+5. Reference the owner-controlled current and approved proposed contract; do not write a rival semantic contract or decide missing interface behavior.
 6. Define the owner-first update order.
 7. Define migration/versioning requirements when needed.
 8. Define automated, integration, and hardware/manual verification needed.
-9. Surface unresolved high-impact design choices instead of resolving them silently. Recommend `grill-with-docs` or another human-in-the-loop design review when appropriate.
+9. When design questions remain unresolved, stop before consumer implementation and request `grill-with-docs`; use its ADR rather than duplicating a design-review interview here.
 
 ## Output
 
@@ -99,7 +82,7 @@ The record must contain:
 - owner repository;
 - affected repositories;
 - current contract;
-- proposed contract;
+- approved proposed contract reference (and brief change summary);
 - compatibility classification;
 - required owner changes;
 - required consumer changes;
@@ -107,7 +90,7 @@ The record must contain:
 - migration/versioning notes;
 - required tests;
 - manual/hardware checkpoints;
-- unresolved decisions;
+- unresolved decisions delegated to Grill or the contract owner;
 - approval status.
 
 ## Gate
@@ -136,7 +119,7 @@ Accept one of:
 
 1. Identify all repositories required by the verification scope.
 2. Record the exact branch/tag and commit SHA for every included repository.
-3. Read each repository's existing build/test instructions rather than inventing PraxFlow-specific commands.
+3. Read each repository's existing build/test instructions rather than inventing Cross-Repo Governance-specific commands.
 4. Run available automated repository-local tests when permitted.
 5. Run or coordinate available integration tests.
 6. Confirm that public contract versions/revisions match across owner and consumers.

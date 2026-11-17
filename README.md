@@ -1,59 +1,78 @@
-# PraxFlow
+# Agent Engineering Skills
 
-PraxFlow is a **small cross-repository governance Skill** for product engineering. It intentionally does not duplicate capabilities that modern agents already provide.
+This repository maintains **two independent Agent Skills** with different responsibilities and no mandatory dependency between them:
 
-DeepSeek, Codex, and other capable agents can already read PDFs and code, inspect repositories, analyze protocols, draft specifications, run tests, and review implementation. Use those native capabilities directly. Use `grill-with-docs` for important unresolved design choices.
+- **`project-bootstrap`** — initialize or reconcile a repository's portable root `AGENTS.md` and explicit `.agents/rules/` index without overwriting existing project conventions.
+- **`cross-repo-governance`** — govern an **approved** public contract across independent repositories, record integrated verification tied to exact commit revisions, and create reproducible release manifests.
 
-PraxFlow is only for three product-level concerns that must remain consistent across independent repositories and sessions:
+They complement—not replace—the active agent and engineering Skills. Use `grill-with-docs` for major design decisions and ADRs; neither Skill duplicates those interviews.
 
-1. public interface changes;
-2. integrated verification tied to exact repository revisions;
-3. reproducible release manifests.
+## Install
 
-## Skill
+The existing installer discovers Skills from `skills/*/SKILL.md`:
 
-PraxFlow installs as one Agent Skill:
-
-```text
-skills/praxflow/SKILL.md
+```bash
+git clone https://github.com/pinnacle-x/agent-engineering-skills.git
+cd agent-engineering-skills
+python scripts/install.py --agent generic --scope user
+python scripts/validate_portability.py
 ```
 
-Supported modes:
+To install only one:
 
-```text
-$praxflow interface-change
-$praxflow system-verify
-$praxflow manifest-release
+```bash
+python scripts/install.py --agent generic --scope user --skill project-bootstrap
+python scripts/install.py --agent generic --scope user --skill cross-repo-governance
 ```
 
-Everything else should use the active agent or companion engineering Skills.
-
-## Recommended stack
+Expected paths when both are installed:
 
 ```text
-Agent (DeepSeek / Codex)
-  ├─ read PDF / code / docs
-  ├─ analyze / plan / implement / test / review
-  │
-  ├─ grill-with-docs          # only when major design choices need human review
-  │
-  └─ praxflow                # only when cross-repo governance is required
-       ├─ interface-change
-       ├─ system-verify
-       └─ manifest-release
+~/.agents/skills/
+├── project-bootstrap/
+│   ├── SKILL.md
+│   └── references/
+└── cross-repo-governance/
+    └── SKILL.md
 ```
 
-## Repository model
+Some harnesses require a small configuration adapter to discover this path. File presence is not evidence of runtime activation.
+
+## Invocation
 
 ```text
-PraxFlow/
-├── skills/
-│   └── praxflow/
-│       └── SKILL.md
-├── docs/
-├── examples/
-├── templates/
-└── scripts/
+$project-bootstrap
+
+$cross-repo-governance interface-change
+$cross-repo-governance system-verify
+$cross-repo-governance manifest-release
 ```
 
-See `docs/installation.md` and `docs/workflow.md`.
+For harnesses that do not support `$...` shorthand, request the installed Skill by name in natural language.
+
+## Responsibilities and boundaries
+
+| Task | Owner |
+| --- | --- |
+| Portable AGENTS.md and rule index | project-bootstrap |
+| Issue tracker/domain-doc engineering setup | setup-matt-pocock-skills (optional) |
+| Important design decisions, API/protocol semantics, ADRs | grill-with-docs (when needed) |
+| Implementation, repository-local tests and review | active agent and engineering Skills |
+| Approved multi-repository contract rollout | cross-repo-governance interface-change |
+| Exact multi-repository revision verification | cross-repo-governance system-verify |
+| Immutable release composition | cross-repo-governance manifest-release |
+
+## Repository layout
+
+```text
+skills/
+├── project-bootstrap/
+│   ├── SKILL.md
+│   └── references/
+└── cross-repo-governance/
+    └── SKILL.md
+```
+
+See [installation](docs/installation.md), [bootstrap](docs/project-bootstrap.md), [workflow](docs/workflow.md) and [cross-repository coordination](docs/cross-repo-workflow.md).
+
+The GitHub repository URL retains its existing spelling until a separate repository rename is performed. The **Skill names and invocation commands** above are the canonical new names.

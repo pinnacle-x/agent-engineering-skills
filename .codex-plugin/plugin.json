@@ -1,28 +1,41 @@
 {
-  "name": "praxflow",
-  "version": "0.4.0",
-  "description": "Lightweight cross-repository governance for product engineering.",
+  "name": "engineering-agent-skills",
+  "version": "0.5.0",
+  "description": "Independent portable project bootstrap and cross-repository governance Agent Skills.",
   "author": {
     "name": "pinnacle-x",
     "url": "https://github.com/pinnacle-x"
   },
-  "homepage": "https://github.com/pinnacle-x/PraxFlow",
-  "repository": "https://github.com/pinnacle-x/PraxFlow",
+  "homepage": "https://github.com/pinnacle-x/agent-engineering-skills",
+  "repository": "https://github.com/pinnacle-x/agent-engineering-skills",
   "license": "MIT",
-  "keywords": ["agent-skills", "codex", "deepseek", "multi-repo", "governance", "manifest", "verification"],
+  "keywords": [
+    "agent-skills",
+    "codex",
+    "project-bootstrap",
+    "multi-repo",
+    "governance",
+    "manifest",
+    "verification"
+  ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "PraxFlow",
-    "shortDescription": "Cross-repository interface, verification, and release governance",
-    "longDescription": "PraxFlow is a narrow agent-neutral Skill for owner-first public interface changes, integrated verification tied to exact repository revisions, and reproducible manifest releases. It intentionally leaves PDF reading, repository discovery, protocol analysis, specification work, implementation, testing, and review to the active agent and companion skills.",
+    "displayName": "Engineering Agent Skills",
+    "shortDescription": "Portable project initialization and cross-repository governance",
+    "longDescription": "Two independent Agent Skills: project-bootstrap creates a portable AGENTS.md and explicit rule index; cross-repo-governance coordinates approved shared contracts, verifies exact repository revisions and creates reproducible release manifests. Design decisions belong to Grill; implementation and local tests belong to the active agent.",
     "developerName": "pinnacle-x",
     "category": "Developer Tools",
-    "capabilities": ["Read", "Write", "Interactive"],
-    "websiteURL": "https://github.com/pinnacle-x/PraxFlow",
+    "capabilities": [
+      "Read",
+      "Write",
+      "Interactive"
+    ],
+    "websiteURL": "https://github.com/pinnacle-x/agent-engineering-skills",
     "defaultPrompt": [
-      "Use PraxFlow to plan this cross-repository public interface change.",
-      "Use PraxFlow to verify this exact multi-repository product revision set.",
-      "Use PraxFlow to create a reproducible release manifest from the verified revisions."
+      "Use project-bootstrap to initialize this repository's AGENTS.md and .agents/rules.",
+      "Use cross-repo-governance to coordinate this approved shared interface change.",
+      "Use cross-repo-governance to verify this multi-repository revision set.",
+      "Use cross-repo-governance to produce a manifest for the verified release."
     ]
   }
 }

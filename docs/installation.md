@@ -1,81 +1,71 @@
-# Installing PraxFlow
+# Installing Agent Engineering Skills
 
-PraxFlow is one lightweight Agent Skill:
+The repository provides **two independent Skills**, both using the portable Agent Skills directory convention where supported.
 
-```text
-skills/praxflow/SKILL.md
-```
+- `project-bootstrap` — portable `AGENTS.md` and `.agents/rules/` setup.
+- `cross-repo-governance` — shared-contract coordination, integrated verification and release composition.
 
-It currently targets Codex and DeepSeek Harness through the shared Agent Skills location:
-
-- user/global: `~/.agents/skills/`
-- project-local: `.agents/skills/`
-
-## Install
+## Install both
 
 ```bash
-git clone https://github.com/pinnacle-x/PraxFlow.git
-cd PraxFlow
-python scripts/install.py --agent deepseek --scope user
+git clone https://github.com/pinnacle-x/agent-engineering-skills.git
+cd agent-engineering-skills
+python scripts/install.py --agent generic --scope user
+python scripts/validate_portability.py
 ```
 
-Codex uses the same destination:
-
-```bash
-python scripts/install.py --agent codex --scope user
-```
-
-After installation:
+Expected:
 
 ```text
 ~/.agents/skills/
-└── praxflow/
+├── project-bootstrap/
+│   ├── SKILL.md
+│   └── references/
+│       ├── AGENTS.template.md
+│       └── rules.template.md
+└── cross-repo-governance/
     └── SKILL.md
 ```
 
-Only one physical PraxFlow installation is required when both agents discover `~/.agents/skills`.
+## Install independently
 
-## Modes
+```bash
+python scripts/install.py --agent generic --scope user --skill project-bootstrap
+python scripts/install.py --agent generic --scope user --skill cross-repo-governance
+```
+
+For a project-scoped install:
+
+```bash
+python scripts/install.py --agent generic --scope project --project /path/to/project --skill project-bootstrap
+```
+
+These commands use the repository's actual installer and do not depend on any other Skill. An installation in `.agents/skills/` is **not** the same as project rules in `.agents/rules/`.
+
+## Invocation
 
 ```text
-$praxflow interface-change
-$praxflow system-verify
-$praxflow manifest-release
+$project-bootstrap
+$cross-repo-governance interface-change
+$cross-repo-governance system-verify
+$cross-repo-governance manifest-release
 ```
 
-Do not use PraxFlow for PDF ingestion, repository bootstrap, system discovery, specification generation/validation, protocol analysis, implementation, or code review. Use the active agent and companion engineering Skills instead.
-
-For major unresolved design choices, install and use `grill-with-docs` separately from its upstream skill repository.
-
-## Project-local installation
-
-```bash
-python scripts/install.py --agent deepseek --scope project --project /path/to/project
-```
-
-## Link mode for PraxFlow development
-
-```bash
-python scripts/install.py --agent deepseek --scope user --mode link
-```
-
-On Windows, symbolic links may require Developer Mode or elevated privileges. Use the default copy mode if linking is unavailable.
+If `$...` commands are unsupported by the active Harness, request the Skill by name in natural language and confirm discovery.
 
 ## Updating
 
-Copy mode:
+For copy installations after updating the local source checkout:
 
 ```bash
 git pull
-python scripts/install.py --agent deepseek --scope user --force
+python scripts/install.py --agent generic --scope user --force
 ```
 
-Link mode:
+`--force` replaces the installed Skill directory or directories. Preserve any local modifications before using it. The installer does not alter a target project's generated rules or delete old renamed Skills automatically. When migrating from an older Skill name, inspect the old installed folder for custom edits before removing it.
 
-```bash
-git pull
-```
+For symlink installs, a source checkout update is sufficient. Windows symlinks can require Developer Mode or elevated permissions.
 
-## DeepSeek discovery
+## Scope separation
 
-If `~/.agents/skills/praxflow/SKILL.md` exists but DeepSeek does not list it, verify that its filesystem Skill provider includes the default `~/.agents` root and that `DSH_AGENTS_HOME` has not redirected the agent home.
+Bootstrap only reconciles `AGENTS.md` and explicit rules. `setup-matt-pocock-skills` separately manages issue-tracker and domain-doc conventions. `grill-with-docs` handles major unresolved design decisions and ADRs. Cross-repo Governance coordinates approved designs across independent repositories, verifies exact revisions and creates release manifests. Normal coding and local checks remain the responsibility of the active agent.
