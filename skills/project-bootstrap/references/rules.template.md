@@ -1,32 +1,31 @@
-# Optional rule file examples
+# Optional task-specific rule format
 
-Create only the rule files justified by the project, one file per heading below. These are examples, not inferred facts. If existing repository instructions already cover a topic, link to those instead of copying them.
+This is a **format reference**, not a list of rules to create during bootstrap.
 
-## `.agents/rules/general.md`
+Only persist rules after repeated, evidenced problems with confirmed causes, after checking existing project guidance and obtaining user approval. A precise user request authorizing the exact rule also suffices.
 
-- Keep changes within the requested task.
-- Inspect existing files and related documentation before editing.
-- Preserve existing conventions, verified decisions, and intentionally configured behavior.
-- Do not invent specifications, project status, test results or tool availability.
-- Surface important ambiguity or conflicts rather than silently redefining the project.
+## Recommended file
 
-## `.agents/rules/development.md` (optional)
+`.agents/rules/<topic>.md`
 
-- Read the affected module and its callers before editing.
-- Prefer minimal changes that follow the project's established architecture.
-- Do not change public interfaces without identifying affected consumers and approvals.
-- Follow project-specific formatting/build guidance if it exists; do not invent commands.
+```markdown
+# Rule: <specific failure being prevented>
 
-## `.agents/rules/testing.md` (optional)
+## Applies when
+<concrete task, affected module or file pattern>
 
-- Use existing test and build commands when available.
-- Report exactly which checks were run and their actual outcomes.
-- Keep hardware/manual checks as pending until evidence exists.
-- Do not mark unperformed tests as passing.
+## Verified problem
+<brief evidence from repeated failures and confirmed cause>
 
-## `.agents/rules/documentation.md` (optional)
+## Required check or behavior
+<one actionable, scoped instruction the agent can verify>
 
-- Update documents that are made inaccurate by the change.
-- Preserve stable decisions and maintain references to the source of truth.
-- Avoid creating placeholder docs or duplicate requirement definitions.
-- Do not change version numbers unless the project's release policy or task requires it.
+## Exceptions / limitations
+<conditions where the rule does not apply>
+```
+
+After creating the file, add a link from the root `AGENTS.md` with a matching **when-to-read** condition. Do not insert a generic wildcard or claim the directory loads automatically. Prefer revising or removing obsolete rules over indefinitely accumulating them.
+
+## Example (do not copy blindly)
+
+For repeated STM32 DMA/cache coherency bugs, the rule can require checking the actual buffer memory region, cacheability, access direction, cache-line alignment and needed cache maintenance. It must **not** blanket-disable caching for every DMA operation.

@@ -1,31 +1,35 @@
 # Project Agent Instructions
 
-This is an **example** to adapt when no root `AGENTS.md` exists. Do not paste project-specific claims or add references to absent rule files.
+Adapt this template to the existing repository. Do not insert absent paths, unverified claims or rules for hypothetical problems.
 
-## Entry
+## Orientation
 
-- Read this `AGENTS.md` first, then follow the applicable rules listed below.
-- Inspect `README.md` if it exists and relevant source files before proposing changes.
-- Derive current behavior from actual files and verified documentation; do not invent project state.
-- Report conflicting guidance instead of silently choosing a convenient version.
+- Before editing, read relevant source, build/test configuration, README and existing project guidance.
+- Treat code and executed tests as evidence of current implementation. Preserve external requirements, standards and approved interface definitions as requirements.
+- Let the active agent choose planning, specification, TDD, implementation and documentation approaches appropriate to the task. Do not impose a fixed workflow.
+- Keep original conventions when modifying the project.
 
-## Rule discovery
+## Documentation locations
 
-Files under `.agents/rules/` are **not assumed to be automatically loaded** by all harnesses.
+- Follow the project's existing documentation structure.
+- If there is no convention, use `docs/` for project-wide documentation and the relevant module's directory for module-specific documents.
+- Create or update the documentation justified by the task, user requirements and the need to preserve architectural decisions or interfaces. No fixed limit on detail or document count.
 
-- Always: `.agents/rules/general.md`
-- Changes to implementation: `.agents/rules/development.md` (only when present)
-- Testing/verification: `.agents/rules/testing.md` (only when present)
-- Updates to documentation or public behavior: `.agents/rules/documentation.md` (only when present)
+## Task-specific rules (optional)
 
-**When creating AGENTS.md:** delete all rule-index lines for files that have not been created. Prefer explicit condition + file path over wildcard loading.
+Files in `.agents/rules/` are **not** universally auto-loaded. Do not create them during normal bootstrap. Once an approved, problem-driven rule file exists, index it here with **an explicit reading condition and exact relative path**.
 
-## Skills
+Example only (omit unless file exists):
 
-Discover available installed Agent Skills before using them. Use a Skill only if it exists in the active environment. Design review, ordinary implementation, and cross-repository release coordination are distinct tasks; do not assume they use the same Skill.
+```markdown
+- When modifying STM32 DMA/cache behavior, read
+  [.agents/rules/stm32-dma.md](.agents/rules/stm32-dma.md).
+```
+
+To add or revise a lasting rule, request `project-bootstrap add-rule`; confirm repeated evidence and avoid redundant guidance.
 
 ## Completion
 
-- Run applicable checks; distinguish passing tests from tests that were not performed.
-- Update affected project documentation, but do not bump versions or change release records without a project requirement.
-- Summarize changed files, verification evidence and remaining blockers.
+- Run applicable checks and report their actual results; distinguish unperformed checks.
+- Keep documents consistent with relevant code, tests, approved contracts and project requirements.
+- Report changed files, important decisions and remaining blockers.

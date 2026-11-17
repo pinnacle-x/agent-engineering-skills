@@ -1,27 +1,27 @@
-# System Verification
+# System verification (optional record)
 
-- Verification ID: VER-TODO
-- Related change/spec: TODO
-- Overall result: PASS | BLOCKED | FAIL
+Create this file only when a persistent record is warranted by project process, risk or user request.
 
-## Repository revisions
+- Scope: single Git / multiple Git repositories
+- Verification goal: <goal or release candidate>
+- Result: PASS | FAIL | BLOCKED | MANUAL_PENDING
 
-| Repository | Revision |
-|---|---|
-| system | TODO |
-| protocol | TODO |
-| pc | TODO |
-| controller | TODO |
+## Revision(s)
 
-## Automated verification
+| Git repository | Commit SHA | Affected modules / notes |
+|---|---|---|
+| <repo> | <exact SHA> | <scope> |
 
-TODO
+For single-Git projects, **one row** is sufficient. For multi-Git releases, include each required repository. Record uncommitted changes explicitly.
 
-## Integration verification
+## Automated and integration evidence
 
-TODO
+<commands actually run, results, logs/artifacts, interfaces checked>
 
-## Manual/hardware verification
+## Hardware/manual evidence
 
-- Status: MANUAL_PENDING | PASS | FAIL
-- Evidence: TODO
+<required check, actual status, evidence or pending reason>
+
+## Known limitations
+
+<missing coverage, failures, unresolved risks>

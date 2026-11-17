@@ -1,37 +1,27 @@
-# Repository Roles
+# Repository and Module Boundaries
 
-Cross-Repo Governance does not require a fixed repository layout. It only needs public-contract ownership and product composition to be unambiguous.
+Engineering Governance adapts to real project structure and does not mandate a number of Git repositories, a directory layout or a separate "system" repository.
 
-Typical roles in a multi-repository product are:
+## Single Git
 
-## System / product repository
+Example:
 
-Owns product-level coordination such as subsystem boundaries, cross-repository change records, and integrated verification evidence when the project uses a dedicated system repository.
+```text
+industrial-device/
+├── .git/
+├── Firmware/
+├── PC/
+├── Protocol/
+├── Hardware/
+└── docs/
+```
 
-## Protocol / contract repository
+Here firmware, PC and protocol may be separate **modules**, but they share one Git commit history. Coordinate shared interface changes across modules and verify integration using **one commit SHA**. Do not create a multi-repository manifest simply because there are many directories.
 
-Owns shared communication semantics or another public contract consumed by multiple repositories.
+## Multiple Git
 
-## PC / application repository
+A product may instead have independent firmware, PC, protocol, hardware and composition repositories. Determine the actual owner of a shared contract; check consumer compatibility and verify an exact revision for each included repository. A release manifest is useful when a product needs to pin several independently versioned repositories.
 
-Owns application internals. It consumes shared public contracts instead of redefining them.
+## Preserve existing design
 
-## Controller / firmware repository
-
-Owns controller internals and consumes shared public contracts instead of redefining them.
-
-## Module repository
-
-Owns one independently versioned module and its internal behavior.
-
-## Hardware repository
-
-Owns hardware design sources and hardware-specific verification when separated from firmware/module ownership.
-
-## Manifest / product-composition repository
-
-Owns the set of repositories and immutable released revision combinations.
-
-## Existing projects
-
-These names are examples, not required names. If an existing project uses different repositories or ownership boundaries, preserve them. Cross-Repo Governance should discover and record the actual owner/consumer relationship rather than reorganizing the product.
+These are examples, not required project folders. Keep current module boundaries, authoritative contract locations, documentation conventions and delivery policies unless the user explicitly asks to reorganize them.

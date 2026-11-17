@@ -1,47 +1,51 @@
-# Project Bootstrap
+# Project Bootstrap and Rule Maintenance
 
-`project-bootstrap` is an **independent Agent Skill**, not a mode of Cross-Repo Governance.
+`project-bootstrap` is independent of the governance Skill. It manages how an agent reads project instructions, **not** how it performs ordinary development.
 
-## Use
-
-After installing the Skill and opening the target repository:
+## Bootstrap
 
 ```text
 $project-bootstrap
 ```
 
-Or ask any capable supported Harness to use the installed `project-bootstrap` Skill to reconcile the current repository's `AGENTS.md` and explicit `.agents/rules/` without overwriting existing files.
+Inspect the current repository, its root and nested `AGENTS.md` files, README, source layout and conventions. Reconcile root instructions without overwriting existing content.
 
-## Responsibilities
+### Documentation location
 
-1. Inspect current `AGENTS.md`, README, source tree, Git state, docs and instructions before changes.
-2. Create the root `AGENTS.md` only if missing; preserve/merge existing instructions.
-3. Add `.agents/rules/` files only when genuine rules are needed.
-4. Explicitly index each existing rule in `AGENTS.md` with its loading condition. Never imply that every Harness auto-discovers this directory.
-5. Use `skills/project-bootstrap/references/AGENTS.template.md` and `skills/project-bootstrap/references/rules.template.md` only as adaptable examples.
-6. Inspect `git diff`; report files changed, preserved conventions and unresolved conflicts. Do not fabricate tests or source-of-truth documents.
+Follow existing conventions first. Without a convention, use `docs/` for project-wide documents and place module-specific docs near their module. The active agent decides what documents and detail the project needs, consistent with user requests, standards, design and product delivery. Do not enforce a fixed document count or format.
 
-Example, **not** a required fixed directory tree:
+### Default rule behavior
+
+**Do not create `.agents/rules/`, `general.md`, `testing.md` or other rule files as a side effect of bootstrap.** If approved rules already exist, add exact conditional links to real paths in `AGENTS.md`. Other Harnesses are not guaranteed to scan that directory.
+
+## Add or revise a proven rule
 
 ```text
-project/
-├── AGENTS.md
-├── .agents/
-│   └── rules/
-│       ├── general.md
-│       ├── development.md     # optional
-│       ├── testing.md         # optional
-│       └── documentation.md   # optional
-└── ... existing source and docs
+$project-bootstrap add-rule
 ```
 
-Do not initialize Git, change remotes, modify production code, invent requirements/status docs, or configure engineering issue trackers as a side effect.
+Use after repeated failures with a verified cause and a demonstrated need for a lasting rule, or when the user requests an explicitly specified rule. The agent should:
 
-## Boundaries
+1. Review examples, root cause and scope; a single unexplained failure is not enough.
+2. Check existing rules, tests, source and project documentation to avoid duplicating instructions.
+3. Propose a targeted, testable rule and note situations where it should **not** apply.
+4. Get the user's approval to persist it unless the current request already authorizes that exact rule.
+5. Create or update `.agents/rules/<topic>.md`.
+6. Update `AGENTS.md` with a working relative path and **when-to-read** condition.
+7. Verify no contradictory rules or duplicate index entries; inspect the diff and report changes.
 
-- `project-bootstrap`: portable entry and rule discovery.
-- `setup-matt-pocock-skills`: issue tracker, triage and domain docs as needed.
-- `grill-with-docs`: major unresolved design choices and ADRs.
-- `cross-repo-governance`: owner/consumer coordination of approved shared contracts, exact-revision verification and release manifests.
+Example `AGENTS.md` entry, only if the file exists:
 
-The two repository-provided Skills can be installed, invoked, updated and tested independently.
+```markdown
+## Task-specific rules
+- When changing STM32 DMA/cache code, read
+  [.agents/rules/stm32-dma.md](.agents/rules/stm32-dma.md).
+```
+
+Periodically revise or delete obsolete rules with approval; do not accumulate rules for hypothetical problems.
+
+## Source-of-truth boundaries
+
+Use source and verified tests to understand current implementation. Preserve standards, customer requirements and approved interfaces as intended behavior. Design/implementation/tests/documentation remain tasks for the active agent; Grill/Wayfinder are optional.
+
+See `skills/project-bootstrap/references/AGENTS.template.md` and `rules.template.md` for *examples*, not files to copy into every new project.

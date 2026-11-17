@@ -1,9 +1,9 @@
 # Installing Agent Engineering Skills
 
-The repository provides **two independent Skills**, both using the portable Agent Skills directory convention where supported.
+The repository contains two **independent** portable Agent Skills:
 
-- `project-bootstrap` — portable `AGENTS.md` and `.agents/rules/` setup.
-- `cross-repo-governance` — shared-contract coordination, integrated verification and release composition.
+- `project-bootstrap` — root `AGENTS.md` management and optional, evidence-based `add-rule` for `.agents/rules/*.md`.
+- `engineering-governance` — optional change impact, integrated verification and release for single-Git and multi-Git products.
 
 ## Install both
 
@@ -14,7 +14,7 @@ python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
 
-Expected:
+Expected (on Harnesses that support the shared directory):
 
 ```text
 ~/.agents/skills/
@@ -23,49 +23,46 @@ Expected:
 │   └── references/
 │       ├── AGENTS.template.md
 │       └── rules.template.md
-└── cross-repo-governance/
+└── engineering-governance/
     └── SKILL.md
 ```
 
-## Install independently
+## Install just one
 
 ```bash
 python scripts/install.py --agent generic --scope user --skill project-bootstrap
-python scripts/install.py --agent generic --scope user --skill cross-repo-governance
+python scripts/install.py --agent generic --scope user --skill engineering-governance
 ```
 
-For a project-scoped install:
+For a project-scoped installation:
 
 ```bash
 python scripts/install.py --agent generic --scope project --project /path/to/project --skill project-bootstrap
 ```
 
-These commands use the repository's actual installer and do not depend on any other Skill. An installation in `.agents/skills/` is **not** the same as project rules in `.agents/rules/`.
+`.agents/skills/` stores installed Skills; `.agents/rules/` stores approved project-specific instructions and is **not created by the installer or bootstrap**. Explicit rule reading conditions belong in the project's `AGENTS.md`. Harness discovery of either location is not universal.
 
 ## Invocation
 
 ```text
 $project-bootstrap
-$cross-repo-governance interface-change
-$cross-repo-governance system-verify
-$cross-repo-governance manifest-release
+$project-bootstrap add-rule
+
+$engineering-governance
+$engineering-governance change-impact
+$engineering-governance verify
+$engineering-governance release
 ```
 
-If `$...` commands are unsupported by the active Harness, request the Skill by name in natural language and confirm discovery.
+If a runtime does not support the command shorthand, ask it to use the installed Skill by name and describe the mode.
 
-## Updating
-
-For copy installations after updating the local source checkout:
+## Update
 
 ```bash
 git pull
 python scripts/install.py --agent generic --scope user --force
 ```
 
-`--force` replaces the installed Skill directory or directories. Preserve any local modifications before using it. The installer does not alter a target project's generated rules or delete old renamed Skills automatically. When migrating from an older Skill name, inspect the old installed folder for custom edits before removing it.
+`--force` overwrites installed Skill directories; inspect local edits before replacing them. The installer never deletes installed folders from **old Skill names** automatically. When moving from `cross-repo-governance` to `engineering-governance`, inspect then uninstall the former yourself; do not let two similarly purposed Skills coexist by mistake.
 
-For symlink installs, a source checkout update is sufficient. Windows symlinks can require Developer Mode or elevated permissions.
-
-## Scope separation
-
-Bootstrap only reconciles `AGENTS.md` and explicit rules. `setup-matt-pocock-skills` separately manages issue-tracker and domain-doc conventions. `grill-with-docs` handles major unresolved design decisions and ADRs. Cross-repo Governance coordinates approved designs across independent repositories, verifies exact revisions and creates release manifests. Normal coding and local checks remain the responsibility of the active agent.
+Link-mode installs update when their source checkout is updated; on Windows symbolic links may require Developer Mode or elevated privileges.
