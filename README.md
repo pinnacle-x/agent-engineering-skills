@@ -1,24 +1,15 @@
-# PraxFlow
+# Agent Engineering Skills
 
-PraxFlow is **one portable Agent Skill** that adds a small set of project-governance capabilities not covered by ordinary agents or the companion Grill engineering Skills. It is not a second general-purpose development workflow.
+This repository maintains **two independent Agent Skills** with different responsibilities and no mandatory dependency between them:
 
-## Modes
+- **`project-bootstrap`** — initialize or reconcile a repository's portable root `AGENTS.md` and explicit `.agents/rules/` index without overwriting existing project conventions.
+- **`cross-repo-governance`** — govern an **approved** public contract across independent repositories, record integrated verification tied to exact commit revisions, and create reproducible release manifests.
 
-```text
-$praxflow bootstrap
-$praxflow interface-change
-$praxflow system-verify
-$praxflow manifest-release
-```
-
-- **bootstrap**: initialize or reconcile root `AGENTS.md` and explicitly indexed `.agents/rules/`; do not recreate issue-tracker, domain documentation or source files.
-- **interface-change**: coordinate the owner, consumers, compatibility and rollout for an **approved** shared contract across independent repositories. Design interviews, competing designs and ADR decisions belong to `grill-with-docs`.
-- **system-verify**: link integration evidence and manual/hardware results to exact commit SHAs across repositories.
-- **manifest-release**: pin a release to the exact verified repository revision set.
-
-Run ordinary discovery, PDF/code analysis, specifications, implementation, local tests and review with the active agent and general engineering Skills. Use `grill-with-docs` for important unresolved design decisions. PraxFlow does not duplicate those capabilities.
+They complement—not replace—the active agent and engineering Skills. Use `grill-with-docs` for major design decisions and ADRs; neither Skill duplicates those interviews.
 
 ## Install
+
+The existing installer discovers Skills from `skills/*/SKILL.md`:
 
 ```bash
 git clone https://github.com/pinnacle-x/PraxFlow.git
@@ -27,50 +18,61 @@ python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
 
-Expected installation:
+To install only one:
+
+```bash
+python scripts/install.py --agent generic --scope user --skill project-bootstrap
+python scripts/install.py --agent generic --scope user --skill cross-repo-governance
+```
+
+Expected paths when both are installed:
 
 ```text
 ~/.agents/skills/
-└── praxflow/
-    ├── SKILL.md
-    └── references/
+├── project-bootstrap/
+│   ├── SKILL.md
+│   └── references/
+└── cross-repo-governance/
+    └── SKILL.md
 ```
 
-If a harness does not support the `$praxflow` shorthand, invoke the installed Skill in natural language and name the mode.
+Some harnesses require a small configuration adapter to discover this path. File presence is not evidence of runtime activation.
 
-## Project startup
-
-From the target project:
+## Invocation
 
 ```text
-$praxflow bootstrap
+$project-bootstrap
+
+$cross-repo-governance interface-change
+$cross-repo-governance system-verify
+$cross-repo-governance manifest-release
 ```
 
-Bootstrap writes the smallest useful portable entry and rule index. It does not guarantee that every harness discovers arbitrary files at `.agents/rules/`; `AGENTS.md` must reference actual rule paths and loading conditions.
+For harnesses that do not support `$...` shorthand, request the installed Skill by name in natural language.
 
-## Workflow
+## Responsibilities and boundaries
+
+| Task | Owner |
+| --- | --- |
+| Portable AGENTS.md and rule index | project-bootstrap |
+| Issue tracker/domain-doc engineering setup | setup-matt-pocock-skills (optional) |
+| Important design decisions, API/protocol semantics, ADRs | grill-with-docs (when needed) |
+| Implementation, repository-local tests and review | active agent and engineering Skills |
+| Approved multi-repository contract rollout | cross-repo-governance interface-change |
+| Exact multi-repository revision verification | cross-repo-governance system-verify |
+| Immutable release composition | cross-repo-governance manifest-release |
+
+## Repository layout
 
 ```text
-PraxFlow bootstrap (once)
-    → active agent + Grill for design when needed
-    → PraxFlow interface-change only for shared-contract governance
-    → implementation and local tests
-    → PraxFlow system-verify
-    → PraxFlow manifest-release after verification PASS
+skills/
+├── project-bootstrap/
+│   ├── SKILL.md
+│   └── references/
+└── cross-repo-governance/
+    └── SKILL.md
 ```
 
-## Repository structure
+See [installation](docs/installation.md), [bootstrap](docs/project-bootstrap.md), [workflow](docs/workflow.md) and [cross-repository coordination](docs/cross-repo-workflow.md).
 
-```text
-PraxFlow/
-├── skills/
-│   └── praxflow/
-│       ├── SKILL.md
-│       └── references/
-├── docs/
-├── examples/
-├── templates/
-└── scripts/
-```
-
-See [bootstrap](docs/project-bootstrap.md), [installation](docs/installation.md), [workflow](docs/workflow.md) and [shared-contract coordination](docs/cross-repo-workflow.md).
+The GitHub repository URL retains its existing spelling until a separate repository rename is performed. The **Skill names and invocation commands** above are the canonical new names.
