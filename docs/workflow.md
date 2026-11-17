@@ -1,36 +1,61 @@
-# Agent-Led Engineering Workflow
+# Continuous Design Confirmation → Direct Agent Execution
 
-The active agent is the **direct executor** of project work. Skills are used only when they provide additional, relevant capabilities.
+The agent is the direct engineering executor. The purpose of Grill/Wayfinder is to help settle consequential design questions **whenever they emerge**, not merely at the beginning of a project. The purpose of project documentation is to let the agent find the **currently effective confirmed scheme**.
 
-## 1. Enter the project
+## 1. Establish the starting context
+
+- **Greenfield:** identify user goals, confirmed constraints, available decisions and open design questions. There is no source baseline to invent.
+- **Existing project:** inspect actual source, build/runtime configuration, hardware and interface artifacts, test evidence and revision state. Source is the factual baseline of the current implementation. Then establish/update confirmed requirements and technical constraints; mark inferred intentions for confirmation rather than declaring them approved.
+
+`$project-bootstrap` can create/reconcile the project entry and discoverable document index. Re-running it is not required for every later design decision.
+
+## 2. Iterate at meaningful design decision points
 
 ```text
-$project-bootstrap
+New phase / new requirement / unresolved architecture or interface decision
+                           ↓
+    Focused issue → grill-with-docs
+    Large ambiguous multi-stage issue → wayfinder
+                           ↓
+               Proposed scheme and alternatives
+                           ↓
+          User/project authority confirms direction
+                           ↓
+      Update effective scheme documentation + doc index
+                           ↓
+            Active agent executes the scope directly
+                           ↓
+     Evidence/feedback/new uncertainty → repeat as needed
 ```
 
-- **From zero:** establish the confirmed goal, technology decisions and relevant constraints; set up the project entry instructions without inventing unapproved details.
-- **Existing source:** inspect current code, build configuration, module boundaries, related hardware/interface artifacts and available verification evidence. Treat the actual engineering state as the factual baseline, then establish/update confirmed requirements and technical-constraints documents. Do not present guesses about intended behavior as confirmed requirements.
-- For existing docs, preserve their established locations. Without an established convention, use `docs/requirements.md` and `docs/technical-constraints.md`.
+Grill/Wayfinder can be used repeatedly across project phases, but they are **not gates for every minor modification**. Complexity alone is not a reason to rerun discovery when an accepted design already covers the task.
 
-`AGENTS.md` states only the `.agents/rules/` directory policy; rule files and an optional index live inside that directory. No empty rules directory is created. Repeated confirmed agent failures can be addressed via `$project-bootstrap add-rule` with approval; individual rule maintenance does not edit `AGENTS.md`.
+Do not mistake a tool's proposal for approval. Keep decisions marked pending until the user or an authorized project owner confirms them. If implementation reveals that a design is wrong or obsolete, return to a suitable design discussion and update the effective documentation after confirmation.
 
-## 2. Determine whether major design is unresolved
+## 3. How the agent finds documents
 
-- **Clear goal and necessary decisions:** the agent executes directly, even when the engineering task is technically difficult.
-- **Important unresolved design choice:** optional `grill-with-docs` to settle the decision, followed by direct agent execution.
-- **Very large, ambiguous project needing extended exploration:** optional `wayfinder` to establish direction and boundaries, followed by direct agent execution.
+Root `AGENTS.md` points to the **project document index** (default `docs/README.md`, or the real established path). The index lists **actual paths** for current implementation evidence, confirmed requirements/constraints, effective architecture/decision records and unresolved/superseded designs.
 
-Task difficulty or the number of changed files is **not** itself a trigger to call a design Skill. Project safety, external standards and accepted contracts remain governing constraints.
+The agent should:
 
-## 3. Verification and delivery, when required
+1. Read `AGENTS.md`, the document index, applicable project rules under `.agents/rules/` (when present), and relevant source.
+2. Select **Active / Confirmed** documents applicable to the task; never treat an obsolete alternative or unaccepted draft as the implementation instruction.
+3. Compare the selected scheme with current source and external controlling requirements. If they disagree, surface and resolve the mismatch before making an irreversible assumption.
+4. After a meaningful accepted design change, maintain the authoritative document and index, including retiring replaced documents, without rewriting `AGENTS.md` each time.
 
-The agent analyzes downstream effects on dependent modules as part of its own work; there is **no dedicated impact-analysis Skill mode**.
+Document index mechanics and example: [Document Discovery](document-discovery.md).
+
+## 4. System checks and delivery
+
+The agent handles ordinary checks and affected-module analysis directly. When integration traceability or versioned delivery warrants it:
 
 ```text
 $engineering-governance verify
 $engineering-governance release
 ```
 
-Invoke governance when system integration evidence or reproducible delivery warrants it. A single Git repository can contain many components and still require just one commit SHA; multi-Git products require a verified SHA for every relevant repository. Routine task checks remain with the active agent.
+Verification should compare the product against **effective confirmed requirements and design** as well as the actual code. Single-Git verification identifies one revision; multi-Git verification identifies exact revisions of all included repositories.
 
-See [engineering governance](engineering-governance.md).
+## 5. Project rules remain independent
+
+`AGENTS.md` also mentions only the `.agents/rules/` directory. It is not created during bootstrap. A confirmed, repeated agent mistake may lead to `$project-bootstrap add-rule` with approval. Individual rule updates and any optional rule index stay inside the rules directory.

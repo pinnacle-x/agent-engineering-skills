@@ -1,24 +1,39 @@
-# Sources of Truth
+# Sources of Truth — Current State and Effective Scheme
 
-## Existing projects: source-first facts, separately confirmed intent
+A successful project needs **two different kinds of authority**, neither of which can silently replace the other.
 
-The **current codebase and actual engineering state** are the factual standard for what the project presently contains and does. Inspect current source, project/build configuration, interface definitions, relevant hardware artifacts and observed test/runtime evidence. Cite concrete file paths and observations in project records.
+## 1. Current implementation facts
 
-Two kinds of statements must remain distinct:
+For an existing project, current source, build/deployment configuration, actual hardware/project files and observed test/runtime results determine **what currently exists or happens**. Inspect the relevant revision/workspace and retain file/evidence references.
 
-- **Current implementation facts:** directly supported by inspected source/configuration or actual verification; an old README alone cannot override current source.
-- **Confirmed requirements and technical constraints:** behavior, standards, interfaces, resource limits and architectural decisions supported by accepted requirements, authoritative standards, explicit user confirmation or reliable engineering evidence. Distinguish currently verified technical platform constraints from future design decisions.
+An older README or remembered design cannot overrule a directly inspected current implementation fact.
 
-Build or maintain `docs/requirements.md` and `docs/technical-constraints.md` when the project has no existing equivalent documentation structure; otherwise update the established authoritative files. Mark requirements inferred only from source as **pending confirmation**, not approved intent. Discrepancies with standards or user expectations require explicit resolution.
+## 2. Confirmed requirements and effective design
 
-## New projects
+Accepted user decisions, external standards, signed-off contracts, verified engineering constraints and project-approved design records determine **what should be implemented**.
 
-There may be no source baseline. Use the user's confirmed goals and agreed technical decisions as the initial basis, and keep unsettled choices distinct from confirmed requirements.
+Start from current code when adopting an existing project, then establish `requirements.md` and `technical-constraints.md` or their actual established equivalents. Code-only inferred intent is **Pending confirmation**; it is not automatically an approved requirement.
 
-## Shared contracts
+For new projects without source, start from confirmed user goals and constraints; use repeated design rounds as needed to establish the first and subsequent schemes.
 
-A shared interface or protocol should have a clear owner, whether that owner is a file or module inside one Git repository or a separate Git repository. Dependent components should not silently redefine it. The active agent checks affected consumers when making changes; no separate Skill mode is required.
+## 3. Document discoverability and lifecycle
 
-## Documents
+Root `AGENTS.md` links **one actual project document index** (normally `docs/README.md`). The index identifies the current implementation baseline, confirmed requirements/constraints and the **active, approved** design documents. Pending drafts and superseded designs remain distinguishable and cannot silently govern implementation.
 
-Respect existing project locations. Without prior convention, use `docs/` for project-level docs and module directories for module-specific documents. Documentation detail follows project needs and external requirements.
+After a consequential design decision is confirmed through a Grill/Wayfinder discussion or another accepted project process, **update the authoritative document and index**. The agent then executes against that active scheme and actual source.
+
+Project documents may live in existing docs directories or modules. The index links to their **real paths** and keeps status/application up to date, without forcing a new directory hierarchy.
+
+## 4. Conflicts
+
+If actual code differs from approved design, treat it as a **tracked discrepancy**:
+
+- The code still describes current behavior.
+- The accepted requirement/design describes expected behavior.
+- Resolve whether to change code, revise design with confirmation, or preserve an intentional compatibility exception.
+
+Do not silently change accepted requirements to match an implementation mistake, or pretend code already implements a design that it does not.
+
+## 5. Shared contracts
+
+A protocol/interface has one semantic owner within a module or repository, even when copied/generated representations exist elsewhere. The agent checks dependent consumers during ordinary engineering work; integration evidence can later use `engineering-governance verify` when necessary.

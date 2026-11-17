@@ -1,18 +1,39 @@
 # Agent Engineering Skills
 
-This repository provides **two independent, portable Agent Skills**. They establish project context and coordinate verification/release when needed; the active agent executes engineering work directly.
+Two **independent Agent Skills** help an active agent enter a project, discover authoritative design documents, and coordinate integration or release when needed.
 
-- **`project-bootstrap`** — enter either a project **from zero** or an **existing codebase**; establish `AGENTS.md` and, for existing projects, evidence-based confirmed requirements and technical constraints. Maintain approved rules within `.agents/rules/` via `add-rule`.
-- **`engineering-governance`** — optional integrated `verify` and reproducible `release` workflows for single-Git and multi-Git products.
+- **`project-bootstrap`** — greenfield or existing-source project entry; evidence-based current-state baseline; confirmed requirements/constraints; a stable project-document index linked from `AGENTS.md`; on-demand project rules under `.agents/rules/`.
+- **`engineering-governance`** — optional `verify` and `release` for single-Git and multi-Git projects.
 
-## Workflow principles
+## The engineering loop
 
-- **Source first for existing projects:** The current codebase, actual build configuration and observed engineering state are the factual baseline. Use these facts to establish documents covering confirmed requirements and technical constraints. Distinguish observed behavior from approved intent; keep unresolved assumptions explicitly pending.
-- **New projects:** Begin from the user's goals, confirmed needs and technical decisions; do not assume an existing codebase or invent requirements.
-- **Direct agent execution:** When goals and necessary design decisions are clear, the agent executes the task. When substantial design is unresolved, use `grill-with-docs` if helpful; for very large ambiguous initiatives, `wayfinder` may help. Neither is mandatory or an execution intermediary.
-- **Project documents:** Respect existing structure. Without a convention, use `docs/` for project-wide documents and module directories for module-specific ones. Use the amount and detail warranted by project requirements.
-- **Rules on demand:** `AGENTS.md` mentions only `.agents/rules/`; bootstrap does not create an empty directory. Approved rules and any optional index are maintained **inside** that directory without updating `AGENTS.md` per change.
-- **Governance on demand:** The agent checks affected code, modules and interfaces as part of direct work. The governance Skill is for integrated evidence and releases when needed; it does not introduce a separate impact-analysis step.
+```text
+New project / existing source baseline
+                ↓
+Identify next important unresolved design question
+                ↓
+Grill or Wayfinder as appropriate → user/project confirms decision
+                ↓
+Update the authoritative scheme document and document index
+                ↓
+Agent reads current active scheme + actual source → executes directly
+                ↓
+Actual checks and feedback → next decision or continuation
+```
+
+**This loop repeats throughout the project**, rather than treating Grill/Wayfinder as an initialization-only step. A well-scoped change already covered by accepted design can be implemented directly; every minor coding question does not require another design session.
+
+For **existing projects**, current source/build/runtime evidence establishes **present implementation facts**. From that baseline, maintain confirmed requirements, technical constraints and design records. Source behavior alone does not establish an approved future requirement. Uncertain intent stays pending.
+
+For **new projects**, start from accepted goals and constraints, iteratively clarify architectural and subsystem choices, then carry out each confirmed scope directly.
+
+## Document discoverability
+
+- Root `AGENTS.md` points to **one stable project document index** (normally `docs/README.md`, or the existing project index) and to the `.agents/rules/` directory.
+- The **document index** lists the actual current baseline, accepted requirements/constraints, active design documents and open/superseded decisions, with real paths and applicability. It is a map, not a competing source of requirements.
+- After each meaningful confirmed design round, the **agent updates the source document and index**. No repeated bootstrap invocation or growth of `AGENTS.md` is needed.
+- Use the project's existing documentation structure; without one, project-wide documents belong under `docs/` and module docs alongside their modules. Maintain the detail required by the project rather than a fixed document count.
+- The `.agents/rules/` directory is **not** created until an approved rule is necessary. Individual rules and any internal index are maintained there without changing `AGENTS.md`.
 
 ## Install
 
@@ -23,14 +44,14 @@ python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
 
-Install one Skill independently:
+Install independently:
 
 ```bash
 python scripts/install.py --agent generic --scope user --skill project-bootstrap
 python scripts/install.py --agent generic --scope user --skill engineering-governance
 ```
 
-The installed shared directory is typically `~/.agents/skills/` on supported Harnesses; verify discovery in the active runtime.
+Typical supported shared installation path: `~/.agents/skills/`. Confirm the active Harness actually discovers installed Skills.
 
 ## Invoke
 
@@ -42,7 +63,7 @@ $engineering-governance verify
 $engineering-governance release
 ```
 
-If the runtime does not recognize the shorthand, request the installed Skill by name in ordinary language.
+The agent calls Grill or Wayfinder as needed for **new important design questions**, and then **executes the confirmed solution itself**. There is no separate execution or change-impact Skill.
 
 ## Layout
 
@@ -55,4 +76,4 @@ skills/
     └── SKILL.md
 ```
 
-See [project bootstrap](docs/project-bootstrap.md), [agent-led workflow](docs/workflow.md), [engineering governance](docs/engineering-governance.md), [installation](docs/installation.md) and [sources of truth](docs/source-of-truth.md).
+See [bootstrap](docs/project-bootstrap.md), [workflow](docs/workflow.md), [document discovery](docs/document-discovery.md), [sources of truth](docs/source-of-truth.md), [governance](docs/engineering-governance.md), and [installation](docs/installation.md).

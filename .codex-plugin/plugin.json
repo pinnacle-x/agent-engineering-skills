@@ -1,7 +1,7 @@
 {
   "name": "engineering-agent-skills",
-  "version": "0.7.0",
-  "description": "Independent project bootstrap for new/existing codebases and integrated verification/release for single- or multi-Git products.",
+  "version": "0.8.0",
+  "description": "Project entry and recurring design-document discovery for agent-executed engineering, plus optional integrated verification and release.",
   "author": {
     "name": "pinnacle-x",
     "url": "https://github.com/pinnacle-x"
@@ -13,7 +13,9 @@
     "agent-skills",
     "codex",
     "project-bootstrap",
-    "existing-codebase",
+    "design-discovery",
+    "grill",
+    "wayfinder",
     "engineering-governance",
     "single-repo",
     "multi-repo",
@@ -23,8 +25,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Engineering Agent Skills",
-    "shortDescription": "Source-first project bootstrap and optional integration/release governance",
-    "longDescription": "project-bootstrap supports new projects or existing source-first adoption, producing evidence-backed confirmed requirements and technical constraints, AGENTS.md, and on-demand approved rules. engineering-governance provides optional integrated verification and reproducible releases. The active agent executes engineering tasks directly; Grill and Wayfinder may clarify major unresolved decisions.",
+    "shortDescription": "Discover confirmed designs; agent executes, governance verifies",
+    "longDescription": "project-bootstrap supports greenfield and source-first existing project adoption, establishes a stable AGENTS.md link to a living index of confirmed requirements, constraints and approved designs, and maintains rules only when justified. Grill and Wayfinder can clarify new important design decisions repeatedly through a project's life; the agent directly executes confirmed solutions. engineering-governance provides optional integrated verification and reproducible releases.",
     "developerName": "pinnacle-x",
     "category": "Developer Tools",
     "capabilities": [
@@ -34,11 +36,11 @@
     ],
     "websiteURL": "https://github.com/pinnacle-x/agent-engineering-skills",
     "defaultPrompt": [
-      "Use project-bootstrap to initialize a new project from confirmed goals and constraints without inventing a codebase.",
-      "Use project-bootstrap to inspect this existing source project and establish evidenced, confirmed requirements and technical-constraints documents.",
+      "Use project-bootstrap for a new project, create a project-document index and link it from AGENTS.md; leave unconfirmed designs pending.",
+      "Use project-bootstrap to inspect this existing codebase, establish its current facts, confirmed requirements and constraints, and a project index of effective design documents.",
+      "Use Grill or Wayfinder when a new important design choice arises; after acceptance, have the agent update the authoritative design and project index, then execute directly.",
       "Use project-bootstrap add-rule to maintain approved, evidenced rules inside .agents/rules/ without editing AGENTS.md.",
-      "Use engineering-governance verify for system-level integration evidence.",
-      "Use engineering-governance release for the verified single-Git or multi-Git product revision(s)."
+      "Use engineering-governance verify or release when system integration or reproducible delivery is needed."
     ]
   }
 }

@@ -1,27 +1,29 @@
 # Project Agent Instructions
 
-Adapt to the actual project. Do not insert unverified project facts.
+Adapt this example to the actual project. Preserve established conventions and do not claim unverified project facts.
 
 ## Project entry
 
-- For an **existing project**, inspect current source and build/runtime state before deciding what is already true; consult the project's confirmed requirements and technical-constraints documents.
-- For a **new project**, follow the user's confirmed goal and technology decisions; identify unresolved choices without inventing them.
-- The agent directly handles project work once the goal and necessary decisions are clear.
-- Respect existing project conventions and approved external standards.
+- For an existing project, inspect current source, build/runtime state and relevant hardware/configuration files to establish the implemented baseline.
+- For a new project, begin from confirmed goals and technical decisions; do not fabricate current code or approved designs.
+- When a new important design choice is unresolved, use the appropriate Grill/Wayfinder design discussion, obtain confirmation and capture the accepted outcome. Such decisions can recur throughout the project.
+- For a task with an effective confirmed design, the agent executes the work directly; do not route engineering execution through a separate workflow.
+- If code and an approved design disagree, report the discrepancy rather than silently changing the approved requirements.
 
-## Documentation
+## Project documentation
 
-- Prefer existing documentation locations. When none are defined, use `docs/` for project-wide documents and relevant module directories for module-specific documents.
-- For an existing project, keep the confirmed requirements and technical constraints documented, with supporting source/evidence references. Do not promote inferred intentions to confirmed requirements without approval.
-- Document the project to the level needed by actual goals and deliverables.
+- Document entry: [Project document index](docs/README.md) **when it exists**. Replace this path with the actual project index if the project already uses another one.
+- Before work, read the index and then only the relevant **Active / Confirmed** documents for the task; consider open decisions but do not treat them as approved designs.
+- When a design is accepted, replaced or invalidated, update the authoritative document and the document index, **not** a growing list in this AGENTS.md.
+- Follow the project's existing documentation locations. Without a convention, use `docs/` for project-wide documents and module folders for module-specific documents.
 
 ## Project Rules
 
-- Project rules live in `.agents/rules/`; this directory is created only when needed.
-- If it exists, inspect its contents and read the rules relevant to the task; if absent, proceed without additional rules.
-- Do not assume the runtime automatically loads this directory.
-- Rule additions, revisions, merges and deletions are managed inside that directory, not in this file.
+- Project rules live in `.agents/rules/`; create this directory only when needed.
+- When the directory exists, inspect its contents and read applicable rules; otherwise proceed without additional rules.
+- Do not assume the runtime automatically loads the directory.
+- Manage individual rules and any optional rule index inside that directory, without per-rule updates to this AGENTS.md.
 
 ## Completion
 
-- Report actual checks, changed files, documentation updates, and any outstanding decisions.
+- Report actual checks, changed files, confirmed design/document updates and unresolved decisions.

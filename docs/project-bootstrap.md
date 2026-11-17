@@ -1,48 +1,47 @@
-# Project Bootstrap — New and Existing Projects
+# Project Bootstrap — Project Entry and Documentation Index
 
-Use `$project-bootstrap` to enter either a greenfield project or one that already contains engineering source files.
+`$project-bootstrap` enters a new project or an existing source project and establishes an agent-readable document map. It is **not a one-time approval of all future design decisions**.
 
-## New project: no established codebase
+## New project
 
-1. Identify the actual project goal and confirmed needs and technology choices.
-2. Record important unresolved design questions without inventing an architecture.
-3. Create/reconcile root `AGENTS.md` and existing documentation where appropriate. Do not initialize Git, generate production code or make design decisions as a bootstrap side effect.
-4. Once the necessary decisions are settled, the **agent executes the requested project work directly**.
+1. Establish confirmed goals and constraints; identify first important unknowns.
+2. Use `grill-with-docs` for a focused consequential decision or `wayfinder` for broad multi-stage ambiguity when suitable.
+3. Record the proposed outcome, obtain user/project confirmation, and ensure the **accepted design document** is available at an actual project path.
+4. Establish root `AGENTS.md` and a document index (normally `docs/README.md`). Link only real documents, not imagined architecture or placeholder files.
+5. Let the agent execute the confirmed scope directly. At later project phases or major design changes, repeat design confirmation and document/index maintenance.
 
-## Existing project: source-first adoption
+## Existing project: code first, then continually refine the scheme
 
-**Use current source, build configurations and observed engineering state as the starting factual standard**, not older chat history or an outdated README.
+1. Inspect real source, build/project files, interface/hardware artifacts, tests and current working state.
+2. Document present implementation facts with file references and relevant revision/test evidence. Do not replace current reality with older conversations.
+3. From that baseline, **establish confirmed requirements and technical constraints**, preserving approved external standards and decisions. Use the established authoritative documents; absent a convention, `docs/requirements.md` and `docs/technical-constraints.md` are defaults.
+4. Separate **current observed behavior** from **approved intended behavior**. Source-only assumptions about requirements belong under **Pending confirmation** until accepted.
+5. Set up the document index to link those records and any confirmed architecture, protocol, design outputs and current source-evidence records.
+6. New features, discovered conflicts and subsequent subsystem choices may invoke Grill/Wayfinder again. Each **confirmed** scheme is recorded and indexed before the agent executes that scope directly.
 
-1. Read the actual modules, interfaces, toolchain/project configuration, relevant hardware or protocol source files, tests, README and existing architecture/requirements records. Run safe existing checks when possible and record what was actually verified.
-2. Extract a current-state baseline with file/path and test evidence. Separate what the project **currently does** from what someone has confirmed it **must do**.
-3. Use that baseline to **create or update confirmed project requirements and technical-constraints documents**. Keep previously approved customer requirements, standards and contract obligations; do not quietly rewrite them to match a possibly incorrect implementation.
-4. If source-only evidence suggests a requirement but does not prove user or standards approval, record it as **pending confirmation**. Do not mislabel an inferred intention as confirmed.
-5. Preserve existing authoritative documentation and locations. When absent, use `docs/requirements.md` and `docs/technical-constraints.md`. Reuse existing equivalents rather than creating duplicates.
+## Root AGENTS.md: stable paths
 
-Optional reference formats: `skills/project-bootstrap/references/requirements.template.md` and `technical-constraints.template.md`. They are **templates**, not source facts.
+The root `AGENTS.md` points to:
+- the actual **project document index** (normally `docs/README.md`), which links to effective project documents and their statuses;
+- the `.agents/rules/` **directory**, which contains optional, approved, task-specific rules.
 
-## AGENTS.md and rule directory
+Do not add each document or rule file to `AGENTS.md`. The index and rules folder own their respective internal discovery details. If the project already uses a document map elsewhere, reuse it and reference its actual path.
 
-Create root `AGENTS.md` only when absent; otherwise reconcile existing instructions without overwriting user content. The rule policy mentions just the directory:
+Suggested wording lives in `skills/project-bootstrap/references/AGENTS.template.md`. A document index example is `skills/project-bootstrap/references/docs-index.template.md`. These are adaptable references, not required final filenames.
 
-```markdown
-## Project Rules
-- Project rules are stored in `.agents/rules/`, created only when needed.
-- If the directory exists, inspect the files and read rules relevant to the task.
-- If absent, proceed without additional project rules.
-- Do not assume the runtime automatically loads the directory.
-```
+## Updating documents after future design rounds
 
-Do not add per-rule filenames, indices or rule applicability descriptions to `AGENTS.md`. Do not create the empty `.agents/rules/` directory or placeholder files during bootstrap.
+A project is not frozen after bootstrap. Whenever a consequential design question is settled:
 
-## Rule maintenance
+1. Update the authoritative design/requirements/constraints document or link to the confirmed Grill/Wayfinder output.
+2. Update the document index with path, scope, confirmation status and supersession where relevant.
+3. The agent reads the active scheme and current source and executes directly.
+4. If later evidence or new requirements change the decision, repeat the loop; do not silently apply an obsolete scheme.
 
-```text
-$project-bootstrap add-rule
-```
+The agent can maintain the document index as part of ordinary project work; **there is no need to call bootstrap for every new confirmed decision**.
 
-Use only for repeated, confirmed agent problems or an explicitly authorized specific rule. Check the actual cause, current code/tests and existing rules before writing a scoped rule. Seek approval before persisting unless the request already authorizes the exact action.
+## Rules
 
-Create/modify/merge/rename/delete rules **inside `.agents/rules/`**; optionally maintain `.agents/rules/INDEX.md` there when useful. Never change `AGENTS.md` just because a rule file changed.
+No empty `.agents/rules/` directory is created during bootstrap. Use `$project-bootstrap add-rule` for specifically authorized or repeatedly evidenced rules. Maintain rule files and an optional `.agents/rules/INDEX.md` internally; no per-rule `AGENTS.md` edits.
 
-The bootstrap and governance Skills remain independent.
+See [Document Discovery](document-discovery.md) and [Sources of Truth](source-of-truth.md).
