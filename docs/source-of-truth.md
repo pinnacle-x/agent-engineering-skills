@@ -1,12 +1,12 @@
 # Source of Truth
 
-PraxFlow uses explicit ownership only to prevent **cross-repository semantic drift**.
+Cross-Repo Governance uses explicit ownership only to prevent **cross-repository semantic drift**.
 
 ## Principle
 
 A public fact or contract has one semantic owner repository. Consumers reference that owner rather than independently redefining the same meaning.
 
-PraxFlow does not prescribe how ordinary project facts, PDFs, specifications, or implementation documents must be stored. Follow each repository's existing `AGENTS.md`, documentation, tracker, and source layout.
+Cross-Repo Governance does not prescribe how ordinary project facts, PDFs, specifications, or implementation documents must be stored. Follow each repository's existing `AGENTS.md`, documentation, tracker, and source layout.
 
 ## Typical ownership
 
@@ -34,7 +34,7 @@ When a public contract changes:
 4. update consumers afterward;
 5. verify the exact combined repository revisions.
 
-Use `$praxflow interface-change` for this process.
+Use `$cross-repo-governance interface-change` for this process.
 
 ## Conflict handling
 
