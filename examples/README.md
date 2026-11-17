@@ -1,8 +1,8 @@
 # Examples
 
-These examples show optional governance scenarios; they do **not** prescribe mandatory workflow documents.
+- [Existing project bootstrap](existing-project/README.md): derive confirmed requirements and technical constraints after inspecting an actual codebase.
+- [Release](release/README.md): single-Git vs multi-Git traceability.
 
-- [Change impact](change-impact/README.md): a shared Modbus contract affecting modules within one Git.
-- [Release](release/README.md): one-Git vs multi-Git revision traceability.
+The agent directly handles normal code changes, including related-module analysis. There is no separate impact-analysis Skill command.
 
-The optional rule format lives in `skills/project-bootstrap/references/rules.template.md`. No `.agents/rules/` files are created by default.
+`project-bootstrap` creates `.agents/rules/` only when adding an approved project rule; any rule index stays inside that directory.

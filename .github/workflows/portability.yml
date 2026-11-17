@@ -15,46 +15,66 @@ jobs:
           python-version: '3.x'
       - name: Validate portable Skill core
         run: python scripts/validate_portability.py
-      - name: Validate Skill contract and documentation
+      - name: Validate new and existing project contract
         run: |
           python - <<'PY'
           import json
+          import re
           from pathlib import Path
 
           root = Path(".")
-          assert sorted(p.name for p in (root / "skills").iterdir() if (p / "SKILL.md").is_file()) == [
-              "engineering-governance", "project-bootstrap"
-          ]
-          bootstrap = (root / "skills/project-bootstrap/SKILL.md").read_text()
-          governance = (root / "skills/engineering-governance/SKILL.md").read_text()
-          template = (root / "skills/project-bootstrap/references/AGENTS.template.md").read_text()
-          readme = (root / "README.md").read_text()
+          skills = sorted(p.name for p in (root / "skills").iterdir() if (p / "SKILL.md").is_file())
+          assert skills == ["engineering-governance", "project-bootstrap"], skills
+
+          bootstrap = (root / "skills/project-bootstrap/SKILL.md").read_text(encoding="utf-8")
+          gov = (root / "skills/engineering-governance/SKILL.md").read_text(encoding="utf-8")
+          agent_template = (root / "skills/project-bootstrap/references/AGENTS.template.md").read_text(encoding="utf-8")
+          rule_template = (root / "skills/project-bootstrap/references/rules.template.md").read_text(encoding="utf-8")
+          readme = (root / "README.md").read_text(encoding="utf-8")
+          workflow = (root / "docs/workflow.md").read_text(encoding="utf-8")
+          docs = (root / "docs/project-bootstrap.md").read_text(encoding="utf-8")
+          existing_ex = (root / "examples/existing-project/README.md").read_text(encoding="utf-8")
+
+          # Both project entry paths and source-backed confirmed documentation.
+          for s in ("## Path A: new project from zero", "## Path B: existing project with source",
+                    "docs/requirements.md", "docs/technical-constraints.md", "Pending confirmation"):
+              assert s in bootstrap, s
+          assert "Confirmed requirements" in bootstrap and "Confirmed technical constraints" in bootstrap
+          for path in ("requirements.template.md", "technical-constraints.template.md"):
+              assert (root / "skills/project-bootstrap/references" / path).is_file()
+          assert "docs/requirements.md" in docs and "docs/technical-constraints.md" in docs
+          assert "pending confirmation" in existing_ex.lower()
+
+          # Only directory-level rule discovery in AGENTS.md, no default rule directory.
           assert "## Mode: add-rule" in bootstrap
-          assert ".agents/rules/" in bootstrap and "Do not create an empty" in bootstrap
-          assert "Never update root" in bootstrap and "AGENTS.md" in bootstrap
-          assert "individual rule files" in bootstrap and "per-rule index in AGENTS.md" in bootstrap
-          assert "does not enumerate rules" in template
-          assert "Do not assume the runtime automatically loads" in template
-          assert ".agents/rules/<topic>.md" in (root / "skills/project-bootstrap/references/rules.template.md").read_text()
-          assert ".agents/rules/INDEX.md" in (root / "skills/project-bootstrap/references/rules.template.md").read_text()
-          assert ".agents/rules/stm32-dma.md" not in template
-          assert "link each rule" not in readme
-          assert "stable pointer to `.agents/rules/`" in readme
-          assert "Do not modify `AGENTS.md` for rule maintenance" in (root / "docs/project-bootstrap.md").read_text()
-          for mode in ("change-impact", "verify", "release"):
-              assert f"## Mode: {mode}" in governance
-          assert "single Git" in governance and "multiple Git" in governance
-          assert "no minimum-documentation" in governance.lower() or "no minimum-documentation restriction" in governance.lower()
-          assert "$project-bootstrap add-rule" in readme
-          assert "$engineering-governance" in readme
-          meta = json.loads((root / ".codex-plugin/plugin.json").read_text())
-          assert meta["name"] == "engineering-agent-skills"
-          assert meta["version"] == "0.6.0"
-          for old in ("skills/cross-repo-governance", "templates/INTERFACE_CHANGE.md",
-                      "docs/cross-repo-workflow.md", "examples/interface-change",
-                      "examples/manifest-release"):
-              assert not (root / old).exists(), old
-          print("Skill contract and documentation: PASS")
+          assert "Do not create an empty" in bootstrap
+          assert "Do **not** update root" in bootstrap
+          assert "does not enumerate" not in agent_template.lower() or ".agents/rules/" in agent_template
+          assert ".agents/rules/" in agent_template
+          assert ".agents/rules/INDEX.md" in rule_template
+          assert "stm32-dma.md" not in agent_template
+
+          # Direct agent execution; optional design helpers; governance has only two modes.
+          for mode in ("verify", "release"):
+              assert f"## Mode: {mode}" in gov
+          assert "## Mode: change-impact" not in gov
+          assert "$engineering-governance change-impact" not in readme + workflow
+          assert "single Git" in gov and "Multi Git" in gov
+          assert "the agent executes" in readme.lower() and "agent executes directly" in workflow.lower()
+          assert "grill-with-docs" in workflow and "wayfinder" in workflow
+          for p in [root / "README.md", root / "docs/workflow.md", root / "skills/project-bootstrap/SKILL.md",
+                    root / "skills/engineering-governance/SKILL.md", root / "skills/project-bootstrap/references/AGENTS.template.md"]:
+              assert not re.search(r"\b(?:TDD|Implement|Spec)\b", p.read_text(encoding="utf-8"), re.I), p
+
+          meta = json.loads((root / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
+          assert meta["version"] == "0.7.0"
+          assert "change-impact" not in json.dumps(meta)
+          for obsolete in ("skills/cross-repo-governance", "templates/INTERFACE_CHANGE.md",
+                           "templates/CHANGE_IMPACT.md", "docs/cross-repo-workflow.md",
+                           "examples/change-impact", "examples/interface-change",
+                           "examples/manifest-release"):
+              assert not (root / obsolete).exists(), obsolete
+          print("Project entry, evidence and governance contract: PASS")
           PY
       - name: Smoke-test generic user install
         run: |
@@ -62,6 +82,8 @@ jobs:
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/SKILL.md"
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/AGENTS.template.md"
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/rules.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/requirements.template.md"
+          test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/project-bootstrap/references/technical-constraints.template.md"
           test -f "$RUNNER_TEMP/agent-skills-home/.agents/skills/engineering-governance/SKILL.md"
           test ! -e "$RUNNER_TEMP/agent-skills-home/.agents/skills/cross-repo-governance"
           test ! -d "$RUNNER_TEMP/agent-skills-home/.agents/rules"

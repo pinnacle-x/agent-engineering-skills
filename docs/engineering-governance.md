@@ -1,43 +1,38 @@
-# Engineering Governance: Single Git and Multi Git
+# Engineering Governance — Integrated Verification and Release
 
-Use `engineering-governance` when an interface change, coupled modules, integrated verification or a reproducible release justifies extra coordination.
+`engineering-governance` provides optional `verify` and `release` modes when a system needs traceable integration results or reproducible delivery. The agent **directly** investigates effects on modules/interfaces while performing project work; governance does not duplicate that work.
 
-| Scope | Change impact | Verification | Release |
-|---|---|---|---|
-| Single Git, isolated change | Ordinary agent work | Local checks | Existing project convention |
-| Single Git, coupled modules | Shared module/file contracts | One commit SHA + integrated checks | One SHA, optional Git tag; no multi-repo XML |
-| Multiple Git repositories | Cross-repo contract owner and consumers | Exact SHA per included repository | Verified SHA combination in an existing/preferred manifest |
+| Situation | Verification scope | Release evidence |
+| --- | --- | --- |
+| One Git, isolated task | Normal agent checks; governance generally unnecessary | Existing project process |
+| One Git, coupled modules | Integrated checks associated with **one** immutable Git SHA | That revision and optional project tag |
+| Multiple independent Git repositories | Compatibility and integration checks against **each** included repo SHA | Verified immutable revision combination in a suitable manifest |
 
-Directory names do **not** determine Git repository count. A tree containing `Firmware/` and `PC/` can still be a single repository.
+A project containing `Firmware/`, `PC/` and `Protocol/` can still have a single `.git` root. Directory count does not determine Git count.
 
-## Change impact (optional)
-
-```text
-$engineering-governance change-impact
-```
-
-Inspect the authoritative shared interface (e.g. Modbus register definition), affected PC/firmware consumers, compatibility, migration and verification obligations. In a single Git repository, the owner definition and consumers may be committed together. In multiple repos, coordinate owner-first changes when there is a separately maintained contract.
-
-Resolve genuine design uncertainty through the active agent; optional Grill/Wayfinder can help. **Do not force ADR approval or numbered change documents.** Use `templates/CHANGE_IMPACT.md` only when durable coordination records are genuinely useful.
-
-## Verify (optional)
+## Verify
 
 ```text
 $engineering-governance verify
 ```
 
-Run relevant actual checks, identify the exact Git revision(s), and record uncommitted state and any unperformed hardware checks. A single Git needs **one SHA**; multiple repos require one for each participating repository. Do not mark unperformed physical tests as passed. Use existing test logs or `templates/SYSTEM_VERIFICATION.md` where a persistent report is needed.
+Review the actual project’s required checks and run/coordinate relevant integration verification. Record commands, test results, exact revision(s), hardware/manual acceptance evidence and remaining unknowns. Unperformed required checks stay pending; do not label them as passing.
 
-## Release (on request)
+A lasting verification document can use `templates/SYSTEM_VERIFICATION.md` when justified by actual project requirements, not as a mandatory file for every change.
+
+## Release
 
 ```text
 $engineering-governance release
 ```
 
-A single Git project usually uses its tested commit, project version/tag and normal release artifacts. A multi-repo product may require a manifest pinning exactly the tested repository SHAs. Preserve whichever format the project already uses. Never require an XML manifest or a new documentation hierarchy for single-Git projects.
+Confirm release version, required verification and exact matching tested revision(s).
 
-Do not release an unverified revision set; record missing required checks and blockers. Documentation is produced and maintained to meet **the project's actual needs**, not a mandatory minimum or maximum.
+- **Single Git:** use the verified commit SHA and existing tag/release conventions. Do not generate multi-repository XML.
+- **Multi Git:** pin the exact verified SHA of each included repository, using the existing/preferred product-composition format. A manifest is appropriate when a product combines independently versioned repositories.
 
-## Source ownership
+Do not silently replace published releases, use moving branch names as fixed versions or pretend missing hardware checks passed. Preserve documentation and delivery evidence appropriate to project requirements.
 
-Implementation truth lives in code and verified tests. Approved requirements, standards and public protocol contracts still define **what should be implemented**; they may live inside one repository or in a separately owned repository. Do not silently replace them with consumer copies.
+## Relationship to project bootstrap
+
+For an **existing** project, `project-bootstrap` establishes source-evidenced current state and the confirmed requirements and technical constraints. Those artifacts inform verification requirements; the agent resolves cross-module effects directly. No other Skill is a mandatory prerequisite.

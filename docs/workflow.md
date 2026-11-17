@@ -1,48 +1,36 @@
 # Agent-Led Engineering Workflow
 
-## Default: the agent works directly
+The active agent is the **direct executor** of project work. Skills are used only when they provide additional, relevant capabilities.
 
-```text
-User goal → agent inspects current code and requirements
-          → agent chooses design/specification/TDD/implementation approach
-          → agent updates code, tests and appropriate documentation
-          → actual verification results and Git revisions
-```
-
-The agent decides task decomposition, test strategy, document detail and location based on existing conventions and requirements. **No mandatory chain of Grill → Spec → Tickets → TDD → Review**.
-
-Optional `grill-with-docs` can assist major undecided design, and `wayfinder` can assist large ambiguous, multi-session problems. Neither is a prerequisite for implementing a clear task.
-
-## When instructions need initialization or repair
+## 1. Enter the project
 
 ```text
 $project-bootstrap
 ```
 
-Create/reconcile `AGENTS.md`; do not create `.agents/rules/` by default. If an agent repeatedly makes the same confirmed error, use:
+- **From zero:** establish the confirmed goal, technology decisions and relevant constraints; set up the project entry instructions without inventing unapproved details.
+- **Existing source:** inspect current code, build configuration, module boundaries, related hardware/interface artifacts and available verification evidence. Treat the actual engineering state as the factual baseline, then establish/update confirmed requirements and technical-constraints documents. Do not present guesses about intended behavior as confirmed requirements.
+- For existing docs, preserve their established locations. Without an established convention, use `docs/requirements.md` and `docs/technical-constraints.md`.
+
+`AGENTS.md` states only the `.agents/rules/` directory policy; rule files and an optional index live inside that directory. No empty rules directory is created. Repeated confirmed agent failures can be addressed via `$project-bootstrap add-rule` with approval; individual rule maintenance does not edit `AGENTS.md`.
+
+## 2. Determine whether major design is unresolved
+
+- **Clear goal and necessary decisions:** the agent executes directly, even when the engineering task is technically difficult.
+- **Important unresolved design choice:** optional `grill-with-docs` to settle the decision, followed by direct agent execution.
+- **Very large, ambiguous project needing extended exploration:** optional `wayfinder` to establish direction and boundaries, followed by direct agent execution.
+
+Task difficulty or the number of changed files is **not** itself a trigger to call a design Skill. Project safety, external standards and accepted contracts remain governing constraints.
+
+## 3. Verification and delivery, when required
+
+The agent analyzes downstream effects on dependent modules as part of its own work; there is **no dedicated impact-analysis Skill mode**.
 
 ```text
-$project-bootstrap add-rule
-```
-
-Only persist a scoped rule with approval. `AGENTS.md` mentions only the `.agents/rules/` directory; rule files and any optional index are maintained inside that directory. Rule additions, edits, merges and deletions do not alter `AGENTS.md`.
-
-## When system-level risk warrants it
-
-For coupled modules or repositories, shared contract changes, integration readiness or versioned delivery:
-
-```text
-$engineering-governance change-impact
 $engineering-governance verify
 $engineering-governance release
 ```
 
-The Skill chooses **single-Git** vs **multi-Git** strategy based on actual Git roots, not folder count. Routine single-module changes stay with the agent. Results can live in the response, existing project records or additional documents where the work requires them.
+Invoke governance when system integration evidence or reproducible delivery warrants it. A single Git repository can contain many components and still require just one commit SHA; multi-Git products require a verified SHA for every relevant repository. Routine task checks remain with the active agent.
 
-## Examples
-
-- **Single Git, small code change:** agent edits/tests; governance generally unnecessary.
-- **One Git with PC + Firmware + Protocol:** agent manages the code; governance can check shared protocol impact and integrated verification using one Git SHA.
-- **Separate PC/Firmware/Protocol Git repositories:** governance can coordinate contract ownership, check compatibility across exact SHAs and pin a multi-repository release composition.
-
-See [Engineering Governance](engineering-governance.md).
+See [engineering governance](engineering-governance.md).
