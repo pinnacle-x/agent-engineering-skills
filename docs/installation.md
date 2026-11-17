@@ -8,8 +8,8 @@ The repository provides **two independent Skills**, both using the portable Agen
 ## Install both
 
 ```bash
-git clone https://github.com/pinnacle-x/PraxFlow.git
-cd PraxFlow
+git clone https://github.com/pinnacle-x/agent-engineering-skills.git
+cd agent-engineering-skills
 python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
