@@ -1,33 +1,27 @@
-# PraxFlow Bootstrap Mode
+# Project Bootstrap
 
-Repository instruction bootstrap is now **part of the single `praxflow` Skill**, not a separately installed or separately invoked `project-bootstrap` Skill.
+`project-bootstrap` is an **independent Agent Skill**, not a mode of Cross-Repo Governance.
 
 ## Use
 
-Install PraxFlow once, then open the target repository in the agent and request:
+After installing the Skill and opening the target repository:
 
 ```text
-$praxflow bootstrap
+$project-bootstrap
 ```
 
-Or use cross-harness natural language:
+Or ask any capable supported Harness to use the installed `project-bootstrap` Skill to reconcile the current repository's `AGENTS.md` and explicit `.agents/rules/` without overwriting existing files.
 
-> Use the praxflow Skill in bootstrap mode to create or reconcile this repository's AGENTS.md and explicitly indexed .agents/rules. Preserve existing source, documents, configuration and Git state.
+## Responsibilities
 
-## Scope
+1. Inspect current `AGENTS.md`, README, source tree, Git state, docs and instructions before changes.
+2. Create the root `AGENTS.md` only if missing; preserve/merge existing instructions.
+3. Add `.agents/rules/` files only when genuine rules are needed.
+4. Explicitly index each existing rule in `AGENTS.md` with its loading condition. Never imply that every Harness auto-discovers this directory.
+5. Use `skills/project-bootstrap/references/AGENTS.template.md` and `skills/project-bootstrap/references/rules.template.md` only as adaptable examples.
+6. Inspect `git diff`; report files changed, preserved conventions and unresolved conflicts. Do not fabricate tests or source-of-truth documents.
 
-This mode **only** supplies portable project instructions and rule discovery:
-
-1. Inspect root `AGENTS.md`, README, source layout, Git status, docs and any existing instruction conventions.
-2. Create or reconcile `AGENTS.md` in place, preserving existing content.
-3. Organize rules under `.agents/rules/` only when appropriate and refer to each real file explicitly in `AGENTS.md`.
-4. Explain always-on versus task-conditional rules; do not assume any harness auto-loads `.agents/rules`.
-5. Use `skills/praxflow/references/AGENTS.template.md` and `skills/praxflow/references/rules.template.md` as optional examples.
-6. Inspect diff/status, avoid duplicate sections, and report actual changes and conflicts.
-
-This mode does **not** initialize Git, change remotes, create source code, alter build/CI configuration, generate invented specs or ADRs, configure the issue tracker, or replicate the domain-doc setup from `setup-matt-pocock-skills`.
-
-## Possible project layout (not mandatory)
+Example, **not** a required fixed directory tree:
 
 ```text
 project/
@@ -35,27 +29,19 @@ project/
 ├── .agents/
 │   └── rules/
 │       ├── general.md
-│       ├── development.md       # only if useful
-│       ├── testing.md           # only if useful
-│       └── documentation.md     # only if useful
+│       ├── development.md     # optional
+│       ├── testing.md         # optional
+│       └── documentation.md   # optional
 └── ... existing source and docs
 ```
 
-Other valid projects may already have adequate rules in different locations. Link to existing rules where possible instead of duplicating their content. Only create `docs/` or other files when they serve real project needs.
+Do not initialize Git, change remotes, modify production code, invent requirements/status docs, or configure engineering issue trackers as a side effect.
 
-## Acceptance
+## Boundaries
 
-- All required rule links in `AGENTS.md` refer to existing files.
-- Only appropriate files were created or edited; source/config remains intact.
-- Rules do not contradict one another or make false auto-discovery promises.
-- A second run would not duplicate entries.
-- Actual build/test outcomes are not invented.
-- If the current harness cannot discover the Skill, state that limitation and propose the smallest adapter.
+- `project-bootstrap`: portable entry and rule discovery.
+- `setup-matt-pocock-skills`: issue tracker, triage and domain docs as needed.
+- `grill-with-docs`: major unresolved design choices and ADRs.
+- `cross-repo-governance`: owner/consumer coordination of approved shared contracts, exact-revision verification and release manifests.
 
-## Division of responsibilities
-
-- `praxflow bootstrap`: portable AGENTS.md and rules.
-- `setup-matt-pocock-skills`: issue tracker, triage and domain docs when desired.
-- `grill-with-docs`: decisions, tradeoffs, and ADRs.
-- `praxflow interface-change`: approved shared-contract owner/consumer governance.
-- `praxflow system-verify` / `manifest-release`: exact-revision validation and release composition.
+The two repository-provided Skills can be installed, invoked, updated and tested independently.
