@@ -31,7 +31,7 @@ jobs:
           readme = (root / "README.md").read_text()
           assert "## Mode: add-rule" in bootstrap
           assert ".agents/rules/" in bootstrap and "Do **not** create" in bootstrap
-          assert "not universally auto-loaded" in template
+          assert "are **not** universally auto-loaded" in template
           for mode in ("change-impact", "verify", "release"):
               assert f"## Mode: {mode}" in governance
           assert "single Git" in governance and "multiple Git" in governance
