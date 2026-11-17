@@ -1,10 +1,10 @@
-# PraxFlow Examples
+# Agent Engineering Skills Examples
 
-PraxFlow keeps examples only for the governance it owns.
+The `project-bootstrap` Skill contains starter references under `skills/project-bootstrap/references/`.
 
-- `interface-change/` — owner-first public contract change record.
-- `manifest-release/` — immutable release composition tied to successful verification.
+Cross-Repo Governance examples focus on capabilities not covered by ordinary agent work or Grill:
 
-Integrated verification structure is represented by `templates/SYSTEM_VERIFICATION.md`.
+- `interface-change/` — owner-first rollout of an **approved** shared contract;
+- `manifest-release/` — immutable release composition tied to successful integrated verification.
 
-PDF extraction, system discovery, protocol validation, specification work, and implementation examples are intentionally not part of PraxFlow; use the active agent and the project's normal engineering workflow.
+Integrated verification structure appears in `templates/SYSTEM_VERIFICATION.md`.
