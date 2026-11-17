@@ -18,7 +18,7 @@ When an important approved decision exists only in conversation, preserve the mi
 
 System architecture and high-level design describe the **current** system, plus clearly separated approved future targets where appropriate. They should be reviewed when code or design choices materially affect them, using the actual source and approved decisions. Their purpose is not to replay every decision or ticket.
 
-Existing project filenames and hierarchy take priority; when absent and justified, use `docs/architecture.md` and `docs/design-overview.md`. The Agent maintains these in ordinary work or through `$project-bootstrap update-design`.
+Existing project filenames and hierarchy take priority; when absent and justified, use `docs/architecture.md` and `docs/design-overview.md`. The Agent maintains these in ordinary work or through `$project-context update-design`.
 
 ## Finding documents across sessions
 

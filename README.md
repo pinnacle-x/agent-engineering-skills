@@ -2,7 +2,7 @@
 
 Two independent portable Agent Skills supporting **direct Agent engineering work**, with upstream Grill/Wayfinder for consequential decisions and **no mandatory parallel specification index**.
 
-- **`project-bootstrap`** — enter greenfield or existing-source projects; establish evidence-backed requirements/constraints and project entry pointers; **create or update current system architecture and high-level design** through `update-design`; maintain approved rules on demand.
+- **`project-context`** — enter greenfield or existing-source projects; establish evidence-backed requirements/constraints and project entry pointers; **create or update current system architecture and high-level design** through `update-design`; maintain approved rules on demand.
 - **`engineering-governance`** — optional `verify` and `release` for single-Git or multi-Git products.
 
 ## Preferred project flow
@@ -40,7 +40,7 @@ These are **upstream-owned locations**, not additional templates we require. The
 Keep **current system architecture** and **high-level design** under project version control when appropriate. Existing project paths win; common defaults are `docs/architecture.md` and `docs/design-overview.md`. These describe the current engineering system and confirmed future changes, not duplicated Wayfinder tickets or a second Spec.
 
 - The Agent checks whether a code change affects these documents and syncs relevant sections as part of ordinary work.
-- For explicit review, creation or catch-up synchronization, use `$project-bootstrap update-design`.
+- For explicit review, creation or catch-up synchronization, use `$project-context update-design`.
 - Existing source and observed results describe **what is actually implemented**; approved requirements, ADRs and selected task spec describe **intended behavior**. If they disagree, flag the discrepancy instead of silently rewriting a requirement.
 
 Root `AGENTS.md` points to the actual stable architecture/overview paths and the upstream domain/tracker configuration when present. A project with a useful index may keep it, but **`docs/README.md` is not a mandatory second index**. Project rules still use only the directory pointer `.agents/rules/`; do not create that folder until an approved rule is needed.
@@ -57,16 +57,16 @@ python scripts/validate_portability.py
 To install one Skill:
 
 ```bash
-python scripts/install.py --agent generic --scope user --skill project-bootstrap
+python scripts/install.py --agent generic --scope user --skill project-context
 python scripts/install.py --agent generic --scope user --skill engineering-governance
 ```
 
 ## Invocation
 
 ```text
-$project-bootstrap
-$project-bootstrap update-design
-$project-bootstrap add-rule
+$project-context
+$project-context update-design
+$project-context add-rule
 
 $engineering-governance verify
 $engineering-governance release
@@ -74,4 +74,8 @@ $engineering-governance release
 
 If shorthand is not available, request a Skill by name in natural language. Grill/Wayfinder and upstream tracker setup are **separate installs**, not dependencies shipped in this repository.
 
-See [project bootstrap](docs/project-bootstrap.md), [local Markdown and document discovery](docs/document-discovery.md), [engineering workflow](docs/workflow.md), [sources of truth](docs/source-of-truth.md), [governance](docs/engineering-governance.md), and [installation](docs/installation.md).
+See [project bootstrap](docs/project-context.md), [local Markdown and document discovery](docs/document-discovery.md), [engineering workflow](docs/workflow.md), [sources of truth](docs/source-of-truth.md), [governance](docs/engineering-governance.md), and [installation](docs/installation.md).
+
+## Renamed Skill (v0.10.0)
+
+The former `project-bootstrap` is now **`project-context`**. Previous installations are not removed automatically; after checking for local edits, remove only the old installed Skill directory to avoid duplicate names. [Migration details](docs/installation.md#rename-migration-project-bootstrap--project-context).

@@ -2,7 +2,7 @@
 
 Two independent Skills are provided:
 
-- `project-bootstrap` — new/existing project entry; current source-based requirements/constraints; direct pointers to upstream Grill local tracker/domain documents; **system architecture/high-level design synchronization** with `update-design`; approved rules.
+- `project-context` — new/existing project entry; current source-based requirements/constraints; direct pointers to upstream Grill local tracker/domain documents; **system architecture/high-level design synchronization** with `update-design`; approved rules.
 - `engineering-governance` — optional integrated system verification and reproducible release.
 
 ## Install both
@@ -18,7 +18,7 @@ On runtimes supporting the shared Skill location:
 
 ```text
 ~/.agents/skills/
-├── project-bootstrap/
+├── project-context/
 │   ├── SKILL.md
 │   └── references/
 │       ├── AGENTS.template.md
@@ -35,14 +35,14 @@ On runtimes supporting the shared Skill location:
 Install individually:
 
 ```bash
-python scripts/install.py --agent generic --scope user --skill project-bootstrap
+python scripts/install.py --agent generic --scope user --skill project-context
 python scripts/install.py --agent generic --scope user --skill engineering-governance
 ```
 
 Or project-scoped:
 
 ```bash
-python scripts/install.py --agent generic --scope project --project /path/to/project --skill project-bootstrap
+python scripts/install.py --agent generic --scope project --project /path/to/project --skill project-context
 ```
 
 The installer installs **Skills**, not target-project documentation, upstream Grill/Wayfinder or a tracker configuration.
@@ -65,9 +65,9 @@ Upstream `to-spec` also expects the configured triage-label vocabulary; if upstr
 ## Invoke our Skills
 
 ```text
-$project-bootstrap
-$project-bootstrap update-design
-$project-bootstrap add-rule
+$project-context
+$project-context update-design
+$project-context add-rule
 
 $engineering-governance verify
 $engineering-governance release
@@ -86,4 +86,10 @@ git pull
 python scripts/install.py --agent generic --scope user --force
 ```
 
-`--force` replaces installed Skill directories; preserve local edits first. The installer does not remove renamed historical Skills automatically; inspect any old `cross-repo-governance` installation before removing it. Windows link-mode installation can require Developer Mode or elevated permissions.
+## Rename migration: project-bootstrap → project-context
+
+This release renames the Skill directory and invocation to `project-context` without changing the `update-design` or `add-rule` modes. The installer discovers the new directory automatically but **does not remove** a previously installed `project-bootstrap`. Even with `--force`, both could remain, causing duplicated Skill choices.
+
+After reinstalling, inspect any locally modified files under the **old** user or project Skill path (`~/.agents/skills/project-bootstrap/` or `<project>/.agents/skills/project-bootstrap/`), then remove **only that old installed Skill directory** when safe. Keep your actual target project's engineering documents, `.agents/rules/` and `.scratch/` untouched. The installer prints a warning when it sees the old directory alongside the new one.
+
+`--force` replaces only selected installed Skill directories. Inspect any historical `cross-repo-governance` installation separately before cleanup. Windows link-mode installation can require Developer Mode or elevated permissions.

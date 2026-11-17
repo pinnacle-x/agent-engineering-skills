@@ -1,18 +1,18 @@
 ---
-name: project-bootstrap
+name: project-context
 description: Bootstrap greenfield or existing-source projects, reuse Grill's native local-Markdown decisions and domain documents, maintain discoverable project entry instructions, and create or update current system architecture and high-level design from confirmed decisions and actual source evidence. Maintain approved project rules under .agents/rules/.
 ---
 
-# Project Bootstrap
+# Project Context
 
 This Skill enters a new or existing engineering project and maintains **current, long-lived system architecture and high-level design documents**. It reuses upstream Grill/Wayfinder/local tracker storage rather than duplicating Map, decision tickets, or specs. The active agent executes engineering work directly.
 
 ## Invocation
 
 ```text
-$project-bootstrap
-$project-bootstrap update-design
-$project-bootstrap add-rule
+$project-context
+$project-context update-design
+$project-context add-rule
 ```
 
 If shorthand is not supported, ask for the Skill and its intended mode in natural language. No other Skill is required for this Skill to be installed or to inspect an existing project.
@@ -73,7 +73,7 @@ Use when the user requests architecture/overview generation or synchronization, 
 7. Check `AGENTS.md` discovery pointers and any existing index **only if the relevant document paths changed or require correction**. Keep the configured tracker/domain pointers untouched and do not migrate or duplicate `.scratch/` content.
 8. Review the diff for substantive accuracy, unresolved contradictions and broken links; report updated documents, inspected evidence, outstanding questions and validation not performed.
 
-**After ordinary Agent code work:** the agent should examine whether system architecture or high-level design was affected and update the relevant long-lived document in the same change when appropriate; it need **not** call this mode every time. `$project-bootstrap update-design` is the dedicated entry for requested reviews, catch-up synchronization or larger documentation changes. A local bug fix with no architectural/design effect should not create gratuitous edits.
+**After ordinary Agent code work:** the agent should examine whether system architecture or high-level design was affected and update the relevant long-lived document in the same change when appropriate; it need **not** call this mode every time. `$project-context update-design` is the dedicated entry for requested reviews, catch-up synchronization or larger documentation changes. A local bug fix with no architectural/design effect should not create gratuitous edits.
 
 Use `references/architecture.template.md` and `references/design-overview.template.md` as **examples**, never as rigid mandatory content.
 
@@ -92,5 +92,5 @@ Use `references/architecture.template.md` and `references/design-overview.templa
 ## Boundaries
 
 - The Agent owns direct engineering execution. Grill/Wayfinder design sessions may recur at meaningful unresolved decisions, but do not require a new session for every code change.
-- `project-bootstrap` maintains current project context, source-evidenced documents and approved design navigation, **not** a second tracker or duplicate specification system.
+- `project-context` maintains current project context, source-evidenced documents and approved design navigation, **not** a second tracker or duplicate specification system.
 - `engineering-governance` remains optional for integrated verification and reproducible release of single- or multi-Git products.

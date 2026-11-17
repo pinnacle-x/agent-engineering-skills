@@ -46,4 +46,4 @@ Without a mode, infer verify or release from the user request, or state that nor
 
 ## Separation
 
-`project-bootstrap` establishes a project entry and can synchronize current system architecture/high-level design via `update-design`. This governance Skill consumes those documents and the native upstream decision records; it does not duplicate them or control ordinary Agent execution.
+`project-context` establishes a project entry and can synchronize current system architecture/high-level design via `update-design`. This governance Skill consumes those documents and the native upstream decision records; it does not duplicate them or control ordinary Agent execution.
