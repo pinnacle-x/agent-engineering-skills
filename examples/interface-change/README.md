@@ -5,7 +5,7 @@ When the `StartTest` command's semantics are still undecided, resolve them with 
 Then invoke:
 
 ```text
-$praxflow interface-change
+$cross-repo-governance interface-change
 goal: Coordinate the approved StartTest command across repositories.
 approved_contract: <owner contract or ADR reference>
 ```
