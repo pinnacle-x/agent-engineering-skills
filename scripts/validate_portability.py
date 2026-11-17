@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the portable PraxFlow Agent Skills core.
+"""Validate portable Agent Skills core.
 
 This intentionally avoids third-party dependencies so it can run in CI and on
 fresh developer machines.
@@ -90,7 +90,7 @@ def main() -> int:
                     f"{skill_dir.name}: canonical SKILL.md contains {reason}: {marker}"
                 )
 
-    print(f"Validated {len(skills)} PraxFlow skill directories")
+    print(f"Validated {len(skills)} portable Agent Skill directories")
     for warning in warnings:
         print(f"WARNING: {warning}")
     for error in errors:
