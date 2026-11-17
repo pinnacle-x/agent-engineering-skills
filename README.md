@@ -12,8 +12,8 @@ They complement—not replace—the active agent and engineering Skills. Use `gr
 The existing installer discovers Skills from `skills/*/SKILL.md`:
 
 ```bash
-git clone https://github.com/pinnacle-x/PraxFlow.git
-cd PraxFlow
+git clone https://github.com/pinnacle-x/agent-engineering-skills.git
+cd agent-engineering-skills
 python scripts/install.py --agent generic --scope user
 python scripts/validate_portability.py
 ```
