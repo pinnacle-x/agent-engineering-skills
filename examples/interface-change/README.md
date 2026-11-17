@@ -1,6 +1,6 @@
 # Cross-Repository Interface Coordination Example
 
-When the `StartTest` command's semantics are still undecided, resolve them with `grill-with-docs` first and record the approved design/ADR. PraxFlow does **not** repeat that design interview.
+When the `StartTest` command's semantics are still undecided, resolve them with `grill-with-docs` first and record the approved design/ADR. Cross-Repo Governance does **not** repeat that design interview.
 
 Then invoke:
 
