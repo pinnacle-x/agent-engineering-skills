@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Install the unified PraxFlow Agent Skill for Codex and DeepSeek Harness.
+"""Install portable independent Agent Skills into a supported shared location.
 
-The canonical skill lives at ../skills/praxflow. Codex and DeepSeek Harness
-share ~/.agents/skills for user-scope installs and .agents/skills for
-project-scope installs.
+Skills are discovered from ./skills/*/SKILL.md and can be selected separately.
+The shared ~/.agents/skills and .agents/skills conventions are not universal.
 """
 
 from __future__ import annotations
@@ -31,7 +30,7 @@ def skill_catalog() -> dict[str, Path]:
     root = repo_root() / "skills"
     catalog: dict[str, Path] = {}
     if not root.is_dir():
-        raise RuntimeError(f"PraxFlow skills directory not found: {root}")
+        raise RuntimeError(f"portable Agent Skills skills directory not found: {root}")
     for child in sorted(root.iterdir()):
         if child.is_dir() and (child / "SKILL.md").is_file():
             catalog[child.name] = child
@@ -79,7 +78,7 @@ def install_link(src: Path, dst: Path, force: bool) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Install the PraxFlow Agent Skill")
+    parser = argparse.ArgumentParser(description="Install the portable Agent Skills Agent Skill")
     parser.add_argument(
         "--agent",
         choices=sorted(TARGETS),
@@ -109,12 +108,12 @@ def parse_args() -> argparse.Namespace:
         "--skill",
         action="append",
         dest="skills",
-        help="Optional explicit skill name. PraxFlow currently provides: praxflow.",
+        help="Install only a named Skill (repeatable); omit to install every discovered Skill.",
     )
     parser.add_argument(
         "--force",
         action="store_true",
-        help="Replace an existing PraxFlow skill directory at the destination.",
+        help="Replace the existing installed Skill directory for a selected Skill.",
     )
     parser.add_argument(
         "--list-agents",
@@ -136,7 +135,7 @@ def main() -> int:
     unknown = [name for name in selected if name not in catalog]
     if unknown:
         print(
-            "Unknown PraxFlow skill(s): " + ", ".join(sorted(unknown)),
+            "Unknown portable Agent Skills skill(s): " + ", ".join(sorted(unknown)),
             file=sys.stderr,
         )
         print("Available: " + ", ".join(catalog), file=sys.stderr)
@@ -161,7 +160,7 @@ def main() -> int:
         print(f"installed {name} -> {dst}")
 
     print()
-    print(f"PraxFlow installed for target '{args.agent}' in: {root}")
+    print(f"Agent Skills installed for target '{args.agent}' in: {root}")
     print("Installed: " + ", ".join(installed))
     return 0
 
