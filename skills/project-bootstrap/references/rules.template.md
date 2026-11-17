@@ -1,31 +1,40 @@
-# Optional task-specific rule format
+# Optional task-specific project rule format
 
-This is a **format reference**, not a list of rules to create during bootstrap.
+This is a format example for **approved, problem-driven rules**, not a bundle of defaults. Bootstrap does not create `.agents/rules/` until an actual rule is needed.
 
-Only persist rules after repeated, evidenced problems with confirmed causes, after checking existing project guidance and obtaining user approval. A precise user request authorizing the exact rule also suffices.
-
-## Recommended file
-
-`.agents/rules/<topic>.md`
+## Rule file: `.agents/rules/<topic>.md`
 
 ```markdown
-# Rule: <specific failure being prevented>
+# Rule: <specific recurring failure being prevented>
 
 ## Applies when
-<concrete task, affected module or file pattern>
+<affected task, module, conditions or file types>
 
-## Verified problem
-<brief evidence from repeated failures and confirmed cause>
+## Confirmed problem
+<observed repeated failures and verified root cause>
 
 ## Required check or behavior
 <one actionable, scoped instruction the agent can verify>
 
-## Exceptions / limitations
-<conditions where the rule does not apply>
+## Exceptions and limitations
+<when this rule must not be applied>
 ```
 
-After creating the file, add a link from the root `AGENTS.md` with a matching **when-to-read** condition. Do not insert a generic wildcard or claim the directory loads automatically. Prefer revising or removing obsolete rules over indefinitely accumulating them.
+Do not reference each rule from root `AGENTS.md`. That file only describes the `.agents/rules/` directory; the agent lists and reads relevant files when it exists.
 
-## Example (do not copy blindly)
+## Optional index: `.agents/rules/INDEX.md`
 
-For repeated STM32 DMA/cache coherency bugs, the rule can require checking the actual buffer memory region, cacheability, access direction, cache-line alignment and needed cache maintenance. It must **not** blanket-disable caching for every DMA operation.
+For multiple rules that benefit from a compact map, use an index **inside** the rules directory:
+
+```markdown
+# Rule Index
+
+| Rule file | Applies when |
+| --- | --- |
+| stm32-dma.md | Changing STM32 DMA / cache code |
+| modbus-registers.md | Changing Modbus register definitions |
+```
+
+These entries are **illustrations, not files to pre-create**. When rules are added, revised, merged, renamed or deleted, reconcile the index with the actual files. If the directory contains only a few obvious rules, omit the index.
+
+Prefer revising or removing obsolete rules instead of growing an unbounded rule collection. Never apply a rule outside its stated scope or claim automatic Harness loading.

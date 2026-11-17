@@ -10,7 +10,7 @@ Two **independent, portable Agent Skills** to support—rather than replace—th
 - **Agent-first:** The agent owns code exploration, planning, specifications, TDD when useful, implementation, debugging, review and project documentation.
 - **Evidence and sources:** Source code and actual tests establish current implemented behavior; external standards, approved product requirements and shared contracts remain authoritative for intended behavior.
 - **Documentation by purpose:** Preserve existing organization. Without a convention, use `docs/` for project-level docs and a module folder for module-specific docs. Let the agent create and maintain the documentation actually warranted by the project or task; do not enforce a fixed document count, format or level of detail.
-- **Rules only when justified:** No `.agents/rules/` directory is created by default. Add lasting rules in response to repeated problems with verified root causes and user approval; link each rule and its loading condition from `AGENTS.md`.
+- **Rules only when justified:** `AGENTS.md` contains one stable pointer to `.agents/rules/` and tells the agent to inspect applicable rules there if the directory exists. Bootstrap creates no empty rules directory. Add, revise, merge or delete approved rules entirely within `.agents/rules/`; maintain an optional index there, not in `AGENTS.md`.
 - **Proportionate governance:** Routine single-module changes do not need governance ceremonies. Significant interface, integration and release risks may merit governance regardless of the number of Git repositories.
 - **Optional companions:** Grill and Wayfinder can help with difficult undecided design or large ambiguous projects, but are not mandatory steps or dependencies.
 

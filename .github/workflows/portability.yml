@@ -30,8 +30,17 @@ jobs:
           template = (root / "skills/project-bootstrap/references/AGENTS.template.md").read_text()
           readme = (root / "README.md").read_text()
           assert "## Mode: add-rule" in bootstrap
-          assert ".agents/rules/" in bootstrap and "Do **not** create" in bootstrap
-          assert "are **not** universally auto-loaded" in template
+          assert ".agents/rules/" in bootstrap and "Do not create an empty" in bootstrap
+          assert "Never update root" in bootstrap and "AGENTS.md" in bootstrap
+          assert "individual rule files" in bootstrap and "per-rule index in AGENTS.md" in bootstrap
+          assert "does not enumerate rules" in template
+          assert "Do not assume the runtime automatically loads" in template
+          assert ".agents/rules/<topic>.md" in (root / "skills/project-bootstrap/references/rules.template.md").read_text()
+          assert ".agents/rules/INDEX.md" in (root / "skills/project-bootstrap/references/rules.template.md").read_text()
+          assert ".agents/rules/stm32-dma.md" not in template
+          assert "link each rule" not in readme
+          assert "stable pointer to `.agents/rules/`" in readme
+          assert "Do not modify `AGENTS.md` for rule maintenance" in (root / "docs/project-bootstrap.md").read_text()
           for mode in ("change-impact", "verify", "release"):
               assert f"## Mode: {mode}" in governance
           assert "single Git" in governance and "multiple Git" in governance

@@ -1,35 +1,27 @@
 # Project Agent Instructions
 
-Adapt this template to the existing repository. Do not insert absent paths, unverified claims or rules for hypothetical problems.
+Adapt to the existing project. Do not invent technical facts or change unrelated instructions.
 
 ## Orientation
 
-- Before editing, read relevant source, build/test configuration, README and existing project guidance.
-- Treat code and executed tests as evidence of current implementation. Preserve external requirements, standards and approved interface definitions as requirements.
-- Let the active agent choose planning, specification, TDD, implementation and documentation approaches appropriate to the task. Do not impose a fixed workflow.
-- Keep original conventions when modifying the project.
+- Read relevant source, current build/test instructions, README and existing project guidance before changes.
+- Treat code and observed tests as evidence for implemented behavior while respecting standards, approved requirements and authoritative contracts.
+- Let the active agent choose appropriate specification, TDD, implementation and documentation approaches.
 
-## Documentation locations
+## Documentation
 
-- Follow the project's existing documentation structure.
-- If there is no convention, use `docs/` for project-wide documentation and the relevant module's directory for module-specific documents.
-- Create or update the documentation justified by the task, user requirements and the need to preserve architectural decisions or interfaces. No fixed limit on detail or document count.
+- Use existing project documentation conventions.
+- Without an established location, put project-wide documents in `docs/` and module-specific documents near their modules.
+- Create and maintain the documentation warranted by user/project needs; no fixed document count or detail limit.
 
-## Task-specific rules (optional)
+## Project Rules
 
-Files in `.agents/rules/` are **not** universally auto-loaded. Do not create them during normal bootstrap. Once an approved, problem-driven rule file exists, index it here with **an explicit reading condition and exact relative path**.
-
-Example only (omit unless file exists):
-
-```markdown
-- When modifying STM32 DMA/cache behavior, read
-  [.agents/rules/stm32-dma.md](.agents/rules/stm32-dma.md).
-```
-
-To add or revise a lasting rule, request `project-bootstrap add-rule`; confirm repeated evidence and avoid redundant guidance.
+- Project-specific rules are stored in `.agents/rules/`. The directory is created on demand and can be absent.
+- When it exists, inspect its contents and read the rules relevant to the task; when absent, proceed without extra project-specific rules.
+- Do not assume the runtime automatically loads rules from that directory.
+- Adding, modifying, merging or deleting rules is handled **inside that directory**; this `AGENTS.md` does not enumerate rules or their applicability.
 
 ## Completion
 
-- Run applicable checks and report their actual results; distinguish unperformed checks.
-- Keep documents consistent with relevant code, tests, approved contracts and project requirements.
-- Report changed files, important decisions and remaining blockers.
+- Run applicable checks and report actual results, including checks not performed.
+- Keep relevant project documentation, source and requirements consistent; surface conflicts.

@@ -1,11 +1,11 @@
 ---
 name: project-bootstrap
-description: Initialize or reconcile portable AGENTS.md instructions; when a recurring, confirmed problem justifies a lasting rule, maintain a targeted .agents/rules/*.md file and index its loading condition in AGENTS.md. Preserve project conventions and avoid pre-creating rules.
+description: Initialize or reconcile a portable AGENTS.md with a stable .agents/rules/ directory convention. Maintain approved, evidence-based project rules within that directory without changing AGENTS.md for individual rule additions, updates, merges, or deletions.
 ---
 
 # Project Bootstrap
 
-This Skill provides a portable repository instruction entry point and **on-demand rule maintenance**. It is independent of the engineering governance Skill. The active agent is responsible for reading code, planning, specifications, TDD when useful, implementation, debugging, documentation, and ordinary verification.
+This Skill maintains the repository's portable agent entry instructions and **on-demand project rules**. It is independent of engineering-governance. The active agent owns code exploration, planning, specs, TDD when useful, implementation, debugging, tests and task-appropriate documentation.
 
 ## Invocation
 
@@ -14,54 +14,60 @@ $project-bootstrap
 $project-bootstrap add-rule
 ```
 
-If the active Harness does not recognize `$...` shorthand, request the installed Skill by name and say whether to bootstrap or add a rule.
+For modifying, merging or deleting existing rules, ask `project-bootstrap` to maintain the relevant project rules; the `add-rule` mode can reconcile existing rules rather than creating duplicates. If the Harness does not support command shorthand, request the Skill by name in natural language.
 
 ## Common prerequisites
 
-1. Discover the actual Git root when present; inspect `git status`, existing root or nested `AGENTS.md`, README, source/build/test conventions, current documentation and relevant existing rules.
-2. Follow existing project instructions and established file locations. Preserve user edits, source code, configuration, Git remotes and branch state.
-3. Treat code and running tests as evidence for **implemented behavior**, but preserve external standards, approved requirements, public contracts and hardware constraints as independent sources of requirements. Surface conflicts; do not fabricate facts.
-4. Do not assume `.agents/rules/` is automatically discovered by any Harness. Only explicit instructions in `AGENTS.md` make the project's loading contract clear.
+1. Identify the actual project root (and Git root when present); inspect `git status`, current root/nested `AGENTS.md` files, README, source, tests, existing documents and `.agents/rules/` if it exists.
+2. Preserve existing project conventions, source code, build configuration, Git metadata and user changes.
+3. Code and executed tests are evidence for **implemented behavior**. Preserve external standards, approved requirements, interfaces and hardware constraints as sources for **intended behavior**; report conflicts.
+4. Do not claim that any Harness automatically discovers `.agents/rules/`. The `AGENTS.md` directory instruction directs the active agent to inspect it when present.
 
 ## Mode: bootstrap (default)
 
-1. Create the root `AGENTS.md` only if missing; otherwise reconcile missing guidance without duplicating or overwriting existing instructions. Preserve relevant nested `AGENTS.md` files.
-2. Include project orientation: where to find current source and build/test instructions, how to resolve conflicting guidance, and where applicable rule links are indexed.
-3. For documents, **respect the existing structure first**. When no convention exists, use `docs/` as the default for project-wide documentation and the related module directory for module-specific documentation. The agent chooses document type, detail and amount based on task needs, existing conventions and durable project requirements. There is **no minimum-documentation policy or forced document quota**.
-4. Do **not** create `.agents/rules/` or template rule files by default. If rules already exist, index only the relevant real files and state their loading conditions; prefer links to existing guidance over copying it.
-5. Do not install companion Skills, create invented ADRs/Specs, configure issue trackers, initialize Git or alter production source as a side effect.
+1. Create the root `AGENTS.md` only if missing; otherwise reconcile it without duplicating or overwriting unrelated guidance. Preserve meaningful nested `AGENTS.md` files.
+2. Include project orientation and a **stable directory-level rule policy**. The only rule location that `AGENTS.md` needs to name is `.agents/rules/`; **do not enumerate individual rule files or maintain a per-rule index in AGENTS.md**.
+3. The rule policy must say: if `.agents/rules/` exists, inspect its current contents and read applicable rules for the task; if absent, there are no extra project rules. The directory is **not** assumed to be auto-loaded by the Harness.
+4. **Do not create an empty `.agents/rules/` directory, `INDEX.md`, `.gitkeep` or individual rule files by default.** Existing project rules remain in place. If AGENTS.md contains legacy per-rule links, propose a one-time consolidation into the directory policy during bootstrap, respecting user-approved instructions.
+5. For project documentation, follow the existing structure first. Without a convention, use `docs/` for project-wide documents and the relevant module for module-specific documents; the agent decides type, detail and amount based on task needs.
+6. Do not install other Skills, invent ADRs/specifications, configure issue trackers, initialize Git, modify production code, or change Git remotes as a side effect.
 
-## Mode: add-rule
+## Mode: add-rule and rule maintenance
 
-Use this when the user requests it or when the agent proposes a rule after **repeated, evidenced failures with a confirmed cause**. One failure or speculation is not sufficient grounds for a permanent rule.
+Use after user request or repeated, evidenced agent failures with a confirmed cause. Do not persist speculative rules for a single unexplained error.
 
-1. Collect concrete examples of the repeated problem and identify its verified cause and where it applies. If the cause is unresolved, investigate first rather than writing a guessed rule.
-2. Check whether existing source code, tests, project instructions, or a current rule already solve the problem. Prefer fixing the code/test or refining an existing rule to adding a duplicate.
-3. Propose a **specific, actionable, testable, scoped** rule and explain what undesired behavior it prevents, when to read it and any possible over-constraint. Obtain the user's approval before persisting a new lasting rule, unless their current request already explicitly authorizes that exact rule.
-4. Create or update `.agents/rules/<topic>.md` only for the approved rule. Use the optional `references/rules.template.md` as a format example, **not** a bundle of default generic rules.
-5. Update root `AGENTS.md` to link to that **existing** file via its relative path, with a task-based condition. Do not use wildcard loading or claim that arbitrary Harnesses auto-load `.agents/rules/*.md`.
-6. Avoid overlapping/conflicting instructions; narrow, revise or remove obsolete rules when approved. Do not use rules to lock the agent into an implementation or testing technique without a proven project need.
-7. Review the actual diff, confirm referenced paths exist, and make the operation idempotent.
+1. Review the repeated problem, root-cause evidence and task scope. Prefer a code/test/configuration fix where appropriate.
+2. Inspect existing `.agents/rules/` files and any local index. Avoid duplicates and conflicting instructions; propose a clear, narrow, testable rule with exceptions.
+3. Seek user approval to persist, merge, revise or delete lasting rules unless the current request already authorizes the **specific** change.
+4. Create `.agents/rules/` only when persisting the first approved rule. Store rules as `.agents/rules/<topic>.md` and include their applicability in the rule itself. For revisions or merges, update the relevant files; for deletion, remove obsolete files after verifying dependencies.
+5. **Never update root `AGENTS.md` merely because a rule was added, revised, merged, renamed or deleted.** AGENTS.md permanently points only to `.agents/rules/`. If that directory policy is missing, recommend running the separate bootstrap mode to reconcile it; do not silently mutate AGENTS.md from this mode.
+6. For larger rule sets where discovery needs help, optionally maintain `.agents/rules/INDEX.md` with file names, scopes and when-to-read conditions. The index is **inside `.agents/rules/`** and is maintained there after rule additions, updates, merges, renames or deletions. For a small rule set, reading files directly is sufficient; do not generate an index just to satisfy a template.
+7. If the last rule is deleted, remove a now-useless index rather than leaving placeholders. Do not impose a fixed rule count or assume Git tracks empty directories.
+8. Verify existing links/index references, check for overlap/conflicts and inspect the diff; running this mode twice must not duplicate entries or rule files.
 
-## Rule index example (only after a rule exists)
+## Stable AGENTS.md rule policy
+
+The generated `AGENTS.md` should contain directory-level instructions like:
 
 ```markdown
-## Task-specific rules
-- When modifying STM32 DMA/cache handling, read
-  [.agents/rules/stm32-dma.md](.agents/rules/stm32-dma.md).
+## Project Rules
+- Project-specific rules live in `.agents/rules/`; the directory is created only when needed.
+- When it exists, inspect its contents and read rules applicable to the current task.
+- If the directory does not exist, proceed without additional project-specific rules.
+- Do not assume the agent runtime automatically loads this directory.
 ```
 
-Do not insert that line unless the indicated file exists.
+**No individual rule filenames, applicability mappings or internal index paths belong in AGENTS.md.** Those details can be stored and maintained in the rule files themselves or in an optional index under `.agents/rules/`.
 
 ## Verification and reporting
 
-- Inspect changed files and, where available, `git diff` and `git status`.
-- Confirm links resolve, instructions do not contradict existing guidance, no default rules were silently generated, and repeat invocations do not duplicate content.
-- Report which documents/instructions changed, newly indexed rules and their triggers, conflicts, evidence and unperformed checks.
-- Do not claim successful Harness discovery or tests without evidence.
+- Inspect changed files and `git diff` / `git status` where available.
+- Confirm bootstrap creates no rules directory by default; validate the single directory-level policy.
+- Confirm rule maintenance changes only the rules directory (unless the user separately requested unrelated edits), and internal index entries correspond to existing rule files.
+- Report files added/modified/deleted, rationale, evidence, user approvals, conflicts and checks not performed. Do not claim automatic Harness discovery or unexecuted tests.
 
 ## Boundaries
 
-- The **active agent** owns routine design, specifications, implementation, tests and task-appropriate documentation.
-- Grill / Wayfinder may assist with difficult undecided design or very large ambiguous projects **when chosen**, never as mandatory dependencies.
-- `engineering-governance` is optional for significant change impact, integration verification and release, in either single- or multi-repository projects.
+- The active agent owns routine design, implementation, tests and documentation.
+- Grill / Wayfinder are optional when difficult unresolved design or very large ambiguous projects benefit from them.
+- `engineering-governance` is optional for change impact, integration verification and release across single-Git or multi-Git projects.

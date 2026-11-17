@@ -40,7 +40,7 @@ For a project-scoped installation:
 python scripts/install.py --agent generic --scope project --project /path/to/project --skill project-bootstrap
 ```
 
-`.agents/skills/` stores installed Skills; `.agents/rules/` stores approved project-specific instructions and is **not created by the installer or bootstrap**. Explicit rule reading conditions belong in the project's `AGENTS.md`. Harness discovery of either location is not universal.
+`.agents/skills/` stores installed Skills; `.agents/rules/` stores approved project-specific instructions and is **not created by the installer or bootstrap**. The project's `AGENTS.md` mentions only the `.agents/rules/` directory and directs the agent to inspect it when present. File-level scope and any index belong inside the rules directory; changing individual rules does not change `AGENTS.md`. Harness discovery of either location is not universal.
 
 ## Invocation
 

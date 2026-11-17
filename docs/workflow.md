@@ -25,7 +25,7 @@ Create/reconcile `AGENTS.md`; do not create `.agents/rules/` by default. If an a
 $project-bootstrap add-rule
 ```
 
-Only persist the scoped rule with approval and index its task-specific loading condition in `AGENTS.md`.
+Only persist a scoped rule with approval. `AGENTS.md` mentions only the `.agents/rules/` directory; rule files and any optional index are maintained inside that directory. Rule additions, edits, merges and deletions do not alter `AGENTS.md`.
 
 ## When system-level risk warrants it
 

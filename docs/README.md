@@ -2,7 +2,7 @@
 
 The two independently installable Skills:
 
-- [Project Bootstrap](project-bootstrap.md): repository instructions, on-demand, evidence-based rule maintenance and explicit conditional links from `AGENTS.md`.
+- [Project Bootstrap](project-bootstrap.md): repository instructions and on-demand, evidence-based rule maintenance within `.agents/rules/`, with just a stable directory pointer in `AGENTS.md`.
 - [Engineering Governance](engineering-governance.md): optional change impact, verification and releases for one or multiple Git repositories.
 
 Also see [installation](installation.md), [agent-led workflow](workflow.md), [sources of truth](source-of-truth.md) and [project organization](repository-roles.md).

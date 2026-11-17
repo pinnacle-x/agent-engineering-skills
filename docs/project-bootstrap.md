@@ -1,6 +1,6 @@
 # Project Bootstrap and Rule Maintenance
 
-`project-bootstrap` is independent of the governance Skill. It manages how an agent reads project instructions, **not** how it performs ordinary development.
+`project-bootstrap` maintains the portable project entry point and project-specific rules. It does not take over ordinary design, implementation, TDD, testing or documentation from the active agent.
 
 ## Bootstrap
 
@@ -8,44 +8,51 @@
 $project-bootstrap
 ```
 
-Inspect the current repository, its root and nested `AGENTS.md` files, README, source layout and conventions. Reconcile root instructions without overwriting existing content.
+Read the project structure, README, source, build settings and existing instructions. Create or reconcile root `AGENTS.md` while preserving existing conventions.
 
-### Documentation location
+### Documentation locations
 
-Follow existing conventions first. Without a convention, use `docs/` for project-wide documents and place module-specific docs near their module. The active agent decides what documents and detail the project needs, consistent with user requests, standards, design and product delivery. Do not enforce a fixed document count or format.
+Follow project conventions first. Without one, use `docs/` for project-wide material and module directories for module-specific material. Agent documentation is based on the user and project's needs, without a fixed count or detail restriction.
 
-### Default rule behavior
+### Rule directory policy in AGENTS.md
 
-**Do not create `.agents/rules/`, `general.md`, `testing.md` or other rule files as a side effect of bootstrap.** If approved rules already exist, add exact conditional links to real paths in `AGENTS.md`. Other Harnesses are not guaranteed to scan that directory.
+**`AGENTS.md` names only the directory `.agents/rules/`, not any individual rule files.** It tells the agent to inspect that directory when it exists and read relevant rules; when absent, proceed without additional project rules. An agent Harness is not assumed to load this path automatically.
 
-## Add or revise a proven rule
+The default bootstrap **does not create `.agents/rules/`, `INDEX.md`, generic rule files or placeholders**.
+
+An appropriate `AGENTS.md` section is:
+
+```markdown
+## Project Rules
+- Project-specific rules live in `.agents/rules/`; this directory is created only when needed.
+- If the directory exists, inspect its files and read applicable rules for this task.
+- If it does not exist, there are no additional project rules.
+- The runtime is not assumed to auto-load this directory.
+```
+
+No per-rule file links or applicability lists should be added to `AGENTS.md`.
+
+## Add, edit, merge and delete rules
 
 ```text
 $project-bootstrap add-rule
 ```
 
-Use after repeated failures with a verified cause and a demonstrated need for a lasting rule, or when the user requests an explicitly specified rule. The agent should:
+Use for repeated, evidenced agent problems with confirmed root causes. A single speculative failure does not justify a permanent rule. An explicit user request can authorize a specified rule.
 
-1. Review examples, root cause and scope; a single unexplained failure is not enough.
-2. Check existing rules, tests, source and project documentation to avoid duplicating instructions.
-3. Propose a targeted, testable rule and note situations where it should **not** apply.
-4. Get the user's approval to persist it unless the current request already authorizes that exact rule.
-5. Create or update `.agents/rules/<topic>.md`.
-6. Update `AGENTS.md` with a working relative path and **when-to-read** condition.
-7. Verify no contradictory rules or duplicate index entries; inspect the diff and report changes.
+1. Examine existing code/tests, the repeated failure, and any existing project rules.
+2. Propose targeted behavior and scope; obtain user approval unless the exact change was already requested.
+3. On first addition, create `.agents/rules/` and the approved `<topic>.md` file. Each rule describes its own applicability, evidence and exceptions.
+4. For revision, merge, rename or removal, edit the affected rules. Keep any optional `.agents/rules/INDEX.md` internally consistent, if used.
+5. **Do not modify `AGENTS.md` for rule maintenance.** It remains a stable directory-level pointer. If a legacy project has no directory-level policy, use the separate bootstrap operation to add it once.
+6. Verify referenced files exist, no rule was duplicated and the diff is limited to intended rule directory changes.
 
-Example `AGENTS.md` entry, only if the file exists:
+For many rules, an optional `INDEX.md` *inside `.agents/rules/`* can summarize names and applicability. For a few easily inspected rules, it is unnecessary. Avoid creating index or placeholder files at bootstrap.
 
-```markdown
-## Task-specific rules
-- When changing STM32 DMA/cache code, read
-  [.agents/rules/stm32-dma.md](.agents/rules/stm32-dma.md).
-```
+When a rule becomes obsolete, merge/revise/delete it with authorization. After the last rule is deleted, remove any empty index; Git does not track empty directories.
 
-Periodically revise or delete obsolete rules with approval; do not accumulate rules for hypothetical problems.
+See the format example at `skills/project-bootstrap/references/rules.template.md`.
 
-## Source-of-truth boundaries
+## Sources of truth
 
-Use source and verified tests to understand current implementation. Preserve standards, customer requirements and approved interfaces as intended behavior. Design/implementation/tests/documentation remain tasks for the active agent; Grill/Wayfinder are optional.
-
-See `skills/project-bootstrap/references/AGENTS.template.md` and `rules.template.md` for *examples*, not files to copy into every new project.
+Code and verified tests describe current implemented behavior. Standards, approved requirements, interfaces and hardware constraints describe intended behavior. Conflicts must be raised rather than silently resolved. Grill and Wayfinder are optional helpers.
