@@ -25,7 +25,7 @@ Actual checks and feedback → next decision or continuation
 
 For **existing projects**, current source/build/runtime evidence establishes **present implementation facts**. From that baseline, maintain confirmed requirements, technical constraints and design records. Source behavior alone does not establish an approved future requirement. Uncertain intent stays pending.
 
-For **new projects**, start from accepted goals and constraints, iteratively clarify architectural and subsystem choices, then implement each confirmed scope directly.
+For **new projects**, start from accepted goals and constraints, iteratively clarify architectural and subsystem choices, then carry out each confirmed scope directly.
 
 ## Document discoverability
 
