@@ -30,7 +30,7 @@ def skill_catalog() -> dict[str, Path]:
     root = repo_root() / "skills"
     catalog: dict[str, Path] = {}
     if not root.is_dir():
-        raise RuntimeError(f"portable Agent Skills skills directory not found: {root}")
+        raise RuntimeError(f"Agent Skills directory not found: {root}")
     for child in sorted(root.iterdir()):
         if child.is_dir() and (child / "SKILL.md").is_file():
             catalog[child.name] = child
@@ -78,7 +78,7 @@ def install_link(src: Path, dst: Path, force: bool) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Install the portable Agent Skills Agent Skill")
+    parser = argparse.ArgumentParser(description="Install portable Agent Skills")
     parser.add_argument(
         "--agent",
         choices=sorted(TARGETS),
@@ -135,7 +135,7 @@ def main() -> int:
     unknown = [name for name in selected if name not in catalog]
     if unknown:
         print(
-            "Unknown portable Agent Skills skill(s): " + ", ".join(sorted(unknown)),
+            "Unknown Skill(s): " + ", ".join(sorted(unknown)),
             file=sys.stderr,
         )
         print("Available: " + ", ".join(catalog), file=sys.stderr)
